@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tarea 04 – Guía para Aprender CSS3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@1,300&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --css-azul: #264de4;
+      --css-azul-claro: #2965f1;
+      --css-celeste: #4a9fd4;
+      --rosa-suave: #f7c5d5;
+      --rosa-medio: #f0a0bb;
+      --azul-pastel: #b8d8f0;
+      --beige: #f5ede3;
+      --morado: #9b6bcc;
+      --negro: #1a1a1a;
+      --code-bg: #0d1117;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:#f0f4ff;color:var(--negro);overflow-x:hidden;}
+
+    /* ══ PROGRESO ══ */
+    #progress-bar{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--css-azul),var(--css-celeste),var(--morado));z-index:300;transition:width .1s linear;border-radius:0 2px 2px 0;}
+
+    /* ══ BOTÓN ATRÁS ══ */
+    .btn-back{
+      position:fixed;top:22px;left:22px;z-index:200;
+      display:flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,.82);backdrop-filter:blur(14px);
+      border:1px solid rgba(255,255,255,.95);border-radius:40px;
+      padding:10px 20px 10px 14px;text-decoration:none;color:#0a1a4a;
+      font-size:.85rem;font-weight:500;
+      box-shadow:0 4px 20px rgba(38,77,228,.18);transition:all .25s ease;
+    }
+    .btn-back:hover{background:rgba(255,255,255,.98);transform:translateX(-3px);}
+    .btn-back svg{width:18px;height:18px;}
+
+    /* ══ NAV LATERAL ══ */
+    .sidebar-nav{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:150;display:flex;flex-direction:column;gap:8px;}
+    .sidebar-dot{width:10px;height:10px;border-radius:50%;background:rgba(38,77,228,.25);border:2px solid rgba(38,77,228,.45);cursor:pointer;transition:all .2s ease;text-decoration:none;display:block;}
+    .sidebar-dot:hover,.sidebar-dot.active{background:var(--css-azul);transform:scale(1.35);}
+    @media(max-width:768px){.sidebar-nav{display:none;}}
+
+    /* ══ HERO ══ */
+    .hero{
+      min-height:100vh;
+      background:linear-gradient(135deg,#020b2e 0%,#0a1a6e 40%,#03093a 70%,#0a0028 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:100px 24px 60px;position:relative;overflow:hidden;
+    }
+    .hero-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.13;}
+    .hero-particles span{position:absolute;font-family:'Fira Code',monospace;font-size:.75rem;color:#4a9fd4;animation:floatCode linear infinite;}
+    @keyframes floatCode{from{transform:translateY(105vh);opacity:0;}8%{opacity:1;}92%{opacity:1;}to{transform:translateY(-5vh);opacity:0;}}
+    .hero::after{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(38,77,228,.18) 0%,transparent 65%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+
+    .hero-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px;animation:fadeUp .9s ease both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
+
+    .hero-badge{font-size:.72rem;font-weight:500;letter-spacing:.35em;text-transform:uppercase;color:#88aaff;background:rgba(38,77,228,.15);border:1px solid rgba(38,77,228,.4);padding:5px 18px;border-radius:20px;}
+
+    /* Logo CSS3 animado */
+    .css3-logo{filter:drop-shadow(0 0 40px rgba(38,77,228,.6));animation:glow 3s ease-in-out infinite;}
+    @keyframes glow{0%,100%{filter:drop-shadow(0 0 28px rgba(38,77,228,.4));}50%{filter:drop-shadow(0 0 60px rgba(41,101,241,.75));}}
+
+    .hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,6vw,4.5rem);font-weight:700;color:#fff;line-height:1.08;letter-spacing:-.02em;text-shadow:0 4px 30px rgba(38,77,228,.5);}
+    .hero-title span{color:#88c0ff;}
+    .hero-subtitle{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1rem,2.3vw,1.4rem);color:rgba(247,197,213,.85);letter-spacing:.06em;}
+    .hero-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+    .hchip{font-size:.72rem;padding:5px 14px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);}
+    .hchip.b{background:rgba(38,77,228,.22);border-color:rgba(38,77,228,.5);color:#88aaff;}
+    .hchip.p{background:rgba(155,107,204,.22);border-color:rgba(155,107,204,.45);color:#d9bfee;}
+    .hchip.r{background:rgba(240,160,187,.15);border-color:rgba(240,160,187,.35);color:#f7c5d5;}
+
+    .scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:5px;opacity:.45;animation:bounce 2s infinite;z-index:2;}
+    .scroll-hint span{font-size:.68rem;letter-spacing:.15em;color:#88aaff;text-transform:uppercase;}
+    @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(8px);}}
+
+    /* ══ LAYOUT ══ */
+    .contenido{max-width:980px;margin:0 auto;padding:64px 24px 80px;}
+
+    /* ══ INTRO ══ */
+    .intro-box{background:white;border-radius:20px;padding:28px 32px;margin-bottom:60px;border-left:5px solid var(--css-azul);box-shadow:0 4px 24px rgba(38,77,228,.1);font-size:.97rem;line-height:1.8;color:#1a2a4a;}
+    .intro-box strong{color:var(--css-azul);}
+
+    /* ══ PASO ══ */
+    .paso{margin-bottom:80px;}
+    .paso-header{display:flex;align-items:flex-start;gap:18px;margin-bottom:28px;}
+    .paso-num{min-width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--css-azul),var(--css-azul-claro));color:white;font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(38,77,228,.38);flex-shrink:0;}
+    .paso-titulo{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:#0a1a4a;line-height:1.2;}
+    .paso-subtitulo{font-size:.88rem;color:#4a5a8a;margin-top:4px;}
+
+    /* ══ ILUSTRACIÓN ══ */
+    .il{width:100%;border-radius:20px;overflow:hidden;margin-bottom:24px;box-shadow:0 8px 32px rgba(38,77,228,.14);}
+    .il svg{width:100%;display:block;}
+
+    /* ══ CÓDIGO ══ */
+    .cb{background:var(--code-bg);border-radius:14px;overflow:hidden;margin:20px 0;box-shadow:0 8px 32px rgba(0,0,0,.4);}
+    .cbar{background:#161b22;padding:8px 16px;display:flex;align-items:center;gap:6px;}
+    .cd{width:10px;height:10px;border-radius:50%;}
+    .cd.r{background:#ff5f57;}.cd.y{background:#febc2e;}.cd.g{background:#28c840;}
+    .cfn{margin-left:auto;font-family:'Fira Code',monospace;font-size:.7rem;color:rgba(255,255,255,.3);}
+    .cc{padding:18px 20px;font-family:'Fira Code',monospace;font-size:.8rem;line-height:1.8;overflow-x:auto;white-space:pre;}
+    /* tokens */
+    .kw{color:#ff7b72;}.fn{color:#d2a8ff;}.st{color:#a5d6ff;}
+    .cm{color:#8b949e;font-style:italic;}.nm{color:#79c0ff;}
+    .sl{color:#7ee787;}.pr{color:#79c0ff;}.vl{color:#a5d6ff;}
+    .un{color:#ffa657;}.at{color:#ffcb6b;}.pt{color:#e6edf3;}
+
+    /* ══ TARJETAS PROP ══ */
+    .prop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin:20px 0;}
+    .prop-card{background:white;border-radius:14px;padding:14px 16px;border-left:4px solid var(--css-azul);box-shadow:0 3px 12px rgba(38,77,228,.1);transition:transform .2s ease;}
+    .prop-card:hover{transform:translateY(-3px);}
+    .prop-name{font-family:'Fira Code',monospace;font-size:.85rem;font-weight:500;color:var(--css-azul);margin-bottom:4px;}
+    .prop-desc{font-size:.8rem;line-height:1.5;color:#3a4a6a;}
+    .prop-card.verde{border-left-color:#2a9a4a;}.prop-card.verde .prop-name{color:#2a9a4a;}
+    .prop-card.morado{border-left-color:var(--morado);}.prop-card.morado .prop-name{color:var(--morado);}
+    .prop-card.rosa{border-left-color:#c84080;}.prop-card.rosa .prop-name{color:#c84080;}
+    .prop-card.naranja{border-left-color:#d46820;}.prop-card.naranja .prop-name{color:#d46820;}
+    .prop-card.celeste{border-left-color:var(--css-celeste);}.prop-card.celeste .prop-name{color:var(--css-celeste);}
+
+    /* ══ PROSA ══ */
+    .prose{font-size:.97rem;line-height:1.85;color:#1a2a3a;}
+    .prose p{margin-bottom:14px;}.prose p:last-child{margin-bottom:0;}
+    .prose strong{color:#0a1a6a;}.prose em{color:var(--morado);font-style:italic;}
+
+    /* ══ TIP ══ */
+    .tip{border-radius:14px;padding:18px 20px;margin:20px 0;display:flex;gap:12px;align-items:flex-start;}
+    .tip.azul{background:#e8f0ff;border:1px solid rgba(38,77,228,.25);}
+    .tip.verde{background:#e8fff2;border:1px solid rgba(42,154,74,.25);}
+    .tip.morado{background:#f5eeff;border:1px solid rgba(155,107,204,.25);}
+    .tip.naranja{background:#fff5e8;border:1px solid rgba(212,104,32,.25);}
+    .tip-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px;}
+    .tip-text{font-size:.88rem;line-height:1.65;color:#1a2a3a;}
+    .tip-text strong{color:#0a1a6a;}
+    .tip-text code{font-family:'Fira Code',monospace;background:rgba(38,77,228,.1);padding:1px 6px;border-radius:4px;font-size:.82rem;}
+
+    /* ══ DEMO VISUAL ══ */
+    .demo{background:white;border-radius:16px;overflow:hidden;margin:20px 0;box-shadow:0 6px 24px rgba(38,77,228,.1);}
+    .demo-bar{background:#f0f4ff;padding:8px 16px;display:flex;align-items:center;gap:8px;font-size:.75rem;color:#4a5a8a;border-bottom:1px solid #e0e8ff;}
+    .demo-bar span{background:#dde8ff;border-radius:4px;padding:2px 8px;font-family:'Fira Code',monospace;font-size:.7rem;color:var(--css-azul);}
+    .demo-body{padding:24px;}
+
+    /* ══ SEP ══ */
+    .sep{width:60px;height:3px;background:linear-gradient(90deg,var(--css-azul),var(--morado));border-radius:2px;margin:0 0 24px;}
+
+    /* ══ TABLA ══ */
+    .tw{overflow-x:auto;margin:20px 0;}
+    table{width:100%;border-collapse:collapse;background:white;border-radius:14px;overflow:hidden;box-shadow:0 4px 16px rgba(38,77,228,.08);font-size:.85rem;}
+    thead{background:linear-gradient(135deg,#020b2e,#0a1a6e);color:white;}
+    th{padding:12px 16px;text-align:left;font-weight:500;letter-spacing:.04em;}
+    td{padding:10px 16px;border-bottom:1px solid rgba(38,77,228,.08);color:#1a2a4a;}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:#f0f4ff;}
+    .tc{font-family:'Fira Code',monospace;font-size:.78rem;color:var(--css-azul);}
+
+    /* ══ SWATCH BOX (colores) ══ */
+    .swatches{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0;}
+    .swatch{width:80px;text-align:center;}
+    .swatch-color{width:80px;height:56px;border-radius:12px;margin-bottom:6px;box-shadow:0 2px 8px rgba(0,0,0,.15);}
+    .swatch-label{font-family:'Fira Code',monospace;font-size:.65rem;color:#4a5a8a;word-break:break-all;}
+
+    /* ══ FOOTER ══ */
+    footer{background:linear-gradient(135deg,#4a2a3a 0%,#3a5070 100%);color:rgba(255,255,255,.85);text-align:center;padding:36px 24px;}
+    .footer-inner{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:8px;align-items:center;}
+    .fi-escuela{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--rosa-suave);letter-spacing:.05em;}
+    .fi-esp{font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--azul-pastel);}
+    .fi-autor{font-size:.88rem;color:rgba(255,255,255,.65);margin-top:4px;}
+    .fi-div{width:40px;height:2px;background:linear-gradient(90deg,var(--rosa-medio),var(--azul-pastel));border-radius:2px;margin:6px auto;}
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- ══ BOTÓN ATRÁS ══ -->
+<a href="index.html" class="btn-back">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+  Volver al portafolio
+</a>
+
+<!-- ══ NAV LATERAL ══ -->
+<nav class="sidebar-nav">
+  <a href="#p0"  class="sidebar-dot active" title="¿Qué es CSS?"></a>
+  <a href="#p1"  class="sidebar-dot" title="Sintaxis y selectores"></a>
+  <a href="#p2"  class="sidebar-dot" title="Colores y fondos"></a>
+  <a href="#p3"  class="sidebar-dot" title="Tipografía"></a>
+  <a href="#p4"  class="sidebar-dot" title="Box Model"></a>
+  <a href="#p5"  class="sidebar-dot" title="Display y Posición"></a>
+  <a href="#p6"  class="sidebar-dot" title="Flexbox"></a>
+  <a href="#p7"  class="sidebar-dot" title="Grid"></a>
+  <a href="#p8"  class="sidebar-dot" title="Pseudoclases y Pseudoelementos"></a>
+  <a href="#p9"  class="sidebar-dot" title="Transiciones y Animaciones"></a>
+  <a href="#p10" class="sidebar-dot" title="Variables y Responsive"></a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-particles">
+    <span style="left:4%;animation-duration:16s;animation-delay:0s">color:</span>
+    <span style="left:11%;animation-duration:20s;animation-delay:3s">display:flex</span>
+    <span style="left:21%;animation-duration:14s;animation-delay:1s">margin:0</span>
+    <span style="left:32%;animation-duration:19s;animation-delay:5s">@media</span>
+    <span style="left:44%;animation-duration:22s;animation-delay:2s">border-radius</span>
+    <span style="left:56%;animation-duration:15s;animation-delay:4s">:hover{}</span>
+    <span style="left:67%;animation-duration:18s;animation-delay:6s">grid-template</span>
+    <span style="left:78%;animation-duration:13s;animation-delay:1.5s">animation:</span>
+    <span style="left:88%;animation-duration:17s;animation-delay:7s">var(--color)</span>
+    <span style="left:95%;animation-duration:21s;animation-delay:3.5s">:root{}</span>
+  </div>
+
+  <div class="hero-inner">
+    <span class="hero-badge">Tarea 04 &nbsp;·&nbsp; Cultura Digital 2</span>
+
+    <!-- Logo CSS3 SVG -->
+    <svg class="css3-logo" viewBox="0 0 100 120" width="110" height="132" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="8,0 92,0 84,108 50,118 16,108" fill="#264de4"/>
+      <polygon points="50,10 50,109 78,102 84.5,10" fill="#2965f1"/>
+      <text x="50" y="55" text-anchor="middle" font-family="Arial Black" font-size="28" font-weight="900" fill="white">CSS</text>
+      <text x="50" y="80" text-anchor="middle" font-family="Arial Black" font-size="22" font-weight="900" fill="rgba(255,255,255,.85)">3</text>
+    </svg>
+
+    <h1 class="hero-title">Guía para aprender<br><span>CSS3</span></h1>
+    <p class="hero-subtitle">El lenguaje que convierte el HTML en arte visual</p>
+
+    <div class="hero-chips">
+      <span class="hchip b">Paso 0: ¿Qué es?</span>
+      <span class="hchip">Selectores</span>
+      <span class="hchip">Box Model</span>
+      <span class="hchip b">Flexbox</span>
+      <span class="hchip">Grid</span>
+      <span class="hchip p">Animaciones</span>
+      <span class="hchip r">Responsive</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Comenzar</span>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#88aaff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- ══════════ CONTENIDO ══════════ -->
+<main class="contenido">
+
+  <div class="intro-box">
+    <strong>CSS3</strong> (Cascading Style Sheets, nivel 3) es el lenguaje que le da <strong>estilo, color, tipografía, animaciones y estructura visual</strong> a las páginas HTML. Mientras HTML define <em>qué hay</em> en una página, CSS define <em>cómo se ve</em>. Sin CSS, la web sería texto negro sobre fondo blanco sin ningún diseño. En esta guía aprenderás todo desde cero: desde escribir tu primera regla hasta crear layouts complejos y animaciones profesionales.
+  </div>
+
+  <!-- ══ PASO 0 ══ -->
+  <section class="paso" id="p0">
+    <div class="paso-header">
+      <div class="paso-num">0</div>
+      <div>
+        <h2 class="paso-titulo">¿Qué es CSS y cómo funciona?</h2>
+        <p class="paso-subtitulo">Entiende el concepto antes de escribir una sola línea</p>
+      </div>
+    </div>
+    <div class="sep"></div>
+
+    <!-- Ilustración: 3 formas de aplicar CSS -->
+    <div class="il">
+      <svg viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="260" fill="#020b2e"/>
+        <circle cx="850" cy="30"  r="90" fill="#0a1a6e" opacity=".4"/>
+        <circle cx="30"  cy="240" r="70" fill="#0a0028" opacity=".4"/>
+
+        <!-- Método 1: inline -->
+        <rect x="20" y="30" width="260" height="190" rx="12" fill="#0d1117" stroke="#264de4" stroke-width="1.5"/>
+        <rect x="20" y="30" width="260" height="28" rx="12" fill="#161b22"/>
+        <rect x="20" y="44" width="260" height="14" fill="#161b22"/>
+        <circle cx="36" cy="44" r="4" fill="#ff5f57"/><circle cx="50" cy="44" r="4" fill="#febc2e"/><circle cx="64" cy="44" r="4" fill="#28c840"/>
+        <text x="150" y="46" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.35)">1. CSS INLINE</text>
+        <text x="32" y="74"  font-family="monospace" font-size="9" fill="#ff7b72">&lt;p</text>
+        <text x="50" y="74"  font-family="monospace" font-size="9" fill="#ffcb6b"> style</text>
+        <text x="88" y="74"  font-family="monospace" font-size="9" fill="#a5d6ff">="color:red"</text>
+        <text x="32" y="90"  font-family="monospace" font-size="9" fill="#ff7b72">    &gt;</text>
+        <text x="32" y="106" font-family="monospace" font-size="9" fill="#e6edf3">  Texto rojo</text>
+        <text x="32" y="122" font-family="monospace" font-size="9" fill="#ff7b72">&lt;/p&gt;</text>
+        <rect x="32" y="140" width="220" height="16" rx="4" fill="#1a0000"/>
+        <text x="142" y="152" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#ff5555">Texto rojo</text>
+        <text x="150" y="200" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#ff7070">⚠ No recomendado</text>
+        <text x="150" y="214" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#546e7a">Difícil de mantener</text>
+
+        <!-- Método 2: interno -->
+        <rect x="320" y="30" width="260" height="190" rx="12" fill="#0d1117" stroke="#2965f1" stroke-width="1.5"/>
+        <rect x="320" y="30" width="260" height="28" rx="12" fill="#161b22"/>
+        <rect x="320" y="44" width="260" height="14" fill="#161b22"/>
+        <circle cx="336" cy="44" r="4" fill="#ff5f57"/><circle cx="350" cy="44" r="4" fill="#febc2e"/><circle cx="364" cy="44" r="4" fill="#28c840"/>
+        <text x="450" y="46" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.35)">2. CSS INTERNO</text>
+        <text x="332" y="74"  font-family="monospace" font-size="9" fill="#ff7b72">&lt;style&gt;</text>
+        <text x="332" y="90"  font-family="monospace" font-size="9" fill="#7ee787">  p {</text>
+        <text x="332" y="106" font-family="monospace" font-size="9" fill="#79c0ff">    color:</text>
+        <text x="385" y="106" font-family="monospace" font-size="9" fill="#a5d6ff"> blue;</text>
+        <text x="332" y="122" font-family="monospace" font-size="9" fill="#7ee787">  }</text>
+        <text x="332" y="138" font-family="monospace" font-size="9" fill="#ff7b72">&lt;/style&gt;</text>
+        <rect x="332" y="155" width="220" height="16" rx="4" fill="#00001a"/>
+        <text x="442" y="167" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#5555ff">Texto azul</text>
+        <text x="450" y="200" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#ffa657">⚡ Aceptable en prototipos</text>
+        <text x="450" y="214" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#546e7a">En &lt;head&gt; del HTML</text>
+
+        <!-- Método 3: externo -->
+        <rect x="620" y="30" width="260" height="190" rx="12" fill="#0d1117" stroke="#7ee787" stroke-width="2"/>
+        <rect x="620" y="30" width="260" height="28" rx="12" fill="#161b22"/>
+        <rect x="620" y="44" width="260" height="14" fill="#161b22"/>
+        <circle cx="636" cy="44" r="4" fill="#ff5f57"/><circle cx="650" cy="44" r="4" fill="#febc2e"/><circle cx="664" cy="44" r="4" fill="#28c840"/>
+        <text x="750" y="46" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.35)">3. CSS EXTERNO ✅</text>
+        <text x="632" y="74"  font-family="monospace" font-size="9" fill="#ff7b72">&lt;link</text>
+        <text x="632" y="90"  font-family="monospace" font-size="9" fill="#ffcb6b">  rel=</text>
+        <text x="666" y="90"  font-family="monospace" font-size="9" fill="#a5d6ff">"stylesheet"</text>
+        <text x="632" y="106" font-family="monospace" font-size="9" fill="#ffcb6b">  href=</text>
+        <text x="672" y="106" font-family="monospace" font-size="9" fill="#a5d6ff">"style.css"</text>
+        <text x="632" y="122" font-family="monospace" font-size="9" fill="#ff7b72">/&gt;</text>
+        <rect x="632" y="140" width="220" height="16" rx="4" fill="#001a00"/>
+        <text x="742" y="152" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#55cc55">Texto verde</text>
+        <text x="750" y="200" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#7ee787">✅ Recomendado</text>
+        <text x="750" y="214" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#546e7a">Reutilizable en todas las páginas</text>
+
+        <text x="450" y="18" text-anchor="middle" font-family="sans-serif" font-size="11" fill="rgba(100,160,255,.55)" letter-spacing="2">LAS 3 FORMAS DE APLICAR CSS</text>
+      </svg>
+    </div>
+
+    <div class="prose">
+      <p>CSS funciona con un principio de <strong>cascada</strong>: los estilos se aplican en orden de arriba a abajo, y los más específicos ganan sobre los generales. El nombre viene de ahí: <em>Cascading</em> Style Sheets.</p>
+      <p>La forma <strong>más profesional y recomendada</strong> es usar un archivo <code>.css</code> externo vinculado desde el HTML con <code>&lt;link&gt;</code>. Esto permite reutilizar los estilos en múltiples páginas y mantener el código organizado.</p>
+    </div>
+
+    <div class="tip azul">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text"><strong>La cascada y la especificidad:</strong> Cuando dos reglas CSS aplican al mismo elemento, gana la más <strong>específica</strong>. Orden de prioridad: <code>!important</code> → estilos inline → id → clases → etiquetas. Más sobre esto en el Paso 1.</div>
+    </div>
+  </section>
+
+  <!-- ══ PASO 1 ══ -->
+  <section class="paso" id="p1">
+    <div class="paso-header">
+      <div class="paso-num">1</div>
+      <div>
+        <h2 class="paso-titulo">Sintaxis CSS y Selectores</h2>
+        <p class="paso-subtitulo">La gramática del lenguaje y cómo apuntar a los elementos HTML</p>
+      </div>
+    </div>
+    <div class="sep"></div>
+
+    <!-- Ilustración: anatomía regla CSS -->
+    <div class="il">
+      <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="200" fill="#0d1117"/>
+        <!-- Regla CSS desglosada -->
+        <text x="60"  y="80" font-family="'Fira Code',monospace" font-size="22" fill="#7ee787">h1</text>
+        <text x="98"  y="80" font-family="'Fira Code',monospace" font-size="22" fill="#e6edf3"> {</text>
+        <text x="120" y="112" font-family="'Fira Code',monospace" font-size="18" fill="#79c0ff">  color</text>
+        <text x="190" y="112" font-family="'Fira Code',monospace" font-size="18" fill="#e6edf3">:</text>
+        <text x="203" y="112" font-family="'Fira Code',monospace" font-size="18" fill="#a5d6ff"> #264de4</text>
+        <text x="310" y="112" font-family="'Fira Code',monospace" font-size="18" fill="#e6edf3">;</text>
+        <text x="120" y="140" font-family="'Fira Code',monospace" font-size="18" fill="#79c0ff">  font-size</text>
+        <text x="240" y="140" font-family="'Fira Code',monospace" font-size="18" fill="#e6edf3">:</text>
+        <text x="253" y="140" font-family="'Fira Code',monospace" font-size="18" fill="#ffa657"> 2rem</text>
+        <text x="305" y="140" font-family="'Fira Code',monospace" font-size="18" fill="#e6edf3">;</text>
+        <text x="100" y="168" font-family="'Fira Code',monospace" font-size="22" fill="#e6edf3">}</text>
+        <!-- flechas anotación -->
+        <line x1="75"  y1="90"  x2="75"  y2="168" stroke="#7ee787"  stroke-width="1.5" stroke-dasharray="4,2"/>
+        <line x1="75"  y1="168" x2="50"  y2="180" stroke="#7ee787"  stroke-width="1.5"/>
+        <text x="8"   y="185" font-family="sans-serif" font-size="10" fill="#7ee787">Selector</text>
+        <line x1="175" y1="118" x2="175" y2="185" stroke="#79c0ff" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="155" y="196" font-family="sans-serif" font-size="10" fill="#79c0ff">Propiedad</text>
+        <line x1="270" y1="118" x2="310" y2="185" stroke="#a5d6ff" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="290" y="196" font-family="sans-serif" font-size="10" fill="#a5d6ff">Valor</text>
+        <line x1="318" y1="118" x2="380" y2="160" stroke="#ffa657" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="355" y="172" font-family="sans-serif" font-size="10" fill="#ffa657">Punto y coma</text>
+        <!-- tipos selectores -->
+        <rect x="450" y="20" width="420" height="160" rx="10" fill="#161b22"/>
+        <text x="460" y="44" font-family="'Fira Code',monospace" font-size="10" fill="#8b949e">/* Tipos de selectores */</text>
+        <text x="460" y="62" font-family="'Fira Code',monospace" font-size="10" fill="#7ee787">p { }</text>
+        <text x="520" y="62" font-family="sans-serif" font-size="9" fill="#8b949e">— etiqueta (todos los &lt;p&gt;)</text>
+        <text x="460" y="78" font-family="'Fira Code',monospace" font-size="10" fill="#79c0ff">.clase { }</text>
+        <text x="540" y="78" font-family="sans-serif" font-size="9" fill="#8b949e">— clase (varios elementos)</text>
+        <text x="460" y="94" font-family="'Fira Code',monospace" font-size="10" fill="#ffa657">#id { }</text>
+        <text x="520" y="94" font-family="sans-serif" font-size="9" fill="#8b949e">— id (un solo elemento)</text>
+        <text x="460" y="110" font-family="'Fira Code',monospace" font-size="10" fill="#d2a8ff">* { }</text>
+        <text x="510" y="110" font-family="sans-serif" font-size="9" fill="#8b949e">— universal (todos)</text>
+        <text x="460" y="126" font-family="'Fira Code',monospace" font-size="10" fill="#a5d6ff">h1, p { }</text>
+        <text x="540" y="126" font-family="sans-serif" font-size="9" fill="#8b949e">— múltiple (dos o más)</text>
+        <text x="460" y="142" font-family="'Fira Code',monospace" font-size="10" fill="#7ee787">div p { }</text>
+        <text x="540" y="142" font-family="sans-serif" font-size="9" fill="#8b949e">— descendiente (p dentro de div)</text>
+        <text x="460" y="158" font-family="'Fira Code',monospace" font-size="10" fill="#ff7b72">div &gt; p { }</text>
+        <text x="548" y="158" font-family="sans-serif" font-size="9" fill="#8b949e">— hijo directo</text>
+        <text x="460" y="174" font-family="'Fira Code',monospace" font-size="10" fill="#79c0ff">a[href] { }</text>
+        <text x="548" y="174" font-family="sans-serif" font-size="9" fill="#8b949e">— atributo</text>
+      </svg>
+    </div>
+
+    <div class="cb">
+      <div class="cbar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="cfn">selectores.css</span></div>
+      <div class="cc"><span class="cm">/* ─── SELECTOR DE ETIQUETA ─── */</span>
+<span class="sl">p</span> { <span class="pr">color</span>: <span class="vl">#333</span>; }
+
+<span class="cm">/* ─── SELECTOR DE CLASE (punto antes del nombre) ─── */</span>
+<span class="sl">.boton-principal</span> {
+  <span class="pr">background</span>: <span class="vl">#264de4</span>;
+  <span class="pr">color</span>: <span class="vl">white</span>;
+  <span class="pr">padding</span>: <span class="nm">10px 24px</span>;
+}
+
+<span class="cm">/* ─── SELECTOR DE ID (# antes del nombre) ─── */</span>
+<span class="sl">#menu-principal</span> {
+  <span class="pr">display</span>: <span class="vl">flex</span>;
+  <span class="pr">gap</span>: <span class="nm">20px</span>;
+}
+
+<span class="cm">/* ─── SELECTOR COMBINADO ─── */</span>
+<span class="sl">nav a</span>          { <span class="pr">text-decoration</span>: <span class="vl">none</span>; }   <span class="cm">/* a dentro de nav */</span>
+<span class="sl">section > h2</span>   { <span class="pr">font-size</span>: <span class="nm">1.5rem</span>; }       <span class="cm">/* h2 hijo directo de section */</span>
+<span class="sl">h1 + p</span>         { <span class="pr">margin-top</span>: <span class="nm">0</span>; }            <span class="cm">/* p inmediatamente después de h1 */</span>
+<span class="sl">input[required]</span>{ <span class="pr">border-color</span>: <span class="vl">red</span>; }      <span class="cm">/* inputs con atributo required */</span>
+
+<span class="cm">/* ─── ESPECIFICIDAD (quién gana) ─── */</span>
+<span class="sl">p</span>           { <span class="pr">color</span>: <span class="vl">black</span>; }     <span class="cm">/* 0-0-1 */</span>
+<span class="sl">.texto</span>      { <span class="pr">color</span>: <span class="vl">blue</span>; }      <span class="cm">/* 0-1-0 ← gana */</span>
+<span class="sl">#parrafo</span>    { <span class="pr">color</span>: <span class="vl">red</span>; }       <span class="cm">/* 1-0-0 ← gana más */</span></div>
+    </div>
+
+    <div class="tip verde">
+      <span class="tip-icon">✅</span>
+      <div class="tip-text"><strong>Buena práctica:</strong> Usa principalmente <strong>clases</strong> (<code>.nombre</code>) para estilos reutilizables. Evita <code>#id</code> para CSS porque su alta especificidad dificulta sobreescribir estilos. Reserva los <code>id</code> para JavaScript.</div>
+    </div>
+  </section>
+
+  <!-- ══ PASO 2 ══ -->
+  <section class="paso" id="p2">
+    <div class="paso-header">
+      <div class="paso-num">2</div>
+      <div>
+        <h2 class="paso-titulo">Colores y Fondos</h2>
+        <p class="paso-subtitulo">Todas las formas de definir colores y propiedades de fondo en CSS3</p>
+      </div>
+    </div>
+    <div class="sep"></div>
+
+    <!-- Ilustración: paleta de colores -->
+    <div class="il">
+      <svg viewBox="0 0 900 180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="180" fill="#0d1117"/>
+        <!-- gradiente de muestra -->
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#264de4"/>
+            <stop offset="25%"  stop-color="#9b6bcc"/>
+            <stop offset="50%"  stop-color="#f0a0bb"/>
+            <stop offset="75%"  stop-color="#f0db4f"/>
+            <stop offset="100%" stop-color="#e44d26"/>
+          </linearGradient>
+          <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#264de4"/>
+            <stop offset="100%" stop-color="#9b6bcc"/>
+          </linearGradient>
+        </defs>
+        <!-- barra gradiente -->
+        <rect x="30" y="20" width="840" height="30" rx="15" fill="url(#grad1)"/>
+        <text x="450" y="40" text-anchor="middle" font-family="sans-serif" font-size="10" fill="white" font-weight="700">CSS puede usar miles de combinaciones de color</text>
+        <!-- swatches nombre/valor -->
+        <rect x="30"  y="62" width="90" height="50" rx="8" fill="#264de4"/>
+        <text x="75"  y="98" text-anchor="middle" font-family="monospace" font-size="8" fill="white">#264de4</text>
+        <rect x="132" y="62" width="90" height="50" rx="8" fill="rgb(155,107,204)"/>
+        <text x="177" y="98" text-anchor="middle" font-family="monospace" font-size="8" fill="white">rgb(155,107,204)</text>
+        <rect x="234" y="62" width="90" height="50" rx="8" fill="rgba(240,160,187,0.85)"/>
+        <text x="279" y="98" text-anchor="middle" font-family="monospace" font-size="8" fill="#333">rgba(240,160,187)</text>
+        <rect x="336" y="62" width="90" height="50" rx="8" fill="hsl(220,80%,55%)"/>
+        <text x="381" y="98" text-anchor="middle" font-family="monospace" font-size="8" fill="white">hsl(220,80%,55%)</text>
+        <rect x="438" y="62" width="90" height="50" rx="8" fill="url(#grad2)"/>
+        <text x="483" y="98" text-anchor="middle" font-family="monospace" font-size="8" fill="white">linear-gradient</text>
+        <rect x="540" y="62" width="90" height="50" rx="8" fill="cornflowerblue"/>
+        <text x="585" y="98" text-anchor="middle" font-family="monospace" font-size="8" fill="white">cornflowerblue</text>
+        <rect x="642" y="62" width="90" height="50" rx="8" fill="transparent" stroke="#88aaff" stroke-width="1.5"/>
+        <text x="687" y="92" text-anchor="middle" font-family="monospace" font-size="8" fill="#88aaff">transparent</text>
+        <rect x="744" y="62" width="90" height="50" rx="8" fill="currentColor" stroke="#88aaff" stroke-width="1.5"/>
+        <text x="789" y="92" text-anchor="middle" font-family="monospace" font-size="8" fill="#88aaff">currentColor</text>
+        <!-- etiquetas -->
+        <text x="75"  y="126" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8b949e">Hexadecimal</text>
+        <text x="177" y="126" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8b949e">RGB</text>
+        <text x="279" y="126" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8b949e">RGBA (opacidad)</text>
+        <text x="381" y="126" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8b949e">HSL</text>
+        <text x="483" y="126" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8b949e">Gradiente</text>
+        <text x="585" y="126" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8b949e">Nombre</text>
+        <text x="687" y="126" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8b949e">Sin color</text>
+        <text x="789" y="126" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8b949e">Color heredado</text>
+        <text x="450" y="160" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(100,160,255,.5)" letter-spacing="2">FORMATOS DE COLOR EN CSS3</text>
+      </svg>
+    </div>
+
+    <div class="cb">
+      <div class="cbar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="cfn">colores-fondos.css</span></div>
+      <div class="cc"><span class="cm">/* ─── FORMATOS DE COLOR ─── */</span>
+<span class="sl">.caja</span> {
+  <span class="pr">color</span>:            <span class="vl">#264de4</span>;           <span class="cm">/* hex */</span>
+  <span class="pr">color</span>:            <span class="fn">rgb</span>(<span class="nm">38</span>, <span class="nm">77</span>, <span class="nm">228</span>);   <span class="cm">/* rgb */</span>
+  <span class="pr">color</span>:            <span class="fn">rgba</span>(<span class="nm">38</span>,<span class="nm">77</span>,<span class="nm">228</span>, <span class="nm">.8</span>); <span class="cm">/* rgba con opacidad */</span>
+  <span class="pr">color</span>:            <span class="fn">hsl</span>(<span class="nm">228</span>, <span class="nm">74%</span>, <span class="nm">52%</span>); <span class="cm">/* hsl: tono, saturación, luminosidad */</span>
+  <span class="pr">background-color</span>: <span class="vl">transparent</span>;
+}
+
+<span class="cm">/* ─── FONDOS ─── */</span>
+<span class="sl">.hero</span> {
+  <span class="cm">/* Color sólido */</span>
+  <span class="pr">background-color</span>: <span class="vl">#f0f4ff</span>;
+
+  <span class="cm">/* Gradiente lineal */</span>
+  <span class="pr">background</span>: <span class="fn">linear-gradient</span>(<span class="nm">135deg</span>, <span class="vl">#264de4</span>, <span class="vl">#9b6bcc</span>);
+
+  <span class="cm">/* Gradiente radial */</span>
+  <span class="pr">background</span>: <span class="fn">radial-gradient</span>(<span class="vl">circle</span>, <span class="vl">#264de4</span> <span class="nm">0%</span>, <span class="vl">transparent</span> <span class="nm">70%</span>);
+
+  <span class="cm">/* Imagen de fondo */</span>
+  <span class="pr">background-image</span>:    <span class="fn">url</span>(<span class="st">"fondo.jpg"</span>);
+  <span class="pr">background-size</span>:     <span class="vl">cover</span>;     <span class="cm">/* cover | contain | 100% */</span>
+  <span class="pr">background-position</span>: <span class="vl">center</span>;
+  <span class="pr">background-repeat</span>:   <span class="vl">no-repeat</span>;
+  <span class="pr">background-attachment</span>: <span class="vl">fixed</span>;  <span class="cm">/* efecto parallax */</span>
+
+  <span class="cm">/* Opacidad del elemento completo */</span>
+  <span class="pr">opacity</span>: <span class="nm">0.9</span>;
+}</div>
+    </div>
+
+    <div class="prop-grid">
+      <div class="prop-card"><div class="prop-name">color</div><div class="prop-desc">Color del texto del elemento.</div></div>
+      <div class="prop-card"><div class="prop-name">background-color</div><div class="prop-desc">Color de fondo sólido.</div></div>
+      <div class="prop-card verde"><div class="prop-name">background-image</div><div class="prop-desc">Imagen o gradiente de fondo.</div></div>
+      <div class="prop-card verde"><div class="prop-name">background-size</div><div class="prop-desc">Tamaño del fondo: cover, contain, px.</div></div>
+      <div class="prop-card morado"><div class="prop-name">linear-gradient()</div><div class="prop-desc">Gradiente en línea recta con ángulo.</div></div>
+      <div class="prop-card morado"><div class="prop-name">radial-gradient()</div><div class="prop-desc">Gradiente circular o elíptico.</div></div>
+      <div class="prop-card naranja"><div class="prop-name">opacity</div><div class="prop-desc">Transparencia del elemento (0–1).</div></div>
+      <div class="prop-card naranja"><div class="prop-name">rgba() / hsla()</div><div class="prop-desc">Color con canal alpha (transparencia).</div></div>
+    </div>
+  </section>
+
+  <!-- ══ PASO 3 ══ -->
+  <section class="paso" id="p3">
+    <div class="paso-header">
+      <div class="paso-num">3</div>
+      <div>
+        <h2 class="paso-titulo">Tipografía en CSS</h2>
+        <p class="paso-subtitulo">Controla fuentes, tamaños, espaciados y estilos de texto</p>
+      </div>
+    </div>
+    <div class="sep"></div>
+
+    <div class="il">
+      <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="220" fill="#f0f4ff"/>
+        <!-- Demo tipografía -->
+        <text x="40" y="55"  font-family="Georgia,serif" font-size="36" font-weight="700" fill="#264de4">Tipografía</text>
+        <text x="40" y="85"  font-family="Georgia,serif" font-size="20" font-weight="400" fill="#1a2a4a">font-size: 20px — font-family: serif</text>
+        <text x="40" y="110" font-family="monospace"    font-size="16" font-weight="400" fill="#9b6bcc">Código monospace — Fira Code</text>
+        <text x="40" y="133" font-family="sans-serif"   font-size="15" fill="#3a4a6a" letter-spacing="3">ESPACIADO — letter-spacing: 3px</text>
+        <text x="40" y="155" font-family="sans-serif"   font-size="15" fill="#3a4a6a" text-decoration="underline">Texto subrayado — text-decoration</text>
+        <text x="40" y="177" font-family="sans-serif"   font-size="15" fill="#3a4a6a" font-style="italic">Cursiva — font-style: italic</text>
+        <text x="40" y="200" font-family="sans-serif"   font-size="13" fill="#3a4a6a" opacity=".55">text-transform: uppercase — MAYÚSCULAS AUTOMÁTICAS</text>
+        <!-- unidades a la derecha -->
+        <rect x="520" y="18" width="360" height="185" rx="12" fill="#1a1228" opacity=".9"/>
+        <text x="532" y="40" font-family="monospace" font-size="10" fill="#8b949e">/* Unidades de medida en CSS */</text>
+        <text x="532" y="58" font-family="monospace" font-size="10" fill="#79c0ff">px</text>
+        <text x="558" y="58" font-family="sans-serif" font-size="9" fill="#8b949e"> — píxeles fijos (16px)</text>
+        <text x="532" y="74" font-family="monospace" font-size="10" fill="#7ee787">rem</text>
+        <text x="560" y="74" font-family="sans-serif" font-size="9" fill="#8b949e"> — relativo al root (1rem=16px)</text>
+        <text x="532" y="90" font-family="monospace" font-size="10" fill="#ffa657">em</text>
+        <text x="558" y="90" font-family="sans-serif" font-size="9" fill="#8b949e"> — relativo al padre</text>
+        <text x="532" y="106" font-family="monospace" font-size="10" fill="#d2a8ff">%</text>
+        <text x="548" y="106" font-family="sans-serif" font-size="9" fill="#8b949e"> — porcentaje del contenedor</text>
+        <text x="532" y="122" font-family="monospace" font-size="10" fill="#a5d6ff">vw / vh</text>
+        <text x="582" y="122" font-family="sans-serif" font-size="9" fill="#8b949e"> — % del viewport (pantalla)</text>
+        <text x="532" y="138" font-family="monospace" font-size="10" fill="#79c0ff">clamp()</text>
+        <text x="582" y="138" font-family="sans-serif" font-size="9" fill="#8b949e"> — fluido entre mín y máx</text>
+        <text x="532" y="160" font-family="monospace" font-size="9" fill="#8b949e">font-weight: 100 200 300 400 500 600 700 800 900</text>
+        <text x="532" y="176" font-family="monospace" font-size="9" fill="#8b949e">text-align: left | center | right | justify</text>
+        <text x="532" y="192" font-family="monospace" font-size="9" fill="#8b949e">line-height: 1 | 1.5 | 2 | 24px</text>
+      </svg>
+    </div>
+
+    <div class="cb">
+      <div class="cbar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="cfn">tipografia.css</span></div>
+      <div class="cc"><span class="cm">/* ─── IMPORTAR FUENTE DE GOOGLE FONTS (en HTML &lt;head&gt;) ─── */</span>
+<span class="cm">/* &lt;link href="https://fonts.googleapis.com/css2?family=Poppins" rel="stylesheet"&gt; */</span>
+
+<span class="sl">body</span> {
+  <span class="pr">font-family</span>: <span class="st">'Poppins'</span>, <span class="vl">sans-serif</span>;  <span class="cm">/* fuente personalizada + fallback */</span>
+  <span class="pr">font-size</span>:   <span class="nm">16px</span>;                   <span class="cm">/* tamaño base */</span>
+  <span class="pr">line-height</span>: <span class="nm">1.6</span>;                   <span class="cm">/* interlineado */</span>
+  <span class="pr">color</span>:       <span class="vl">#1a1a1a</span>;
+}
+
+<span class="sl">h1</span> {
+  <span class="pr">font-size</span>:    <span class="fn">clamp</span>(<span class="nm">1.8rem</span>, <span class="nm">5vw</span>, <span class="nm">4rem</span>); <span class="cm">/* fluido responsive */</span>
+  <span class="pr">font-weight</span>:  <span class="nm">700</span>;
+  <span class="pr">letter-spacing</span>: <span class="nm">-0.02em</span>;
+  <span class="pr">text-transform</span>: <span class="vl">none</span>;           <span class="cm">/* uppercase | capitalize | lowercase */</span>
+}
+
+<span class="sl">.parrafo</span> {
+  <span class="pr">font-size</span>:       <span class="nm">1rem</span>;          <span class="cm">/* 1rem = 16px por defecto */</span>
+  <span class="pr">text-align</span>:      <span class="vl">justify</span>;
+  <span class="pr">text-indent</span>:     <span class="nm">2em</span>;           <span class="cm">/* sangría primera línea */</span>
+  <span class="pr">word-spacing</span>:    <span class="nm">4px</span>;
+  <span class="pr">letter-spacing</span>:  <span class="nm">0.05em</span>;
+  <span class="pr">text-decoration</span>: <span class="vl">none</span>;          <span class="cm">/* underline | overline | line-through */</span>
+  <span class="pr">white-space</span>:     <span class="vl">normal</span>;        <span class="cm">/* nowrap | pre | pre-wrap */</span>
+}
+
+<span class="sl">.truncar</span> {
+  <span class="pr">white-space</span>:   <span class="vl">nowrap</span>;
+  <span class="pr">overflow</span>:      <span class="vl">hidden</span>;
+  <span class="pr">text-overflow</span>: <span class="vl">ellipsis</span>;        <span class="cm">/* agrega "..." al truncar */</span>
+}</div>
+    </div>
+  </section>
+
+  <!-- ══ PASO 4 ══ -->
+  <section class="paso" id="p4">
+    <div class="paso-header">
+      <div class="paso-num">4</div>
+      <div>
+        <h2 class="paso-titulo">El Box Model (Modelo de Caja)</h2>
+        <p class="paso-subtitulo">El concepto más importante de CSS: todo en la web es una caja</p>
+      </div>
+    </div>
+    <div class="sep"></div>
+
+    <!-- Ilustración: box model -->
+    <div class="il">
+      <svg viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="280" fill="#0d1117"/>
+        <!-- margin -->
+        <rect x="60"  y="20"  width="460" height="240" rx="6" fill="#2d4a2d" opacity=".6"/>
+        <text x="88"  y="40"  font-family="monospace" font-size="10" fill="#7ee787">margin (exterior — transparente)</text>
+        <!-- border -->
+        <rect x="100" y="50"  width="380" height="180" rx="6" fill="none" stroke="#ffa657" stroke-width="3"/>
+        <text x="112" y="68"  font-family="monospace" font-size="10" fill="#ffa657">border (borde visible)</text>
+        <!-- padding -->
+        <rect x="118" y="76"  width="344" height="136" rx="4" fill="#1a2a4a" opacity=".7"/>
+        <text x="130" y="92"  font-family="monospace" font-size="10" fill="#79c0ff">padding (relleno interior)</text>
+        <!-- content -->
+        <rect x="150" y="106" width="280" height="76" rx="4" fill="#264de4" opacity=".85"/>
+        <text x="290" y="148" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="white">CONTENIDO</text>
+        <text x="290" y="166" text-anchor="middle" font-family="monospace" font-size="10" fill="rgba(255,255,255,.7)">width × height</text>
+
+        <!-- flechas medidas izq -->
+        <line x1="60"  y1="140" x2="100" y2="140" stroke="#7ee787" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="52"   y="143" text-anchor="end" font-family="monospace" font-size="8" fill="#7ee787">margin</text>
+        <line x1="100" y1="160" x2="118" y2="160" stroke="#ffa657" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="92"   y="163" text-anchor="end" font-family="monospace" font-size="8" fill="#ffa657">border</text>
+        <line x1="118" y1="144" x2="150" y2="144" stroke="#79c0ff" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="108"  y="147" text-anchor="end" font-family="monospace" font-size="8" fill="#79c0ff">padding</text>
+
+        <!-- box-sizing info -->
+        <rect x="560" y="20" width="310" height="240" rx="12" fill="#161b22"/>
+        <text x="572" y="46" font-family="monospace" font-size="10" fill="#8b949e">/* Propiedades del Box Model */</text>
+        <text x="572" y="66" font-family="monospace" font-size="10" fill="#79c0ff">width</text>
+        <text x="615" y="66" font-family="sans-serif" font-size="9" fill="#8b949e"> — ancho del contenido</text>
+        <text x="572" y="82" font-family="monospace" font-size="10" fill="#79c0ff">height</text>
+        <text x="622" y="82" font-family="sans-serif" font-size="9" fill="#8b949e"> — alto del contenido</text>
+        <text x="572" y="98" font-family="monospace" font-size="10" fill="#79c0ff">max/min-width</text>
+        <text x="665" y="98" font-family="sans-serif" font-size="9" fill="#8b949e"> — límites</text>
+        <text x="572" y="118" font-family="monospace" font-size="10" fill="#7ee787">margin</text>
+        <text x="625" y="118" font-family="sans-serif" font-size="9" fill="#8b949e"> — espacio exterior</text>
+        <text x="572" y="134" font-family="monospace" font-size="10" fill="#7ee787">margin: top right bottom left</text>
+        <text x="572" y="150" font-family="monospace" font-size="10" fill="#7ee787">margin: 0 auto</text>
+        <text x="665" y="150" font-family="sans-serif" font-size="9" fill="#8b949e"> — centrar horizontalmente</text>
+        <text x="572" y="170" font-family="monospace" font-size="10" fill="#ffa657">padding</text>
+        <text x="628" y="170" font-family="sans-serif" font-size="9" fill="#8b949e"> — espacio interior</text>
+        <text x="572" y="186" font-family="monospace" font-size="10" fill="#ffa657">border: 2px solid #264de4</text>
+        <text x="572" y="202" font-family="monospace" font-size="10" fill="#ffa657">border-radius: 12px</text>
+        <text x="665" y="202" font-family="sans-serif" font-size="9" fill="#8b949e"> — esquinas redondeadas</text>
+        <text x="572" y="222" font-family="monospace" font-size="10" fill="#d2a8ff">box-sizing: border-box</text>
+        <text x="572" y="236" font-family="sans-serif" font-size="9" fill="#8b949e">  ← incluye padding+border en width</text>
+        <text x="572" y="252" font-family="monospace" font-size="10" fill="#d2a8ff">box-shadow: 0 4px 20px rgba</text>
+      </svg>
+    </div>
+
+    <div class="cb">
+      <div class="cbar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="cfn">box-model.css</span></div>
+      <div class="cc"><span class="cm">/* ─── RESET UNIVERSAL (siempre al inicio) ─── */</span>
+<span class="sl">*</span> {
+  <span class="pr">margin</span>:     <span class="nm">0</span>;
+  <span class="pr">padding</span>:    <span class="nm">0</span>;
+  <span class="pr">box-sizing</span>: <span class="vl">border-box</span>; <span class="cm">/* el width incluye padding y border */</span>
+}
+
+<span class="sl">.tarjeta</span> {
+  <span class="cm">/* DIMENSIONES */</span>
+  <span class="pr">width</span>:      <span class="nm">300px</span>;
+  <span class="pr">max-width</span>:  <span class="nm">100%</span>;          <span class="cm">/* nunca más ancho que su contenedor */</span>
+  <span class="pr">height</span>:     <span class="vl">auto</span>;
+
+  <span class="cm">/* PADDING (shorthand: arriba/abajo izq/der) */</span>
+  <span class="pr">padding</span>:    <span class="nm">24px 20px</span>;
+
+  <span class="cm">/* MARGIN (auto = centrar) */</span>
+  <span class="pr">margin</span>:     <span class="nm">0 auto 32px</span>; <span class="cm">/* arriba der/izq abajo */</span>
+
+  <span class="cm">/* BORDER */</span>
+  <span class="pr">border</span>:     <span class="nm">2px</span> <span class="vl">solid</span> <span class="vl">#264de4</span>;
+  <span class="pr">border-radius</span>: <span class="nm">16px</span>;
+
+  <span class="cm">/* SOMBRA */</span>
+  <span class="pr">box-shadow</span>: <span class="nm">0</span> <span class="nm">8px</span> <span class="nm">32px</span> <span class="fn">rgba</span>(<span class="nm">38</span>,<span class="nm">77</span>,<span class="nm">228</span>, <span class="nm">.2</span>);
+
+  <span class="cm">/* DESBORDAMIENTO */</span>
+  <span class="pr">overflow</span>:   <span class="vl">hidden</span>;    <span class="cm">/* visible | hidden | scroll | auto */</span>
+}</div>
+    </div>
+
+    <div class="tip naranja">
+      <span class="tip-icon">⚠️</span>
+      <div class="tip-text"><strong>Regla de oro:</strong> Siempre agrega <code>* { box-sizing: border-box; }</code> al inicio de tu CSS. Sin esto, el padding y el border se suman al width declarado y los cálculos de diseño se vuelven confusos.</div>
+    </div>
+  </section>
+
+  <!-- ══ PASO 5 ══ -->
+  <section class="paso" id="p5">
+    <div class="paso-header">
+      <div class="paso-num">5</div>
+      <div>
+        <h2 class="paso-titulo">Display y Posicionamiento</h2>
+        <p class="paso-subtitulo">Cómo se comportan y ubican los elementos en la página</p>
+      </div>
+    </div>
+    <div class="sep"></div>
+
+    <div class="il">
+      <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="200" fill="#f0f4ff"/>
+        <!-- block -->
+        <text x="20" y="18" font-family="sans-serif" font-size="10" fill="#264de4" font-weight="700">display: block</text>
+        <rect x="20" y="24" width="200" height="28" rx="4" fill="#264de4" opacity=".8"/>
+        <text x="120" y="43" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">ocupa todo el ancho</text>
+        <rect x="20" y="56" width="200" height="28" rx="4" fill="#264de4" opacity=".6"/>
+        <text x="120" y="75" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">siguiente elemento: abajo</text>
+        <!-- inline -->
+        <text x="240" y="18" font-family="sans-serif" font-size="10" fill="#9b6bcc" font-weight="700">display: inline</text>
+        <rect x="240" y="24" width="60" height="24" rx="4" fill="#9b6bcc" opacity=".8"/>
+        <text x="270" y="41" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">inline</text>
+        <rect x="306" y="24" width="70" height="24" rx="4" fill="#9b6bcc" opacity=".6"/>
+        <text x="341" y="41" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">uno al lado</text>
+        <rect x="382" y="24" width="55" height="24" rx="4" fill="#9b6bcc" opacity=".4"/>
+        <text x="409" y="41" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4a2a7a">del otro</text>
+        <!-- inline-block -->
+        <text x="460" y="18" font-family="sans-serif" font-size="10" fill="#2a9a4a" font-weight="700">display: inline-block</text>
+        <rect x="460" y="24" width="90" height="40" rx="4" fill="#2a9a4a" opacity=".8"/>
+        <text x="505" y="42" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">w+h control</text>
+        <text x="505" y="54" text-anchor="middle" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,.7)">en línea</text>
+        <rect x="556" y="24" width="90" height="40" rx="4" fill="#2a9a4a" opacity=".6"/>
+        <text x="601" y="46" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">igual</text>
+        <!-- none -->
+        <text x="680" y="18" font-family="sans-serif" font-size="10" fill="#c84040" font-weight="700">display: none</text>
+        <rect x="680" y="24" width="180" height="28" rx="4" fill="#c84040" opacity=".2" stroke="#c84040" stroke-width="1" stroke-dasharray="4,2"/>
+        <text x="770" y="43" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#c84040">¡elemento invisible!</text>
+
+        <!-- posicionamiento -->
+        <text x="20" y="115" font-family="sans-serif" font-size="10" fill="#1a2a6a" font-weight="700">Posicionamiento (position:)</text>
+        <rect x="20"  y="122" width="130" height="32" rx="4" fill="#264de4" opacity=".15" stroke="#264de4" stroke-width="1"/>
+        <text x="85"  y="142" text-anchor="middle" font-family="monospace" font-size="9" fill="#264de4">static (normal)</text>
+        <rect x="165" y="122" width="130" height="32" rx="4" fill="#9b6bcc" opacity=".15" stroke="#9b6bcc" stroke-width="1"/>
+        <text x="230" y="142" text-anchor="middle" font-family="monospace" font-size="9" fill="#9b6bcc">relative</text>
+        <rect x="310" y="122" width="130" height="32" rx="4" fill="#2a9a4a" opacity=".15" stroke="#2a9a4a" stroke-width="1"/>
+        <text x="375" y="142" text-anchor="middle" font-family="monospace" font-size="9" fill="#2a9a4a">absolute</text>
+        <rect x="455" y="122" width="130" height="32" rx="4" fill="#ffa657" opacity=".2" stroke="#ffa657" stroke-width="1"/>
+        <text x="520" y="142" text-anchor="middle" font-family="monospace" font-size="9" fill="#c07020">fixed</text>
+        <rect x="600" y="122" width="130" height="32" rx="4" fill="#c84040" opacity=".15" stroke="#c84040" stroke-width="1"/>
+        <text x="665" y="142" text-anchor="middle" font-family="monospace" font-size="9" fill="#c84040">sticky</text>
+        <text x="20"  y="175" font-family="sans-serif" font-size="9" fill="#546e7a">flujo normal</text>
+        <text x="165" y="175" font-family="sans-serif" font-size="9" fill="#546e7a">mueve sin salir</text>
+        <text x="310" y="175" font-family="sans-serif" font-size="9" fill="#546e7a">relativo al padre</text>
+        <text x="455" y="175" font-family="sans-serif" font-size="9" fill="#546e7a">relativo al viewport</text>
+        <text x="600" y="175" font-family="sans-serif" font-size="9" fill="#546e7a">hybrid: relative+fixed</text>
+      </svg>
+    </div>
+
+    <div class="cb">
+      <div class="cbar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="cfn">display-position.css</span></div>
+      <div class="cc"><span class="cm">/* ─── DISPLAY ─── */</span>
+<span class="sl">.bloque</span>   { <span class="pr">display</span>: <span class="vl">block</span>; }
+<span class="sl">.linea</span>    { <span class="pr">display</span>: <span class="vl">inline</span>; }
+<span class="sl">.mixto</span>    { <span class="pr">display</span>: <span class="vl">inline-block</span>; }
+<span class="sl">.oculto</span>   { <span class="pr">display</span>: <span class="vl">none</span>; }       <span class="cm">/* elimina del flujo */</span>
+<span class="sl">.invisible</span>{ <span class="pr">visibility</span>: <span class="vl">hidden</span>; }  <span class="cm">/* oculta pero ocupa espacio */</span>
+
+<span class="cm">/* ─── POSICIONAMIENTO ─── */</span>
+<span class="sl">.contenedor</span> { <span class="pr">position</span>: <span class="vl">relative</span>; } <span class="cm">/* ancla para absolutos hijos */</span>
+
+<span class="sl">.badge</span> {
+  <span class="pr">position</span>: <span class="vl">absolute</span>;  <span class="cm">/* fuera del flujo, relativo al padre relative */</span>
+  <span class="pr">top</span>:      <span class="nm">10px</span>;
+  <span class="pr">right</span>:    <span class="nm">10px</span>;
+  <span class="pr">z-index</span>:  <span class="nm">10</span>;         <span class="cm">/* capas: más alto = encima */</span>
+}
+
+<span class="sl">.navbar</span> {
+  <span class="pr">position</span>: <span class="vl">fixed</span>;      <span class="cm">/* siempre visible al hacer scroll */</span>
+  <span class="pr">top</span>:      <span class="nm">0</span>;
+  <span class="pr">left</span>:     <span class="nm">0</span>;
+  <span class="pr">width</span>:    <span class="nm">100%</span>;
+  <span class="pr">z-index</span>:  <span class="nm">1000</span>;
+}
+
+<span class="sl">.sticky-header</span> {
+  <span class="pr">position</span>: <span class="vl">sticky</span>;     <span class="cm">/* se pega al hacer scroll hasta cierto punto */</span>
+  <span class="pr">top</span>:      <span class="nm">0</span>;
+}</div>
+    </div>
+  </section>
+
+  <!-- ══ PASO 6 ══ -->
+  <section class="paso" id="p6">
+    <div class="paso-header">
+      <div class="paso-num">6</div>
+      <div>
+        <h2 class="paso-titulo">Flexbox — Layout en 1 dimensión</h2>
+        <p class="paso-subtitulo">El sistema más usado para alinear y distribuir elementos en una fila o columna</p>
+      </div>
+    </div>
+    <div class="sep"></div>
+
+    <div class="il">
+      <svg viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="260" fill="#020b2e"/>
+        <!-- contenedor flex -->
+        <rect x="20" y="20" width="860" height="220" rx="12" fill="#0d1540" stroke="#264de4" stroke-width="1.5"/>
+        <text x="450" y="14" text-anchor="middle" font-family="monospace" font-size="9" fill="#264de4">display: flex</text>
+
+        <!-- justify-content: space-between -->
+        <text x="30" y="48" font-family="monospace" font-size="9" fill="#88aaff">justify-content: space-between</text>
+        <rect x="30"  y="54" width="60" height="36" rx="6" fill="#264de4" opacity=".8"/>
+        <text x="60"  y="77" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">A</text>
+        <rect x="410" y="54" width="60" height="36" rx="6" fill="#264de4" opacity=".8"/>
+        <text x="440" y="77" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">B</text>
+        <rect x="790" y="54" width="60" height="36" rx="6" fill="#264de4" opacity=".8"/>
+        <text x="820" y="77" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">C</text>
+
+        <!-- justify-content: center -->
+        <text x="30" y="116" font-family="monospace" font-size="9" fill="#88aaff">justify-content: center  |  gap: 16px</text>
+        <rect x="330" y="122" width="60" height="36" rx="6" fill="#9b6bcc" opacity=".85"/>
+        <text x="360" y="145" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">A</text>
+        <rect x="406" y="122" width="60" height="36" rx="6" fill="#9b6bcc" opacity=".85"/>
+        <text x="436" y="145" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">B</text>
+        <rect x="482" y="122" width="60" height="36" rx="6" fill="#9b6bcc" opacity=".85"/>
+        <text x="512" y="145" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">C</text>
+
+        <!-- flex-direction: column + align-items -->
+        <text x="30" y="185" font-family="monospace" font-size="9" fill="#88aaff">flex-direction: row  |  align-items: stretch</text>
+        <rect x="30"  y="192" width="60" height="44" rx="6" fill="#2a9a4a" opacity=".8"/>
+        <text x="60"  y="219" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">A</text>
+        <rect x="96"  y="192" width="100" height="44" rx="6" fill="#2a9a4a" opacity=".6"/>
+        <text x="146" y="219" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">flex-grow: 1</text>
+        <rect x="202" y="192" width="60" height="44" rx="6" fill="#2a9a4a" opacity=".8"/>
+        <text x="232" y="219" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">C</text>
+
+        <!-- etiqueta eje principal -->
+        <line x1="30" y1="250" x2="870" y2="250" stroke="#264de4" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <text x="450" y="245" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#4a6aff">← eje principal (main axis) →</text>
+      </svg>
+    </div>
+
+    <div class="cb">
+      <div class="cbar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="cfn">flexbox.css</span></div>
+      <div class="cc"><span class="cm">/* ─── CONTENEDOR FLEX ─── */</span>
+<span class="sl">.contenedor</span> {
+  <span class="pr">display</span>:          <span class="vl">flex</span>;
+
+  <span class="cm">/* Dirección del eje principal */</span>
+  <span class="pr">flex-direction</span>:   <span class="vl">row</span>;          <span class="cm">/* row | column | row-reverse */</span>
+
+  <span class="cm">/* Alineación en eje principal (horizontal en row) */</span>
+  <span class="pr">justify-content</span>:  <span class="vl">space-between</span>; <span class="cm">/* flex-start | center | space-around | space-evenly */</span>
+
+  <span class="cm">/* Alineación en eje cruzado (vertical en row) */</span>
+  <span class="pr">align-items</span>:      <span class="vl">center</span>;        <span class="cm">/* flex-start | flex-end | stretch | baseline */</span>
+
+  <span class="cm">/* Espacio entre elementos */</span>
+  <span class="pr">gap</span>:              <span class="nm">16px</span>;
+
+  <span class="cm">/* Permitir salto de línea */</span>
+  <span class="pr">flex-wrap</span>:        <span class="vl">wrap</span>;          <span class="cm">/* nowrap | wrap | wrap-reverse */</span>
+}
+
+<span class="cm">/* ─── ELEMENTOS HIJOS ─── */</span>
+<span class="sl">.item</span> {
+  <span class="pr">flex-grow</span>:   <span class="nm">1</span>;   <span class="cm">/* cuánto crece para llenar el espacio */</span>
+  <span class="pr">flex-shrink</span>: <span class="nm">1</span>;   <span class="cm">/* cuánto se encoge si hay poco espacio */</span>
+  <span class="pr">flex-basis</span>:  <span class="vl">auto</span>; <span class="cm">/* tamaño base antes de grow/shrink */</span>
+  <span class="cm">/* shorthand: */</span>
+  <span class="pr">flex</span>: <span class="nm">1</span>;           <span class="cm">/* equivale a flex: 1 1 0 */</span>
+}
+
+<span class="sl">.item-especial</span> {
+  <span class="pr">align-self</span>:  <span class="vl">flex-end</span>; <span class="cm">/* sobreescribe align-items solo para este */</span>
+  <span class="pr">order</span>:       <span class="nm">-1</span>;       <span class="cm">/* cambia el orden visual (no el HTML) */</span>
+}</div>
+    </div>
+
+    <div class="tip azul">
+      <span class="tip-icon">🧠</span>
+      <div class="tip-text"><strong>Truco para memorizar:</strong> <code>justify-content</code> controla el eje principal (la dirección del flex). <code>align-items</code> controla el eje cruzado (perpendicular). Si <code>flex-direction: row</code>, justify es horizontal y align es vertical.</div>
+    </div>
+  </section>
+
+  <!-- ══ PASO 7 ══ -->
+  <section class="paso" id="p7">
+    <div class="paso-header">
+      <div class="paso-num">7</div>
+      <div>
+        <h2 class="paso-titulo">CSS Grid — Layout en 2 dimensiones</h2>
+        <p class="paso-subtitulo">El sistema más poderoso para crear layouts complejos en filas Y columnas</p>
+      </div>
+    </div>
+    <div class="sep"></div>
+
+    <div class="il">
+      <svg viewBox="0 0 900 240" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="240" fill="#020b2e"/>
+        <!-- grid 3x3 -->
+        <rect x="20" y="20" width="540" height="200" rx="10" fill="#0d1540" stroke="#264de4" stroke-width="1"/>
+        <text x="290" y="14" text-anchor="middle" font-family="monospace" font-size="9" fill="#88aaff">grid-template-columns: repeat(3, 1fr)</text>
+        <!-- filas/columnas guías -->
+        <line x1="200" y1="20" x2="200" y2="220" stroke="#264de4" stroke-width=".5" opacity=".4"/>
+        <line x1="380" y1="20" x2="380" y2="220" stroke="#264de4" stroke-width=".5" opacity=".4"/>
+        <line x1="20"  y1="87" x2="560" y2="87"  stroke="#264de4" stroke-width=".5" opacity=".4"/>
+        <line x1="20"  y1="153" x2="560" y2="153" stroke="#264de4" stroke-width=".5" opacity=".4"/>
+        <!-- celdas -->
+        <rect x="28"  y="28"  width="164" height="52" rx="6" fill="#264de4" opacity=".9"/>
+        <text x="110" y="59"  text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="white">header (span 3 cols)</text>
+        <rect x="200" y="28"  width="172" height="52" rx="6" fill="#264de4" opacity=".5"/>
+        <rect x="380" y="28"  width="172" height="52" rx="6" fill="#264de4" opacity=".5"/>
+        <text x="290" y="59"  text-anchor="middle" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,.4)">col 2</text>
+        <text x="466" y="59"  text-anchor="middle" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,.4)">col 3</text>
+        <!-- fila 2 -->
+        <rect x="28"  y="95"  width="164" height="50" rx="6" fill="#9b6bcc" opacity=".9"/>
+        <text x="110" y="125" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">sidebar</text>
+        <rect x="200" y="95"  width="352" height="50" rx="6" fill="#2a9a4a" opacity=".85"/>
+        <text x="376" y="125" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">main (span 2 cols)</text>
+        <!-- fila 3 -->
+        <rect x="28"  y="161" width="524" height="50" rx="6" fill="#ffa657" opacity=".8"/>
+        <text x="290" y="191" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#1a1a1a">footer (span full width)</text>
+
+        <!-- propiedades a la derecha -->
+        <rect x="580" y="20" width="300" height="200" rx="10" fill="#161b22"/>
+        <text x="592" y="42"  font-family="monospace" font-size="9" fill="#8b949e">/* Grid Container */</text>
+        <text x="592" y="58"  font-family="monospace" font-size="9" fill="#79c0ff">display: grid</text>
+        <text x="592" y="74"  font-family="monospace" font-size="9" fill="#7ee787">grid-template-columns:</text>
+        <text x="592" y="88"  font-family="monospace" font-size="9" fill="#a5d6ff">  repeat(3, 1fr)</text>
+        <text x="592" y="104" font-family="monospace" font-size="9" fill="#7ee787">grid-template-rows:</text>
+        <text x="592" y="118" font-family="monospace" font-size="9" fill="#a5d6ff">  auto 1fr auto</text>
+        <text x="592" y="134" font-family="monospace" font-size="9" fill="#79c0ff">gap: 16px</text>
+        <text x="592" y="154" font-family="monospace" font-size="9" fill="#8b949e">/* Grid Item */</text>
+        <text x="592" y="170" font-family="monospace" font-size="9" fill="#ffa657">grid-column: 1 / 4</text>
+        <text x="592" y="186" font-family="monospace" font-size="9" fill="#ffa657">grid-column: span 2</text>
+        <text x="592" y="202" font-family="monospace" font-size="9" fill="#ffa657">grid-row: 1 / 3</text>
+      </svg>
+    </div>
+
+    <div class="cb">
+      <div class="cbar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="cfn">grid.css</span></div>
+      <div class="cc"><span class="cm">/* ─── CONTENEDOR GRID ─── */</span>
+<span class="sl">.pagina</span> {
+  <span class="pr">display</span>:               <span class="vl">grid</span>;
+  <span class="pr">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="nm">3</span>, <span class="vl">1fr</span>);  <span class="cm">/* 3 columnas iguales */</span>
+  <span class="pr">grid-template-rows</span>:    <span class="vl">auto</span> <span class="nm">1fr</span> <span class="vl">auto</span>;   <span class="cm">/* header, contenido, footer */</span>
+  <span class="pr">gap</span>:                   <span class="nm">16px</span>;
+  <span class="pr">min-height</span>:            <span class="nm">100vh</span>;
+}
+
+<span class="cm">/* ─── UNIDADES ESPECIALES ─── */</span>
+<span class="cm">/* 1fr = 1 fracción del espacio disponible */</span>
+<span class="sl">.galeria</span> {
+  <span class="pr">display</span>:               <span class="vl">grid</span>;
+  <span class="pr">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="vl">auto-fill</span>, <span class="fn">minmax</span>(<span class="nm">250px</span>, <span class="nm">1fr</span>));
+  <span class="cm">/* auto-fill: crea tantas columnas como quepan de mínimo 250px */</span>
+  <span class="pr">gap</span>: <span class="nm">20px</span>;
+}
+
+<span class="cm">/* ─── POSICIONAR ÍTEMS ─── */</span>
+<span class="sl">.header</span>  { <span class="pr">grid-column</span>: <span class="nm">1</span> / <span class="nm">4</span>; }        <span class="cm">/* ocupa todas las columnas */</span>
+<span class="sl">.sidebar</span> { <span class="pr">grid-column</span>: <span class="nm">1</span>; <span class="pr">grid-row</span>: <span class="nm">2</span>; }
+<span class="sl">.main</span>    { <span class="pr">grid-column</span>: <span class="nm">2</span> / <span class="nm">4</span>; }        <span class="cm">/* ocupa 2 columnas */</span>
+<span class="sl">.footer</span>  { <span class="pr">grid-column</span>: <span class="nm">1</span> / <span class="vl">-1</span>; }       <span class="cm">/* hasta la última columna */</span>
+
+<span class="cm">/* ─── TEMPLATE AREAS (más legible) ─── */</span>
+<span class="sl">.layout</span> {
+  <span class="pr">display</span>: <span class="vl">grid</span>;
+  <span class="pr">grid-template-areas</span>:
+    <span class="st">"header  header  header"</span>
+    <span class="st">"sidebar main    main  "</span>
+    <span class="st">"footer  footer  footer"</span>;
+}
+<span class="sl">.header</span>  { <span class="pr">grid-area</span>: <span class="vl">header</span>; }
+<span class="sl">.sidebar</span> { <span class="pr">grid-area</span>: <span class="vl">sidebar</span>; }
+<span class="sl">.main</span>    { <span class="pr">grid-area</span>: <span class="vl">main</span>; }
+<span class="sl">.footer</span>  { <span class="pr">grid-area</span>: <span class="vl">footer</span>; }</div>
+    </div>
+  </section>
+
+  <!-- ══ PASO 8 ══ -->
+  <section class="paso" id="p8">
+    <div class="paso-header">
+      <div class="paso-num">8</div>
+      <div>
+        <h2 class="paso-titulo">Pseudoclases y Pseudoelementos</h2>
+        <p class="paso-subtitulo">Estiliza estados e inserta contenido decorativo sin tocar el HTML</p>
+      </div>
+    </div>
+    <div class="sep"></div>
+
+    <div class="il">
+      <svg viewBox="0 0 900 180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="180" fill="#0d1117"/>
+        <!-- pseudoclases -->
+        <rect x="20" y="18" width="410" height="145" rx="10" fill="#161b22"/>
+        <text x="32" y="38" font-family="monospace" font-size="10" fill="#8b949e">/* PSEUDOCLASES (: estado del elemento) */</text>
+        <text x="32" y="56"  font-family="monospace" font-size="9" fill="#7ee787">a:hover</text>
+        <text x="110" y="56" font-family="sans-serif" font-size="9" fill="#8b949e"> — al pasar el mouse</text>
+        <text x="32" y="72"  font-family="monospace" font-size="9" fill="#7ee787">a:active</text>
+        <text x="116" y="72" font-family="sans-serif" font-size="9" fill="#8b949e"> — al hacer clic</text>
+        <text x="32" y="88"  font-family="monospace" font-size="9" fill="#7ee787">a:visited</text>
+        <text x="120" y="88" font-family="sans-serif" font-size="9" fill="#8b949e"> — enlace ya visitado</text>
+        <text x="32" y="104" font-family="monospace" font-size="9" fill="#79c0ff">input:focus</text>
+        <text x="126" y="104" font-family="sans-serif" font-size="9" fill="#8b949e"> — campo enfocado</text>
+        <text x="32" y="120" font-family="monospace" font-size="9" fill="#79c0ff">li:first-child</text>
+        <text x="142" y="120" font-family="sans-serif" font-size="9" fill="#8b949e"> — primer hijo</text>
+        <text x="32" y="136" font-family="monospace" font-size="9" fill="#79c0ff">li:last-child</text>
+        <text x="138" y="136" font-family="sans-serif" font-size="9" fill="#8b949e"> — último hijo</text>
+        <text x="32" y="152" font-family="monospace" font-size="9" fill="#79c0ff">li:nth-child(2n)</text>
+        <text x="158" y="152" font-family="sans-serif" font-size="9" fill="#8b949e"> — cada 2 hijos (pares)</text>
+
+        <!-- pseudoelementos -->
+        <rect x="460" y="18" width="420" height="145" rx="10" fill="#161b22"/>
+        <text x="472" y="38" font-family="monospace" font-size="10" fill="#8b949e">/* PSEUDOELEMENTOS (:: decoración) */</text>
+        <text x="472" y="56"  font-family="monospace" font-size="9" fill="#ffa657">::before</text>
+        <text x="538" y="56"  font-family="sans-serif" font-size="9" fill="#8b949e"> — inserta contenido ANTES</text>
+        <text x="472" y="72"  font-family="monospace" font-size="9" fill="#ffa657">::after</text>
+        <text x="530" y="72"  font-family="sans-serif" font-size="9" fill="#8b949e"> — inserta contenido DESPUÉS</text>
+        <text x="472" y="88"  font-family="monospace" font-size="9" fill="#d2a8ff">::first-line</text>
+        <text x="562" y="88"  font-family="sans-serif" font-size="9" fill="#8b949e"> — primera línea de texto</text>
+        <text x="472" y="104" font-family="monospace" font-size="9" fill="#d2a8ff">::first-letter</text>
+        <text x="574" y="104" font-family="sans-serif" font-size="9" fill="#8b949e"> — primera letra</text>
+        <text x="472" y="120" font-family="monospace" font-size="9" fill="#d2a8ff">::placeholder</text>
+        <text x="574" y="120" font-family="sans-serif" font-size="9" fill="#8b949e"> — texto de placeholder</text>
+        <text x="472" y="136" font-family="monospace" font-size="9" fill="#d2a8ff">::selection</text>
+        <text x="556" y="136" font-family="sans-serif" font-size="9" fill="#8b949e"> — texto seleccionado</text>
+        <text x="472" y="152" font-family="monospace" font-size="9" fill="#d2a8ff">::marker</text>
+        <text x="532" y="152" font-family="sans-serif" font-size="9" fill="#8b949e"> — viñeta de lista</text>
+      </svg>
+    </div>
+
+    <div class="cb">
+      <div class="cbar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="cfn">pseudo.css</span></div>
+      <div class="cc"><span class="cm">/* ─── PSEUDOCLASES ─── */</span>
+<span class="sl">.boton</span> {
+  <span class="pr">background</span>: <span class="vl">#264de4</span>;
+  <span class="pr">transition</span>: <span class="vl">all</span> <span class="nm">.3s</span> <span class="vl">ease</span>;
+}
+<span class="sl">.boton:hover</span>  { <span class="pr">background</span>: <span class="vl">#1a38c0</span>; <span class="pr">transform</span>: <span class="fn">translateY</span>(<span class="nm">-2px</span>); }
+<span class="sl">.boton:active</span> { <span class="pr">transform</span>: <span class="fn">scale</span>(<span class="nm">.97</span>); }
+<span class="sl">.boton:focus</span>  { <span class="pr">outline</span>: <span class="nm">3px</span> <span class="vl">solid</span> <span class="fn">rgba</span>(<span class="nm">38</span>,<span class="nm">77</span>,<span class="nm">228</span>,<span class="nm">.4</span>); }
+
+<span class="sl">li:nth-child(odd)</span>  { <span class="pr">background</span>: <span class="vl">#f0f4ff</span>; }  <span class="cm">/* impares */</span>
+<span class="sl">li:nth-child(even)</span> { <span class="pr">background</span>: <span class="vl">white</span>; }    <span class="cm">/* pares   */</span>
+<span class="sl">p:not(.especial)</span>   { <span class="pr">color</span>: <span class="vl">#333</span>; }           <span class="cm">/* todos menos .especial */</span>
+
+<span class="cm">/* ─── PSEUDOELEMENTOS ─── */</span>
+<span class="sl">.boton::before</span> {
+  <span class="pr">content</span>: <span class="st">"✨ "</span>;         <span class="cm">/* OBLIGATORIO: content para ::before/after */</span>
+}
+
+<span class="sl">.separador::after</span> {
+  <span class="pr">content</span>:  <span class="st">""</span>;
+  <span class="pr">display</span>:  <span class="vl">block</span>;
+  <span class="pr">width</span>:    <span class="nm">60px</span>;
+  <span class="pr">height</span>:   <span class="nm">3px</span>;
+  <span class="pr">background</span>: <span class="vl">#264de4</span>;
+  <span class="pr">margin</span>:   <span class="nm">12px auto</span>;
+}
+
+<span class="sl">::selection</span> { <span class="pr">background</span>: <span class="vl">#264de4</span>; <span class="pr">color</span>: <span class="vl">white</span>; }  <span class="cm">/* color al seleccionar texto */</span>
+<span class="sl">input::placeholder</span> { <span class="pr">color</span>: <span class="vl">#aaa</span>; <span class="pr">font-style</span>: <span class="vl">italic</span>; }</div>
+    </div>
+  </section>
+
+  <!-- ══ PASO 9 ══ -->
+  <section class="paso" id="p9">
+    <div class="paso-header">
+      <div class="paso-num">9</div>
+      <div>
+        <h2 class="paso-titulo">Transiciones y Animaciones CSS3</h2>
+        <p class="paso-subtitulo">Dale vida al diseño con movimiento fluido sin una línea de JavaScript</p>
+      </div>
+    </div>
+    <div class="sep"></div>
+
+    <div class="il">
+      <svg viewBox="0 0 900 180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="180" fill="#020b2e"/>
+        <!-- transition demo -->
+        <text x="30" y="22" font-family="sans-serif" font-size="10" fill="#88aaff" font-weight="700">transition — cambio suave entre estados</text>
+        <!-- antes -->
+        <rect x="30"  y="30" width="100" height="40" rx="8" fill="#264de4" opacity=".6"/>
+        <text x="80"  y="55" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">antes</text>
+        <!-- flecha ease -->
+        <path d="M140 50 C180 50 200 30 240 50" fill="none" stroke="#88aaff" stroke-width="2" stroke-dasharray="4,2"/>
+        <polygon points="240,45 255,50 240,55" fill="#88aaff"/>
+        <text x="190" y="40" text-anchor="middle" font-family="monospace" font-size="8" fill="#88aaff">ease-in-out .3s</text>
+        <!-- después -->
+        <rect x="260" y="22" width="130" height="56" rx="14" fill="#264de4"/>
+        <text x="325" y="55" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">:hover — después</text>
+
+        <!-- @keyframes demo -->
+        <text x="460" y="22" font-family="sans-serif" font-size="10" fill="#ffa657" font-weight="700">@keyframes — animación continua</text>
+        <circle cx="530" cy="70" r="18" fill="#ffa657" opacity=".9">
+          <animate attributeName="cx" from="510" to="640" dur="2s" repeatCount="indefinite" calcMode="ease-in-out"/>
+        </circle>
+        <circle cx="660" cy="70" r="18" fill="#264de4" opacity=".4"/>
+        <line x1="510" y1="92" x2="660" y2="92" stroke="#4a6aff" stroke-width="1" stroke-dasharray="4,2"/>
+        <text x="585" y="108" text-anchor="middle" font-family="monospace" font-size="8" fill="#ffa657">translateX(0) → translateX(150px)</text>
+
+        <!-- timing functions -->
+        <text x="30" y="130" font-family="sans-serif" font-size="9" fill="#8b949e">Timing functions: </text>
+        <text x="150" y="130" font-family="monospace" font-size="9" fill="#79c0ff">linear</text>
+        <text x="200" y="130" font-family="monospace" font-size="9" fill="#79c0ff"> ease</text>
+        <text x="240" y="130" font-family="monospace" font-size="9" fill="#79c0ff"> ease-in</text>
+        <text x="300" y="130" font-family="monospace" font-size="9" fill="#79c0ff"> ease-out</text>
+        <text x="370" y="130" font-family="monospace" font-size="9" fill="#79c0ff"> ease-in-out</text>
+        <text x="465" y="130" font-family="monospace" font-size="9" fill="#7ee787"> cubic-bezier()</text>
+        <text x="600" y="130" font-family="monospace" font-size="9" fill="#ffa657"> steps()</text>
+      </svg>
+    </div>
+
+    <div class="cb">
+      <div class="cbar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="cfn">animaciones.css</span></div>
+      <div class="cc"><span class="cm">/* ─── TRANSITION (cambio suave entre dos estados) ─── */</span>
+<span class="sl">.tarjeta</span> {
+  <span class="pr">transition</span>: <span class="vl">all</span> <span class="nm">.3s</span> <span class="vl">ease</span>;
+  <span class="cm">/* propiedad  duración  timing-function  delay */</span>
+  <span class="pr">transition</span>: <span class="vl">transform</span> <span class="nm">.4s</span> <span class="vl">ease-out</span>, <span class="vl">box-shadow</span> <span class="nm">.4s</span> <span class="vl">ease</span>;
+}
+<span class="sl">.tarjeta:hover</span> {
+  <span class="pr">transform</span>:  <span class="fn">translateY</span>(<span class="nm">-8px</span>) <span class="fn">scale</span>(<span class="nm">1.02</span>);
+  <span class="pr">box-shadow</span>: <span class="nm">0</span> <span class="nm">20px</span> <span class="nm">40px</span> <span class="fn">rgba</span>(<span class="nm">38</span>,<span class="nm">77</span>,<span class="nm">228</span>,<span class="nm">.3</span>);
+}
+
+<span class="cm">/* ─── @KEYFRAMES (animación continua) ─── */</span>
+<span class="at">@keyframes</span> <span class="fn">aparecer</span> {
+  <span class="nm">from</span> { <span class="pr">opacity</span>: <span class="nm">0</span>; <span class="pr">transform</span>: <span class="fn">translateY</span>(<span class="nm">30px</span>); }
+  <span class="nm">to</span>   { <span class="pr">opacity</span>: <span class="nm">1</span>; <span class="pr">transform</span>: <span class="fn">translateY</span>(<span class="nm">0</span>); }
+}
+
+<span class="at">@keyframes</span> <span class="fn">girar</span> {
+  <span class="nm">0%</span>   { <span class="pr">transform</span>: <span class="fn">rotate</span>(<span class="nm">0deg</span>); }
+  <span class="nm">100%</span> { <span class="pr">transform</span>: <span class="fn">rotate</span>(<span class="nm">360deg</span>); }
+}
+
+<span class="at">@keyframes</span> <span class="fn">pulsar</span> {
+  <span class="nm">0%</span>, <span class="nm">100%</span> { <span class="pr">transform</span>: <span class="fn">scale</span>(<span class="nm">1</span>); }
+  <span class="nm">50%</span>       { <span class="pr">transform</span>: <span class="fn">scale</span>(<span class="nm">1.08</span>); }
+}
+
+<span class="sl">.elemento</span> {
+  <span class="pr">animation</span>:            <span class="fn">aparecer</span> <span class="nm">.8s</span> <span class="vl">ease</span> <span class="vl">both</span>;
+  <span class="cm">/* nombre  duración  timing  fill-mode */</span>
+  <span class="pr">animation-delay</span>:      <span class="nm">.2s</span>;
+  <span class="pr">animation-iteration-count</span>: <span class="vl">infinite</span>; <span class="cm">/* o un número: 3 */</span>
+  <span class="pr">animation-direction</span>:  <span class="vl">alternate</span>;   <span class="cm">/* normal | reverse | alternate */</span>
+  <span class="pr">animation-play-state</span>: <span class="vl">running</span>;     <span class="cm">/* paused con JS */</span>
+}
+
+<span class="cm">/* ─── TRANSFORM (no anima por sí solo, úsalo con transition o @keyframes) ─── */</span>
+<span class="sl">.forma</span> {
+  <span class="pr">transform</span>: <span class="fn">translateX</span>(<span class="nm">50px</span>)
+              <span class="fn">translateY</span>(<span class="nm">-20px</span>)
+              <span class="fn">rotate</span>(<span class="nm">45deg</span>)
+              <span class="fn">scale</span>(<span class="nm">1.5</span>)
+              <span class="fn">skewX</span>(<span class="nm">10deg</span>);
+}</div>
+    </div>
+  </section>
+
+  <!-- ══ PASO 10 ══ -->
+  <section class="paso" id="p10">
+    <div class="paso-header">
+      <div class="paso-num">10</div>
+      <div>
+        <h2 class="paso-titulo">Variables CSS y Diseño Responsive</h2>
+        <p class="paso-subtitulo">Variables nativas para sistemas de diseño y @media queries para adaptarse a cualquier pantalla</p>
+      </div>
+    </div>
+    <div class="sep"></div>
+
+    <!-- Ilustración responsive -->
+    <div class="il">
+      <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="220" fill="#020b2e"/>
+        <!-- desktop -->
+        <rect x="20"  y="20" width="340" height="180" rx="10" fill="#0d1540" stroke="#264de4" stroke-width="1.5"/>
+        <rect x="20"  y="20" width="340" height="22"  rx="10" fill="#161b22"/>
+        <rect x="20"  y="30" width="340" height="12"  fill="#161b22"/>
+        <circle cx="36" cy="31" r="4" fill="#ff5f57"/><circle cx="50" cy="31" r="4" fill="#febc2e"/><circle cx="64" cy="31" r="4" fill="#28c840"/>
+        <text x="190" y="31" text-anchor="middle" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,.3)">🖥️ Desktop ≥ 1024px</text>
+        <!-- 3 cols desktop -->
+        <rect x="32"  y="50" width="90" height="130" rx="6" fill="#264de4" opacity=".7"/>
+        <rect x="130" y="50" width="90" height="130" rx="6" fill="#264de4" opacity=".55"/>
+        <rect x="228" y="50" width="90" height="130" rx="6" fill="#264de4" opacity=".4"/>
+        <text x="77"  y="120" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">col 1</text>
+        <text x="175" y="120" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">col 2</text>
+        <text x="273" y="120" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">col 3</text>
+
+        <!-- tablet -->
+        <rect x="390" y="30" width="240" height="160" rx="10" fill="#0d1540" stroke="#9b6bcc" stroke-width="1.5"/>
+        <rect x="390" y="30" width="240" height="20"  rx="10" fill="#161b22"/>
+        <text x="510" y="44" text-anchor="middle" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,.3)">📱 Tablet 768–1023px</text>
+        <!-- 2 cols tablet -->
+        <rect x="400" y="56" width="100" height="120" rx="6" fill="#9b6bcc" opacity=".7"/>
+        <rect x="510" y="56" width="100" height="120" rx="6" fill="#9b6bcc" opacity=".5"/>
+        <text x="450" y="120" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">col 1</text>
+        <text x="560" y="120" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">col 2</text>
+
+        <!-- mobile -->
+        <rect x="670" y="40" width="130" height="150" rx="12" fill="#0d1540" stroke="#2a9a4a" stroke-width="1.5"/>
+        <rect x="670" y="40" width="130" height="20"  rx="12" fill="#161b22"/>
+        <text x="735" y="54" text-anchor="middle" font-family="sans-serif" font-size="7" fill="rgba(255,255,255,.3)">📱 Mobile &lt;768px</text>
+        <rect x="680" y="66" width="110" height="52" rx="6" fill="#2a9a4a" opacity=".8"/>
+        <rect x="680" y="124" width="110" height="52" rx="6" fill="#2a9a4a" opacity=".6"/>
+        <text x="735" y="96"  text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">full width</text>
+        <text x="735" y="154" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">full width</text>
+
+        <text x="450" y="210" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(100,160,255,.45)" letter-spacing="2">MISMO HTML — DIFERENTE CSS SEGÚN PANTALLA</text>
+      </svg>
+    </div>
+
+    <div class="cb">
+      <div class="cbar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="cfn">variables-responsive.css</span></div>
+      <div class="cc"><span class="cm">/* ═══════════════════════════════
+   VARIABLES CSS (Custom Properties)
+   ═══════════════════════════════ */</span>
+<span class="sl">:root</span> {
+  <span class="cm">/* Paleta de colores */</span>
+  <span class="un">--color-primario</span>:  <span class="vl">#264de4</span>;
+  <span class="un">--color-secundario</span>:<span class="vl">#9b6bcc</span>;
+  <span class="un">--color-fondo</span>:     <span class="vl">#f0f4ff</span>;
+  <span class="un">--color-texto</span>:     <span class="vl">#1a2a4a</span>;
+
+  <span class="cm">/* Tipografía */</span>
+  <span class="un">--fuente-ppal</span>:  <span class="st">'DM Sans'</span>, <span class="vl">sans-serif</span>;
+  <span class="un">--tam-base</span>:     <span class="nm">16px</span>;
+  <span class="un">--tam-h1</span>:       <span class="fn">clamp</span>(<span class="nm">1.8rem</span>, <span class="nm">5vw</span>, <span class="nm">4rem</span>);
+
+  <span class="cm">/* Espaciado */</span>
+  <span class="un">--espacio-sm</span>:   <span class="nm">8px</span>;
+  <span class="un">--espacio-md</span>:   <span class="nm">16px</span>;
+  <span class="un">--espacio-lg</span>:   <span class="nm">32px</span>;
+
+  <span class="cm">/* Efectos */</span>
+  <span class="un">--radio</span>:        <span class="nm">12px</span>;
+  <span class="un">--sombra</span>:       <span class="nm">0 8px 32px</span> <span class="fn">rgba</span>(<span class="nm">38</span>,<span class="nm">77</span>,<span class="nm">228</span>, <span class="nm">.15</span>);
+}
+
+<span class="cm">/* Usar variables */</span>
+<span class="sl">.boton</span> {
+  <span class="pr">background</span>:    <span class="fn">var</span>(<span class="un">--color-primario</span>);
+  <span class="pr">font-family</span>:   <span class="fn">var</span>(<span class="un">--fuente-ppal</span>);
+  <span class="pr">padding</span>:       <span class="fn">var</span>(<span class="un">--espacio-sm</span>) <span class="fn">var</span>(<span class="un">--espacio-md</span>);
+  <span class="pr">border-radius</span>: <span class="fn">var</span>(<span class="un">--radio</span>);
+  <span class="pr">box-shadow</span>:    <span class="fn">var</span>(<span class="un">--sombra</span>);
+}
+
+<span class="cm">/* ═══════════════════════
+   MEDIA QUERIES — Responsive
+   ═══════════════════════ */</span>
+<span class="cm">/* MOBILE FIRST: escribir para móvil primero, luego agrandar */</span>
+
+<span class="sl">.grid</span> {
+  <span class="pr">display</span>:               <span class="vl">grid</span>;
+  <span class="pr">grid-template-columns</span>: <span class="nm">1fr</span>;     <span class="cm">/* móvil: 1 columna */</span>
+  <span class="pr">gap</span>:                   <span class="nm">16px</span>;
+}
+
+<span class="cm">/* Tablet: ≥ 768px */</span>
+<span class="at">@media</span> (<span class="pr">min-width</span>: <span class="nm">768px</span>) {
+  <span class="sl">.grid</span> { <span class="pr">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="nm">2</span>, <span class="nm">1fr</span>); }
+}
+
+<span class="cm">/* Desktop: ≥ 1024px */</span>
+<span class="at">@media</span> (<span class="pr">min-width</span>: <span class="nm">1024px</span>) {
+  <span class="sl">.grid</span> { <span class="pr">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="nm">3</span>, <span class="nm">1fr</span>); }
+}
+
+<span class="cm">/* Pantallas grandes: ≥ 1280px */</span>
+<span class="at">@media</span> (<span class="pr">min-width</span>: <span class="nm">1280px</span>) {
+  <span class="sl">.contenido</span> { <span class="pr">max-width</span>: <span class="nm">1200px</span>; <span class="pr">margin</span>: <span class="nm">0 auto</span>; }
+}
+
+<span class="cm">/* Modo oscuro automático */</span>
+<span class="at">@media</span> (<span class="pr">prefers-color-scheme</span>: <span class="vl">dark</span>) {
+  <span class="sl">:root</span> {
+    <span class="un">--color-fondo</span>: <span class="vl">#0a1228</span>;
+    <span class="un">--color-texto</span>: <span class="vl">#e0e8ff</span>;
+  }
+}
+
+<span class="cm">/* Imprimir */</span>
+<span class="at">@media</span> <span class="vl">print</span> {
+  <span class="sl">.navbar, .sidebar</span> { <span class="pr">display</span>: <span class="vl">none</span>; }
+}</div>
+    </div>
+
+    <div class="tip morado">
+      <span class="tip-icon">🚀</span>
+      <div class="tip-text"><strong>¡Ya conoces CSS3!</strong> Con estos 10 pasos puedes construir cualquier diseño web profesional. El siguiente nivel es practicar con proyectos reales, explorar <strong>CSS Nesting</strong>, <strong>Container Queries</strong> y frameworks como <strong>Tailwind CSS</strong>. Recuerda: el diseño se aprende diseñando.</div>
+    </div>
+
+    <!-- Tabla resumen final -->
+    <div class="tw" style="margin-top:40px;">
+      <p style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#0a1a4a;margin-bottom:16px;">📋 Resumen de propiedades CSS3</p>
+      <table>
+        <thead><tr><th>Categoría</th><th>Propiedades principales</th><th>Uso clave</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Colores</strong></td><td class="tc">color, background, opacity, gradient</td><td>Paleta visual completa</td></tr>
+          <tr><td><strong>Tipografía</strong></td><td class="tc">font-family, font-size, font-weight, line-height</td><td>Legibilidad y jerarquía</td></tr>
+          <tr><td><strong>Box Model</strong></td><td class="tc">width, height, margin, padding, border, box-shadow</td><td>Espacio y estructura</td></tr>
+          <tr><td><strong>Display</strong></td><td class="tc">display, visibility, overflow, z-index</td><td>Visibilidad y capas</td></tr>
+          <tr><td><strong>Posición</strong></td><td class="tc">position, top, right, bottom, left</td><td>Ubicación en pantalla</td></tr>
+          <tr><td><strong>Flexbox</strong></td><td class="tc">display:flex, justify-content, align-items, gap</td><td>Layouts 1D</td></tr>
+          <tr><td><strong>Grid</strong></td><td class="tc">display:grid, grid-template-columns, grid-area</td><td>Layouts 2D complejos</td></tr>
+          <tr><td><strong>Pseudo</strong></td><td class="tc">:hover, :focus, ::before, ::after, :nth-child</td><td>Estados y decoración</td></tr>
+          <tr><td><strong>Animación</strong></td><td class="tc">transition, @keyframes, animation, transform</td><td>Movimiento y vida</td></tr>
+          <tr><td><strong>Variables</strong></td><td class="tc">:root, --variable, var()</td><td>Sistemas de diseño</td></tr>
+          <tr><td><strong>Responsive</strong></td><td class="tc">@media, min-width, clamp(), fr, vw/vh</td><td>Adaptación a pantallas</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span class="fi-escuela">Centro de Bachillerato Tecnológico Industrial y de Servicios No. 144</span>
+    <div class="fi-div"></div>
+    <span class="fi-esp">Especialidad: Inteligencia Artificial</span>
+    <span class="fi-autor">Profesor: &nbsp;<strong>Jordy Chirino Balcázar</strong></span>
+    <span class="fi-autor">Creado por &nbsp;<strong>Sophia Castro</strong></span>
+  </div>
+</footer>
+
+<script>
+  // Barra de progreso
+  window.addEventListener('scroll', () => {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progress-bar').style.width = (window.scrollY / total * 100) + '%';
+  });
+
+  // Dots laterales activos
+  const pasos  = document.querySelectorAll('.paso');
+  const dots   = document.querySelectorAll('.sidebar-dot');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        dots.forEach(d => d.classList.remove('active'));
+        const a = document.querySelector(`.sidebar-dot[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+  pasos.forEach(p => io.observe(p));
+</script>
+</body>
+</html>

@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tarea 03 – Guía para Aprender HTML5</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@1,300&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* ═══════════════════════════════════════
+       TOKENS Y RESET
+    ═══════════════════════════════════════ */
+    :root {
+      --rosa-suave:#f7c5d5; --rosa-medio:#f0a0bb; --rosa-claro:#fce8f0;
+      --azul-pastel:#b8d8f0; --azul-claro:#d6ecfb;
+      --beige:#f5ede3;
+      --morado-claro:#d9bfee; --morado:#9b6bcc; --morado-osc:#7a4aaa;
+      --naranja:#ff7043; --naranja-c:#fff3ee;
+      --verde:#2e7d5a;   --verde-c:#e6f7ef;
+      --azul-o:#1565c0;  --azul-oc:#e3f0ff;
+      --rojo:#c62828;    --rojo-c:#ffeaea;
+      --negro:#1a1a1a; --gris:#555;
+      /* hero html5 */
+      --h-bg1:#e8400a; --h-bg2:#f4a020; --h-bg3:#c0392b;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:var(--beige);color:var(--negro);overflow-x:hidden;}
+
+    /* ═══════════════════════════════════════
+       BTN ATRÁS
+    ═══════════════════════════════════════ */
+    .btn-back{
+      position:fixed;top:22px;left:22px;z-index:200;
+      display:flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,.78);backdrop-filter:blur(14px);
+      border:1px solid rgba(255,255,255,.9);border-radius:40px;
+      padding:10px 20px 10px 14px;text-decoration:none;
+      color:#2a1a1a;font-size:.85rem;font-weight:500;
+      box-shadow:0 4px 20px rgba(200,60,10,.18);
+      transition:all .25s ease;
+    }
+    .btn-back:hover{background:rgba(255,255,255,.98);transform:translateX(-3px);}
+    .btn-back svg{width:18px;height:18px;}
+
+    /* ═══════════════════════════════════════
+       ÍNDICE FLOTANTE
+    ═══════════════════════════════════════ */
+    .toc{
+      position:fixed;right:18px;top:50%;transform:translateY(-50%);
+      z-index:150;display:flex;flex-direction:column;gap:6px;
+    }
+    .toc-dot{
+      width:10px;height:10px;border-radius:50%;
+      background:rgba(200,60,10,.25);border:2px solid rgba(200,60,10,.4);
+      cursor:pointer;transition:all .2s ease;text-decoration:none;
+      display:block;
+    }
+    .toc-dot:hover{background:var(--naranja);transform:scale(1.3);}
+
+    /* ═══════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════ */
+    .hero{
+      min-height:100vh;
+      background:linear-gradient(135deg,#1a0800 0%,#4a1500 35%,#2a0a00 65%,#1a0500 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:100px 24px 70px;
+      position:relative;overflow:hidden;
+    }
+    /* partículas etiquetas */
+    .hero-tags{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.13;}
+    .hero-tags span{
+      position:absolute;font-family:'Fira Code',monospace;font-size:.85rem;
+      color:#ff9a60;animation:tagFloat linear infinite;
+    }
+    @keyframes tagFloat{
+      from{transform:translateY(110vh) rotate(-5deg);opacity:0;}
+      8%{opacity:1;} 92%{opacity:1;}
+      to{transform:translateY(-10vh) rotate(5deg);opacity:0;}
+    }
+    /* orbe central */
+    .hero::after{
+      content:'';position:absolute;width:700px;height:700px;border-radius:50%;
+      background:radial-gradient(circle,rgba(255,100,20,.14) 0%,transparent 65%);
+      top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
+    }
+    .hero-inner{
+      position:relative;z-index:2;
+      display:flex;flex-direction:column;align-items:center;gap:18px;
+      animation:fadeUp .9s ease both;
+    }
+    @keyframes fadeUp{
+      from{opacity:0;transform:translateY(32px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+    .hero-badge{
+      font-size:.72rem;font-weight:500;letter-spacing:.35em;text-transform:uppercase;
+      color:#ffb080;background:rgba(255,120,60,.14);
+      border:1px solid rgba(255,120,60,.3);padding:5px 18px;border-radius:20px;
+    }
+    /* Logo HTML5 grande */
+    .html5-logo-wrap{
+      width:140px;height:140px;border-radius:28px;
+      background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
+      border:2px solid rgba(255,100,20,.3);
+      box-shadow:0 0 60px rgba(255,80,10,.25),inset 0 1px 0 rgba(255,255,255,.1);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .hero-title{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(2.4rem,6vw,5rem);font-weight:900;color:#fff;
+      line-height:1.05;letter-spacing:-.02em;
+      text-shadow:0 4px 40px rgba(255,100,20,.4);
+    }
+    .hero-title span{color:#ff8c50;}
+    .hero-sub{
+      font-family:'Cormorant Garamond',serif;font-style:italic;
+      font-size:clamp(1rem,2.2vw,1.4rem);color:rgba(255,200,160,.85);
+      letter-spacing:.06em;
+    }
+    .hero-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+    .hchip{
+      font-size:.75rem;padding:5px 14px;border-radius:20px;
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+      color:rgba(255,255,255,.7);
+    }
+    .hchip.o{background:rgba(255,120,60,.2);border-color:rgba(255,120,60,.35);color:#ffb080;}
+    .scroll-hint{
+      position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+      display:flex;flex-direction:column;align-items:center;gap:5px;
+      opacity:.45;animation:bounce 2s infinite;z-index:2;
+    }
+    .scroll-hint span{font-size:.68rem;letter-spacing:.15em;color:#ff9a60;text-transform:uppercase;}
+    @keyframes bounce{
+      0%,100%{transform:translateX(-50%) translateY(0);}
+      50%{transform:translateX(-50%) translateY(8px);}
+    }
+
+    /* ═══════════════════════════════════════
+       CONTENIDO
+    ═══════════════════════════════════════ */
+    .contenido{max-width:960px;margin:0 auto;padding:64px 24px 80px;}
+
+    /* Introducción card */
+    .intro-card{
+      background:white;border-radius:22px;padding:30px 36px;
+      margin-bottom:64px;
+      border-left:6px solid var(--naranja);
+      box-shadow:0 6px 30px rgba(255,100,20,.1);
+      font-size:.97rem;line-height:1.85;color:#3a2010;
+    }
+    .intro-card strong{color:var(--naranja);}
+
+    /* ── PASO ── */
+    .paso{
+      margin-bottom:72px;
+      animation:fadeUp .6s ease both;
+    }
+    .paso-header{
+      display:flex;align-items:center;gap:18px;margin-bottom:28px;
+      padding-bottom:16px;border-bottom:2px solid rgba(255,100,20,.12);
+    }
+    .paso-num{
+      width:56px;height:56px;border-radius:16px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;
+      color:white;
+      box-shadow:0 4px 16px rgba(0,0,0,.15);
+    }
+    .paso-num.n0{background:linear-gradient(135deg,#555,#333);}
+    .paso-num.n1{background:linear-gradient(135deg,#e44d26,#f16529);}
+    .paso-num.n2{background:linear-gradient(135deg,#264de4,#2965f1);}
+    .paso-num.n3{background:linear-gradient(135deg,#f0db4f,#e0c800); color:#1a1a1a;}
+    .paso-num.n4{background:linear-gradient(135deg,#2e7d5a,#4caf80);}
+    .paso-num.n5{background:linear-gradient(135deg,#7a4aaa,#9b6bcc);}
+    .paso-num.n6{background:linear-gradient(135deg,#c62828,#e53935);}
+    .paso-num.n7{background:linear-gradient(135deg,#1565c0,#1e88e5);}
+    .paso-num.n8{background:linear-gradient(135deg,#ff6f00,#ffa726);}
+    .paso-num.n9{background:linear-gradient(135deg,#00695c,#26a69a);}
+
+    .paso-info h2{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.3rem,3vw,1.9rem);font-weight:700;color:#2a1000;
+    }
+    .paso-info p{font-size:.88rem;color:#7a5a40;margin-top:3px;}
+
+    /* Texto guía */
+    .guia-texto{
+      font-size:.96rem;line-height:1.82;color:#3a2a20;
+      margin-bottom:20px;
+    }
+    .guia-texto strong{color:#c0390a;}
+    .guia-texto p{margin-bottom:12px;}
+    .guia-texto p:last-child{margin-bottom:0;}
+
+    /* ── SVG ILUSTRACIÓN ── */
+    .ilustracion{
+      width:100%;border-radius:18px;overflow:hidden;
+      margin:20px 0;
+      box-shadow:0 6px 28px rgba(0,0,0,.1);
+    }
+    .ilustracion svg{width:100%;display:block;}
+
+    /* ── BLOQUE CÓDIGO ── */
+    .code-block{
+      background:#1a1228;border-radius:14px;overflow:hidden;
+      margin:20px 0;font-family:'Fira Code',monospace;
+    }
+    .code-bar{
+      background:#2a1e3a;padding:8px 16px;
+      display:flex;align-items:center;gap:6px;
+    }
+    .cd{width:10px;height:10px;border-radius:50%;}
+    .cd.r{background:#ff5f57;} .cd.y{background:#febc2e;} .cd.g{background:#28c840;}
+    .clabel{margin-left:auto;font-size:.68rem;letter-spacing:.1em;color:rgba(255,255,255,.3);font-family:'Fira Code',monospace;}
+    .code-content{
+      padding:16px 20px;font-size:.8rem;line-height:1.85;
+      overflow-x:auto;white-space:pre;color:#cdd3de;
+    }
+    /* sintaxis */
+    .kw{color:#c792ea;} .tg{color:#f07178;} .at{color:#ffcb6b;}
+    .vl{color:#c3e88d;} .cm{color:#546e7a;font-style:italic;}
+    .st{color:#c3e88d;} .fn{color:#82aaff;} .nm{color:#f78c6c;}
+    .pt{color:#cdd3de;} .sl{color:#89ddff;}
+
+    /* ── GRID ETIQUETAS ── */
+    .tags-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+      gap:14px;margin:20px 0;
+    }
+    .tag-card{
+      background:white;border-radius:14px;padding:14px 16px;
+      border-top:3px solid var(--naranja);
+      box-shadow:0 3px 14px rgba(0,0,0,.07);
+      transition:transform .2s ease;
+    }
+    .tag-card:hover{transform:translateY(-3px);}
+    .tag-name{
+      font-family:'Fira Code',monospace;font-size:.88rem;
+      font-weight:500;color:var(--naranja);margin-bottom:5px;
+    }
+    .tag-desc{font-size:.8rem;line-height:1.55;color:#4a3a30;}
+
+    /* colores por categoría */
+    .tag-card.azul{border-top-color:#264de4;}
+    .tag-card.azul .tag-name{color:#264de4;}
+    .tag-card.verde{border-top-color:#2e7d5a;}
+    .tag-card.verde .tag-name{color:#2e7d5a;}
+    .tag-card.morado{border-top-color:#7a4aaa;}
+    .tag-card.morado .tag-name{color:#7a4aaa;}
+    .tag-card.rojo{border-top-color:#c62828;}
+    .tag-card.rojo .tag-name{color:#c62828;}
+    .tag-card.gris{border-top-color:#555;}
+    .tag-card.gris .tag-name{color:#555;}
+
+    /* ── NOTA / ALERTA ── */
+    .nota{
+      display:flex;gap:14px;align-items:flex-start;
+      border-radius:14px;padding:16px 20px;margin:18px 0;
+      font-size:.88rem;line-height:1.65;
+    }
+    .nota.info{background:var(--azul-oc);border-left:4px solid var(--azul-o);color:#0d3a6a;}
+    .nota.tip {background:var(--verde-c);border-left:4px solid var(--verde);color:#0d3a20;}
+    .nota.warn{background:var(--naranja-c);border-left:4px solid var(--naranja);color:#5a2000;}
+    .nota svg{flex-shrink:0;width:20px;height:20px;margin-top:1px;}
+
+    /* ── TABLA ATRIBUTOS ── */
+    .tabla-wrap{overflow-x:auto;margin:20px 0;}
+    table{
+      width:100%;border-collapse:collapse;background:white;
+      border-radius:14px;overflow:hidden;
+      box-shadow:0 4px 18px rgba(0,0,0,.07);font-size:.85rem;
+    }
+    thead{background:linear-gradient(135deg,#e44d26,#c0390a);color:white;}
+    th{padding:13px 16px;text-align:left;font-weight:500;letter-spacing:.04em;}
+    td{padding:11px 16px;border-bottom:1px solid rgba(255,100,20,.08);color:#3a2010;}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:#fff8f4;}
+    code{
+      font-family:'Fira Code',monospace;font-size:.82rem;
+      background:#fff0ea;color:var(--naranja);
+      padding:2px 7px;border-radius:6px;
+    }
+
+    /* ── MINI DEMO VISUAL ── */
+    .demo-box{
+      background:white;border-radius:18px;padding:24px 28px;
+      margin:20px 0;box-shadow:0 4px 20px rgba(0,0,0,.08);
+    }
+    .demo-label{
+      font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+      color:#9a7a60;margin-bottom:14px;font-weight:500;
+    }
+    .demo-render{border:2px dashed rgba(255,100,20,.25);border-radius:10px;padding:18px 20px;}
+
+    /* ── CHECKLIST ── */
+    .checklist{list-style:none;display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+    .checklist li{
+      display:flex;align-items:flex-start;gap:12px;
+      background:white;border-radius:12px;padding:12px 16px;
+      font-size:.88rem;line-height:1.6;color:#3a2a20;
+      box-shadow:0 2px 10px rgba(0,0,0,.06);
+    }
+    .checklist li svg{flex-shrink:0;width:18px;height:18px;margin-top:1px;}
+
+    /* ── SECCIÓN RESUMEN FINAL ── */
+    .resumen-grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+      gap:18px;margin:20px 0;
+    }
+    .res-card{
+      border-radius:18px;padding:22px 20px;
+      display:flex;flex-direction:column;gap:8px;
+      transition:transform .2s;
+    }
+    .res-card:hover{transform:translateY(-4px);}
+    .res-card.c1{background:linear-gradient(135deg,#fff3ee,#ffe0d0);}
+    .res-card.c2{background:linear-gradient(135deg,#e3f0ff,#d0e8ff);}
+    .res-card.c3{background:linear-gradient(135deg,#e6f7ef,#d0f0e0);}
+    .res-card.c4{background:linear-gradient(135deg,#f0eaff,#e0d0ff);}
+    .res-card.c5{background:linear-gradient(135deg,#ffeaea,#ffd0d0);}
+    .res-card.c6{background:linear-gradient(135deg,#fffbe0,#fff0b0);}
+    .res-card h4{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#2a1000;}
+    .res-card p{font-size:.82rem;line-height:1.6;color:#4a3a30;}
+
+    /* ── FOOTER ── */
+    footer{
+      background:linear-gradient(135deg,#4a2a3a 0%,#3a5070 100%);
+      color:rgba(255,255,255,.85);text-align:center;padding:36px 24px;
+    }
+    .footer-inner{
+      max-width:700px;margin:0 auto;
+      display:flex;flex-direction:column;gap:8px;align-items:center;
+    }
+    .footer-inner .escuela{
+      font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;
+      color:var(--rosa-suave);letter-spacing:.05em;
+    }
+    .footer-inner .footer-esp{font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--azul-pastel);}
+    .footer-inner .footer-autor{font-size:.88rem;color:rgba(255,255,255,.65);margin-top:4px;}
+    .footer-divider{
+      width:40px;height:2px;
+      background:linear-gradient(90deg,var(--rosa-medio),var(--azul-pastel));
+      border-radius:2px;margin:6px auto;
+    }
+  </style>
+</head>
+<body>
+
+<!-- BOTÓN ATRÁS -->
+<a href="index.html" class="btn-back">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+  Volver al portafolio
+</a>
+
+<!-- ÍNDICE PUNTOS -->
+<nav class="toc">
+  <a class="toc-dot" href="#paso0" title="Paso 0"></a>
+  <a class="toc-dot" href="#paso1" title="Paso 1"></a>
+  <a class="toc-dot" href="#paso2" title="Paso 2"></a>
+  <a class="toc-dot" href="#paso3" title="Paso 3"></a>
+  <a class="toc-dot" href="#paso4" title="Paso 4"></a>
+  <a class="toc-dot" href="#paso5" title="Paso 5"></a>
+  <a class="toc-dot" href="#paso6" title="Paso 6"></a>
+  <a class="toc-dot" href="#paso7" title="Paso 7"></a>
+  <a class="toc-dot" href="#paso8" title="Paso 8"></a>
+  <a class="toc-dot" href="#paso9" title="Paso 9"></a>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-tags">
+    <span style="left:4%;animation-duration:16s;animation-delay:0s">&lt;html&gt;</span>
+    <span style="left:13%;animation-duration:20s;animation-delay:3s">&lt;div&gt;</span>
+    <span style="left:23%;animation-duration:14s;animation-delay:1s">&lt;section&gt;</span>
+    <span style="left:35%;animation-duration:18s;animation-delay:5s">&lt;header&gt;</span>
+    <span style="left:47%;animation-duration:13s;animation-delay:2s">&lt;p&gt;</span>
+    <span style="left:57%;animation-duration:19s;animation-delay:4s">&lt;img/&gt;</span>
+    <span style="left:68%;animation-duration:15s;animation-delay:6s">&lt;nav&gt;</span>
+    <span style="left:79%;animation-duration:17s;animation-delay:1.5s">&lt;form&gt;</span>
+    <span style="left:89%;animation-duration:12s;animation-delay:7s">&lt;/body&gt;</span>
+  </div>
+
+  <div class="hero-inner">
+    <span class="hero-badge">Tarea 03 &nbsp;·&nbsp; Cultura Digital 2</span>
+
+    <!-- Logo HTML5 SVG -->
+    <div class="html5-logo-wrap">
+      <svg viewBox="0 0 100 110" width="90" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="8,0 92,0 84,92 50,102 16,92" fill="#e44d26"/>
+        <polygon points="50,9 50,94 78,86 84,8" fill="#f16529"/>
+        <polygon points="18,18 82,18 79,50 50,50 50,60 77,60 74,82 50,89 26,82 24,62 34,62 35,72 50,76 65,72 66,60 22,60 18,18" fill="white"/>
+        <polygon points="50,18 50,50 79,50 82,18" fill="#ebebeb"/>
+        <polygon points="50,60 50,89 74,82 77,60" fill="#ebebeb"/>
+        <text x="50" y="108" text-anchor="middle" font-family="Arial Black" font-size="10" font-weight="900" fill="#ff8c50">5</text>
+      </svg>
+    </div>
+
+    <h1 class="hero-title">Guía para aprender<br><span>HTML 5</span></h1>
+    <p class="hero-sub">Del paso cero a páginas web completas — sin experiencia previa</p>
+
+    <div class="hero-chips">
+      <span class="hchip o">10 Pasos</span>
+      <span class="hchip">🏗️ Estructura</span>
+      <span class="hchip">🏷️ Etiquetas</span>
+      <span class="hchip">📋 Formularios</span>
+      <span class="hchip o">🎬 Multimedia</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Comenzar</span>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff9a60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- ═══════ CONTENIDO ═══════ -->
+<main class="contenido">
+
+  <!-- INTRO -->
+  <div class="intro-card">
+    <strong>HTML5</strong> (HyperText Markup Language versión 5) es el lenguaje fundamental de la web. Con él defines la <strong>estructura y el significado</strong> de cada elemento de una página: títulos, párrafos, imágenes, videos, formularios y más. Esta guía te lleva desde cero absoluto hasta dominar todas las etiquetas y conceptos esenciales, paso a paso, con ejemplos reales.
+  </div>
+
+  <!-- ════════════════════════════════
+       PASO 0 – ¿Qué es HTML?
+  ════════════════════════════════ -->
+  <section class="paso" id="paso0">
+    <div class="paso-header">
+      <div class="paso-num n0">0</div>
+      <div class="paso-info">
+        <h2>¿Qué es HTML y cómo funciona?</h2>
+        <p>Conceptos base antes de escribir la primera línea</p>
+      </div>
+    </div>
+
+    <div class="guia-texto">
+      <p>HTML no es un lenguaje de programación: es un <strong>lenguaje de marcado</strong>. Funciona usando <strong>etiquetas</strong> (tags) que le indican al navegador cómo mostrar el contenido. Cada etiqueta envuelve un fragmento de contenido y le da significado.</p>
+      <p>El navegador (Chrome, Firefox, Safari) lee tu archivo <code>.html</code>, interpreta las etiquetas y renderiza la página visual que ves en pantalla.</p>
+    </div>
+
+    <!-- Ilustración: cómo funciona HTML -->
+    <div class="ilustracion">
+      <svg viewBox="0 0 860 260" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="260" fill="#1a0e2a"/>
+        <circle cx="780" cy="220" r="100" fill="#2a1a3a" opacity=".5"/>
+        <circle cx="60" cy="30" r="60" fill="#1a1000" opacity=".4"/>
+
+        <!-- Caja 1: Archivo .html -->
+        <rect x="30" y="70" width="180" height="120" rx="14" fill="#2a1e3a" stroke="#ff7043" stroke-width="1.5"/>
+        <rect x="30" y="70" width="180" height="30" rx="14" fill="#3a2a4a"/>
+        <rect x="30" y="84" width="180" height="16" fill="#3a2a4a"/>
+        <circle cx="48" cy="85" r="5" fill="#ff5f57"/><circle cx="62" cy="85" r="5" fill="#febc2e"/><circle cx="76" cy="85" r="5" fill="#28c840"/>
+        <text x="205" y="88" font-family="monospace" font-size="8" fill="rgba(255,255,255,.3)">index.html</text>
+        <text x="45" y="115" font-family="monospace" font-size="9" fill="#f07178">&lt;h1&gt;</text>
+        <text x="75" y="115" font-family="monospace" font-size="9" fill="#cdd3de">Hola</text>
+        <text x="102" y="115" font-family="monospace" font-size="9" fill="#f07178">&lt;/h1&gt;</text>
+        <text x="45" y="130" font-family="monospace" font-size="9" fill="#f07178">&lt;p&gt;</text>
+        <text x="62" y="130" font-family="monospace" font-size="9" fill="#cdd3de">Texto aquí</text>
+        <text x="110" y="130" font-family="monospace" font-size="9" fill="#f07178">&lt;/p&gt;</text>
+        <text x="45" y="145" font-family="monospace" font-size="9" fill="#f07178">&lt;img</text>
+        <text x="70" y="145" font-family="monospace" font-size="9" fill="#ffcb6b"> src=</text>
+        <text x="97" y="145" font-family="monospace" font-size="9" fill="#c3e88d">"img.jpg"</text>
+        <text x="45" y="160" font-family="monospace" font-size="9" fill="#f07178"> /&gt;</text>
+        <text x="110" y="200" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#ff9a60" font-weight="600">Tu código HTML</text>
+
+        <!-- Flecha 1 -->
+        <path d="M215 130 L295 130" stroke="#ff7043" stroke-width="2.5" marker-end="url(#arr)" stroke-dasharray="5,3"/>
+
+        <!-- Caja 2: Navegador -->
+        <rect x="300" y="55" width="200" height="150" rx="14" fill="#1a2a4a" stroke="#82aaff" stroke-width="1.5"/>
+        <rect x="300" y="55" width="200" height="32" rx="14" fill="#0e1e3a"/>
+        <rect x="300" y="71" width="200" height="16" fill="#0e1e3a"/>
+        <circle cx="318" cy="71" r="5" fill="#ff5f57"/><circle cx="332" cy="71" r="5" fill="#febc2e"/><circle cx="346" cy="71" r="5" fill="#28c840"/>
+        <rect x="360" y="64" width="120" height="14" rx="7" fill="#1a3060"/>
+        <text x="420" y="74" text-anchor="middle" font-family="sans-serif" font-size="7" fill="rgba(255,255,255,.4)">https://mipagina.com</text>
+        <text x="315" y="105" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,.5)">Interpreta etiquetas...</text>
+        <rect x="315" y="112" width="80" height="6" rx="3" fill="rgba(255,255,255,.1)"/>
+        <rect x="315" y="122" width="130" height="5" rx="2" fill="rgba(255,255,255,.07)"/>
+        <rect x="315" y="130" width="100" height="5" rx="2" fill="rgba(255,255,255,.07)"/>
+        <text x="400" y="215" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#82aaff" font-weight="600">Navegador Web</text>
+
+        <!-- Flecha 2 -->
+        <path d="M505 130 L585 130" stroke="#28c840" stroke-width="2.5" stroke-dasharray="5,3"/>
+        <polygon points="583,125 595,130 583,135" fill="#28c840"/>
+
+        <!-- Caja 3: Resultado visual -->
+        <rect x="600" y="60" width="220" height="140" rx="14" fill="#f5ede3" stroke="#28c840" stroke-width="1.5"/>
+        <text x="618" y="92" font-family="serif" font-size="15" font-weight="700" fill="#1a0a00">Hola</text>
+        <text x="618" y="110" font-family="sans-serif" font-size="9" fill="#3a2a20">Texto aquí</text>
+        <rect x="618" y="118" width="60" height="40" rx="6" fill="#d0c0b0"/>
+        <text x="648" y="142" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8a7a6a">img.jpg</text>
+        <text x="710" y="215" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#28c840" font-weight="600">Página renderizada</text>
+
+        <!-- Labels proceso -->
+        <text x="110" y="42" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,.4)">① Escribes</text>
+        <text x="400" y="42" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,.4)">② El navegador lee</text>
+        <text x="710" y="42" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,.4)">③ Ves el resultado</text>
+
+        <!-- Definición flecha -->
+        <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0,0 6,3 0,6" fill="#ff7043"/></marker></defs>
+        <polygon points="293,125 305,130 293,135" fill="#ff7043"/>
+      </svg>
+    </div>
+
+    <div class="nota info">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Solo necesitas un <strong>editor de texto</strong> (como VS Code, que es gratuito) y un navegador web. ¡No se necesita instalar nada más para comenzar!</span>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       PASO 1 – Estructura básica
+  ════════════════════════════════ -->
+  <section class="paso" id="paso1">
+    <div class="paso-header">
+      <div class="paso-num n1">1</div>
+      <div class="paso-info">
+        <h2>Estructura básica de un documento HTML5</h2>
+        <p>El esqueleto que todo archivo HTML debe tener</p>
+      </div>
+    </div>
+
+    <div class="guia-texto">
+      <p>Todo documento HTML5 tiene una <strong>estructura base obligatoria</strong>. Es como los cimientos de una casa: sin ellos, nada funciona correctamente. Esta estructura le dice al navegador qué tipo de archivo es, en qué idioma está y cómo está organizado.</p>
+    </div>
+
+    <!-- Ilustración estructura -->
+    <div class="ilustracion">
+      <svg viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="300" fill="#f5ede3"/>
+        <rect x="0" y="0" width="860" height="300" fill="url(#bgGrid)" opacity=".3"/>
+        <defs>
+          <pattern id="bgGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(200,100,20,.15)" stroke-width="1"/>
+          </pattern>
+        </defs>
+
+        <!-- Capa DOCTYPE -->
+        <rect x="40" y="20" width="780" height="40" rx="10" fill="#ff7043" opacity=".15" stroke="#ff7043" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="430" y="45" text-anchor="middle" font-family="monospace" font-size="13" fill="#c0390a" font-weight="600">&lt;!DOCTYPE html&gt;</text>
+        <text x="840" y="45" text-anchor="end" font-family="sans-serif" font-size="10" fill="#c0390a">Declara HTML5</text>
+
+        <!-- Capa html -->
+        <rect x="55" y="68" width="750" height="210" rx="10" fill="#e44d26" opacity=".08" stroke="#e44d26" stroke-width="1.5"/>
+        <text x="85" y="88" font-family="monospace" font-size="12" fill="#e44d26" font-weight="600">&lt;html lang="es"&gt;</text>
+        <text x="840" y="88" text-anchor="end" font-family="sans-serif" font-size="10" fill="#e44d26">Raíz del documento</text>
+
+        <!-- Capa head -->
+        <rect x="80" y="96" width="340" height="88" rx="8" fill="#264de4" opacity=".1" stroke="#264de4" stroke-width="1.5"/>
+        <text x="100" y="114" font-family="monospace" font-size="11" fill="#264de4" font-weight="600">&lt;head&gt;</text>
+        <text x="118" y="132" font-family="monospace" font-size="10" fill="#1565c0">  &lt;meta charset="UTF-8"/&gt;</text>
+        <text x="118" y="148" font-family="monospace" font-size="10" fill="#1565c0">  &lt;meta name="viewport" …/&gt;</text>
+        <text x="118" y="164" font-family="monospace" font-size="10" fill="#1565c0">  &lt;title&gt;Mi Página&lt;/title&gt;</text>
+        <text x="100" y="180" font-family="monospace" font-size="11" fill="#264de4" font-weight="600">&lt;/head&gt;</text>
+        <text x="440" y="140" font-family="sans-serif" font-size="10" fill="#264de4">Metadatos (no visibles)</text>
+
+        <!-- Capa body -->
+        <rect x="80" y="192" width="700" height="76" rx="8" fill="#2e7d5a" opacity=".1" stroke="#2e7d5a" stroke-width="1.5"/>
+        <text x="100" y="210" font-family="monospace" font-size="11" fill="#2e7d5a" font-weight="600">&lt;body&gt;</text>
+        <text x="118" y="228" font-family="monospace" font-size="10" fill="#155a30">  &lt;h1&gt;Hola Mundo&lt;/h1&gt;</text>
+        <text x="118" y="244" font-family="monospace" font-size="10" fill="#155a30">  &lt;p&gt;Aquí va tu contenido visible&lt;/p&gt;</text>
+        <text x="100" y="262" font-family="monospace" font-size="11" fill="#2e7d5a" font-weight="600">&lt;/body&gt;</text>
+        <text x="600" y="228" font-family="sans-serif" font-size="10" fill="#2e7d5a">Contenido visible ✓</text>
+
+        <text x="80" y="290" font-family="monospace" font-size="11" fill="#e44d26" font-weight="600">&lt;/html&gt;</text>
+      </svg>
+    </div>
+
+    <div class="code-block">
+      <div class="code-bar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="clabel">mi-primera-pagina.html</span></div>
+      <div class="code-content"><span class="cm">&lt;!-- Paso 1: estructura mínima obligatoria --&gt;</span>
+<span class="tg">&lt;!DOCTYPE html&gt;</span>
+<span class="tg">&lt;html</span> <span class="at">lang</span>=<span class="vl">"es"</span><span class="tg">&gt;</span>
+
+  <span class="tg">&lt;head&gt;</span>
+    <span class="cm">&lt;!-- Metadatos: información SOBRE la página --&gt;</span>
+    <span class="tg">&lt;meta</span> <span class="at">charset</span>=<span class="vl">"UTF-8"</span><span class="tg">/&gt;</span>
+    <span class="tg">&lt;meta</span> <span class="at">name</span>=<span class="vl">"viewport"</span> <span class="at">content</span>=<span class="vl">"width=device-width, initial-scale=1.0"</span><span class="tg">/&gt;</span>
+    <span class="tg">&lt;title&gt;</span><span class="pt">Mi Primera Página Web</span><span class="tg">&lt;/title&gt;</span>
+  <span class="tg">&lt;/head&gt;</span>
+
+  <span class="tg">&lt;body&gt;</span>
+    <span class="cm">&lt;!-- Todo lo que el usuario VE va aquí --&gt;</span>
+    <span class="tg">&lt;h1&gt;</span><span class="pt">¡Hola Mundo!</span><span class="tg">&lt;/h1&gt;</span>
+    <span class="tg">&lt;p&gt;</span><span class="pt">Mi primera página con HTML5.</span><span class="tg">&lt;/p&gt;</span>
+  <span class="tg">&lt;/body&gt;</span>
+
+<span class="tg">&lt;/html&gt;</span></div>
+    </div>
+
+    <div class="tags-grid">
+      <div class="tag-card">
+        <div class="tag-name">&lt;!DOCTYPE html&gt;</div>
+        <div class="tag-desc">Declara que el documento usa HTML5. Siempre va en la primera línea.</div>
+      </div>
+      <div class="tag-card azul">
+        <div class="tag-name">&lt;html&gt;</div>
+        <div class="tag-desc">Elemento raíz. Todo el documento vive dentro de él. El atributo <code>lang</code> indica el idioma.</div>
+      </div>
+      <div class="tag-card azul">
+        <div class="tag-name">&lt;head&gt;</div>
+        <div class="tag-desc">Contiene metadatos: título, charset, enlaces a CSS, SEO. No es visible en pantalla.</div>
+      </div>
+      <div class="tag-card verde">
+        <div class="tag-name">&lt;body&gt;</div>
+        <div class="tag-desc">Todo lo que el usuario ve en pantalla va aquí: textos, imágenes, botones, etc.</div>
+      </div>
+      <div class="tag-card gris">
+        <div class="tag-name">&lt;meta charset&gt;</div>
+        <div class="tag-desc">Define la codificación de caracteres. UTF-8 permite tildes y ñ correctamente.</div>
+      </div>
+      <div class="tag-card gris">
+        <div class="tag-name">&lt;title&gt;</div>
+        <div class="tag-desc">Texto que aparece en la pestaña del navegador y en resultados de búsqueda.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       PASO 2 – Etiquetas de texto
+  ════════════════════════════════ -->
+  <section class="paso" id="paso2">
+    <div class="paso-header">
+      <div class="paso-num n2">2</div>
+      <div class="paso-info">
+        <h2>Etiquetas de Texto y Tipografía</h2>
+        <p>Títulos, párrafos, énfasis y contenido semántico</p>
+      </div>
+    </div>
+
+    <div class="guia-texto">
+      <p>Las etiquetas de texto son las más usadas. Con ellas defines <strong>jerarquía de contenido</strong>, párrafos, palabras importantes y más. HTML5 enfatiza el <strong>uso semántico</strong>: usar la etiqueta correcta para cada tipo de contenido.</p>
+    </div>
+
+    <!-- Ilustración jerarquía headings -->
+    <div class="ilustracion">
+      <svg viewBox="0 0 860 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="220" fill="#1a1228"/>
+        <circle cx="800" cy="180" r="90" fill="#2a1a3a" opacity=".5"/>
+
+        <!-- Barras de tamaño h1-h6 -->
+        <rect x="30" y="20" width="500" height="28" rx="6" fill="#e44d26" opacity=".9"/>
+        <text x="44" y="39" font-family="serif" font-size="16" font-weight="900" fill="white">H1 – Título Principal</text>
+        <text x="545" y="39" font-family="monospace" font-size="10" fill="#f07178">&lt;h1&gt; — 2rem — Solo uno por página</text>
+
+        <rect x="30" y="58" width="420" height="24" rx="6" fill="#f16529" opacity=".8"/>
+        <text x="44" y="74" font-family="serif" font-size="14" font-weight="700" fill="white">H2 – Sección Principal</text>
+        <text x="465" y="74" font-family="monospace" font-size="10" fill="#ffcb6b">&lt;h2&gt; — 1.5rem</text>
+
+        <rect x="30" y="92" width="340" height="21" rx="6" fill="#f4a020" opacity=".8"/>
+        <text x="44" y="106" font-family="serif" font-size="12" font-weight="700" fill="white">H3 – Sub-sección</text>
+        <text x="385" y="106" font-family="monospace" font-size="10" fill="#ffcb6b">&lt;h3&gt; — 1.25rem</text>
+
+        <rect x="30" y="123" width="270" height="19" rx="6" fill="#e0a000" opacity=".7"/>
+        <text x="44" y="136" font-family="serif" font-size="11" font-weight="600" fill="white">H4 – Sub-sub-sección</text>
+        <text x="315" y="136" font-family="monospace" font-size="10" fill="#c3e88d">&lt;h4&gt; — 1rem</text>
+
+        <rect x="30" y="152" width="210" height="17" rx="6" fill="#c07a00" opacity=".7"/>
+        <text x="44" y="163" font-family="serif" font-size="10" font-weight="600" fill="white">H5 – Detalle menor</text>
+        <text x="255" y="163" font-family="monospace" font-size="10" fill="#c3e88d">&lt;h5&gt; — 0.875rem</text>
+
+        <rect x="30" y="179" width="160" height="15" rx="6" fill="#8a5000" opacity=".7"/>
+        <text x="44" y="190" font-family="serif" font-size="9" font-weight="600" fill="white">H6 – Mínimo nivel</text>
+        <text x="205" y="190" font-family="monospace" font-size="10" fill="#82aaff">&lt;h6&gt; — 0.75rem</text>
+
+        <!-- flecha jerarquía -->
+        <line x1="820" y1="20" x2="820" y2="195" stroke="rgba(255,255,255,.15)" stroke-width="2"/>
+        <text x="840" y="110" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,.3)" transform="rotate(90,840,110)">Mayor → Menor importancia</text>
+        <polygon points="815,195 820,205 825,195" fill="rgba(255,255,255,.2)"/>
+      </svg>
+    </div>
+
+    <div class="code-block">
+      <div class="code-bar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="clabel">textos.html</span></div>
+      <div class="code-content"><span class="cm">&lt;!-- Títulos: h1 es el más importante --&gt;</span>
+<span class="tg">&lt;h1&gt;</span><span class="pt">Título principal (solo 1 por página)</span><span class="tg">&lt;/h1&gt;</span>
+<span class="tg">&lt;h2&gt;</span><span class="pt">Sección importante</span><span class="tg">&lt;/h2&gt;</span>
+<span class="tg">&lt;h3&gt;</span><span class="pt">Sub-sección</span><span class="tg">&lt;/h3&gt;</span>
+
+<span class="cm">&lt;!-- Párrafo --&gt;</span>
+<span class="tg">&lt;p&gt;</span><span class="pt">Este es un párrafo. Puede contener texto largo
+  con <strong>negritas</strong> y <em>cursivas</em> mezcladas.</span><span class="tg">&lt;/p&gt;</span>
+
+<span class="cm">&lt;!-- Énfasis semántico --&gt;</span>
+<span class="tg">&lt;p&gt;</span><span class="pt">Palabra </span><span class="tg">&lt;strong&gt;</span><span class="pt">muy importante</span><span class="tg">&lt;/strong&gt;</span><span class="pt"> en negrita.</span><span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;p&gt;</span><span class="pt">Término </span><span class="tg">&lt;em&gt;</span><span class="pt">enfatizado</span><span class="tg">&lt;/em&gt;</span><span class="pt"> en cursiva.</span><span class="tg">&lt;/p&gt;</span>
+
+<span class="cm">&lt;!-- Otras etiquetas de texto --&gt;</span>
+<span class="tg">&lt;p&gt;</span><span class="pt">Texto </span><span class="tg">&lt;mark&gt;</span><span class="pt">resaltado</span><span class="tg">&lt;/mark&gt;</span><span class="pt"> en amarillo.</span><span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;p&gt;</span><span class="pt">Precio: </span><span class="tg">&lt;del&gt;</span><span class="pt">$200</span><span class="tg">&lt;/del&gt;</span> <span class="tg">&lt;ins&gt;</span><span class="pt">$150</span><span class="tg">&lt;/ins&gt;</span><span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;p&gt;</span><span class="pt">H</span><span class="tg">&lt;sub&gt;</span><span class="pt">2</span><span class="tg">&lt;/sub&gt;</span><span class="pt">O  y  E=mc</span><span class="tg">&lt;sup&gt;</span><span class="pt">2</span><span class="tg">&lt;/sup&gt;</span><span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;blockquote&gt;</span><span class="pt">Una cita larga destacada del texto.</span><span class="tg">&lt;/blockquote&gt;</span>
+<span class="tg">&lt;code&gt;</span><span class="pt">console.log("código inline")</span><span class="tg">&lt;/code&gt;</span>
+<span class="tg">&lt;br/&gt;</span> <span class="cm">&lt;!-- salto de línea --&gt;</span>
+<span class="tg">&lt;hr/&gt;</span> <span class="cm">&lt;!-- línea horizontal divisora --&gt;</span></div>
+    </div>
+
+    <div class="tags-grid">
+      <div class="tag-card"><div class="tag-name">&lt;h1&gt; – &lt;h6&gt;</div><div class="tag-desc">Jerarquía de títulos. h1 es el más importante. Solo debe haber un h1 por página.</div></div>
+      <div class="tag-card azul"><div class="tag-name">&lt;p&gt;</div><div class="tag-desc">Párrafo de texto. Es un elemento de bloque: genera salto antes y después.</div></div>
+      <div class="tag-card verde"><div class="tag-name">&lt;strong&gt;</div><div class="tag-desc">Texto muy importante (negrita). Tiene valor semántico SEO.</div></div>
+      <div class="tag-card verde"><div class="tag-name">&lt;em&gt;</div><div class="tag-desc">Énfasis (cursiva). Indica estrés o acento en la lectura.</div></div>
+      <div class="tag-card morado"><div class="tag-name">&lt;mark&gt;</div><div class="tag-desc">Resalta texto como con un marcador amarillo.</div></div>
+      <div class="tag-card morado"><div class="tag-name">&lt;blockquote&gt;</div><div class="tag-desc">Cita larga de otra fuente. Se muestra sangrada.</div></div>
+      <div class="tag-card rojo"><div class="tag-name">&lt;del&gt; / &lt;ins&gt;</div><div class="tag-desc">Texto eliminado (tachado) e insertado. Útil para precios y cambios.</div></div>
+      <div class="tag-card rojo"><div class="tag-name">&lt;sub&gt; / &lt;sup&gt;</div><div class="tag-desc">Subíndice (H₂O) y superíndice (E=mc²).</div></div>
+      <div class="tag-card gris"><div class="tag-name">&lt;br/&gt;</div><div class="tag-desc">Salto de línea forzado. Etiqueta vacía (sin cierre).</div></div>
+      <div class="tag-card gris"><div class="tag-name">&lt;hr/&gt;</div><div class="tag-desc">Línea horizontal divisora. Etiqueta vacía.</div></div>
+      <div class="tag-card gris"><div class="tag-name">&lt;code&gt;</div><div class="tag-desc">Código inline con fuente monoespaciada.</div></div>
+      <div class="tag-card gris"><div class="tag-name">&lt;pre&gt;</div><div class="tag-desc">Texto preformateado: respeta espacios y saltos de línea.</div></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       PASO 3 – Listas
+  ════════════════════════════════ -->
+  <section class="paso" id="paso3">
+    <div class="paso-header">
+      <div class="paso-num n3">3</div>
+      <div class="paso-info">
+        <h2>Listas: ordenadas, desordenadas y de definición</h2>
+        <p>Organiza la información de forma estructurada</p>
+      </div>
+    </div>
+
+    <div class="guia-texto">
+      <p>Las listas son fundamentales para <strong>organizar información</strong>. HTML ofrece tres tipos: listas sin orden (<code>&lt;ul&gt;</code>), listas numeradas (<code>&lt;ol&gt;</code>) y listas de definición (<code>&lt;dl&gt;</code>) para términos y descripciones.</p>
+    </div>
+
+    <!-- Ilustración visual 3 tipos de lista -->
+    <div class="ilustracion">
+      <svg viewBox="0 0 860 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="200" fill="#f0eaff"/>
+        <circle cx="800" cy="180" r="80" fill="#e0d0f8" opacity=".5"/>
+
+        <!-- Lista desordenada -->
+        <rect x="20" y="14" width="250" height="172" rx="14" fill="white" stroke="#9b6bcc" stroke-width="1.5"/>
+        <rect x="20" y="14" width="250" height="36" rx="14" fill="#9b6bcc"/>
+        <rect x="20" y="28" width="250" height="22" fill="#9b6bcc"/>
+        <text x="145" y="37" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="white">&lt;ul&gt; Desordenada</text>
+        <circle cx="44" cy="68" r="5" fill="#9b6bcc"/>
+        <text x="58" y="72" font-family="sans-serif" font-size="11" fill="#3a2a4a">Elemento uno</text>
+        <circle cx="44" cy="93" r="5" fill="#9b6bcc"/>
+        <text x="58" y="97" font-family="sans-serif" font-size="11" fill="#3a2a4a">Elemento dos</text>
+        <circle cx="44" cy="118" r="5" fill="#9b6bcc"/>
+        <text x="58" y="122" font-family="sans-serif" font-size="11" fill="#3a2a4a">Elemento tres</text>
+        <rect x="54" y="133" width="5" height="5" rx="2" fill="#c9a8e4"/>
+        <text x="68" y="141" font-family="sans-serif" font-size="10" fill="#7a5a8a">Sub-elemento</text>
+        <text x="32" y="178" font-family="monospace" font-size="9" fill="#9b6bcc">&lt;ul&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ul&gt;</text>
+
+        <!-- Lista ordenada -->
+        <rect x="300" y="14" width="250" height="172" rx="14" fill="white" stroke="#e44d26" stroke-width="1.5"/>
+        <rect x="300" y="14" width="250" height="36" rx="14" fill="#e44d26"/>
+        <rect x="300" y="28" width="250" height="22" fill="#e44d26"/>
+        <text x="425" y="37" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="white">&lt;ol&gt; Ordenada</text>
+        <text x="322" y="72" font-family="monospace" font-size="12" font-weight="700" fill="#e44d26">1.</text>
+        <text x="340" y="72" font-family="sans-serif" font-size="11" fill="#3a2a4a">Primer paso</text>
+        <text x="322" y="97" font-family="monospace" font-size="12" font-weight="700" fill="#e44d26">2.</text>
+        <text x="340" y="97" font-family="sans-serif" font-size="11" fill="#3a2a4a">Segundo paso</text>
+        <text x="322" y="122" font-family="monospace" font-size="12" font-weight="700" fill="#e44d26">3.</text>
+        <text x="340" y="122" font-family="sans-serif" font-size="11" fill="#3a2a4a">Tercer paso</text>
+        <text x="322" y="147" font-family="monospace" font-size="11" font-weight="700" fill="#f0a060">a.</text>
+        <text x="340" y="147" font-family="sans-serif" font-size="10" fill="#7a4a30">Sub-letra (type="a")</text>
+        <text x="312" y="178" font-family="monospace" font-size="9" fill="#e44d26">&lt;ol&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ol&gt;</text>
+
+        <!-- Lista de definición -->
+        <rect x="580" y="14" width="260" height="172" rx="14" fill="white" stroke="#2e7d5a" stroke-width="1.5"/>
+        <rect x="580" y="14" width="260" height="36" rx="14" fill="#2e7d5a"/>
+        <rect x="580" y="28" width="260" height="22" fill="#2e7d5a"/>
+        <text x="710" y="37" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="white">&lt;dl&gt; Definición</text>
+        <text x="600" y="68" font-family="sans-serif" font-size="11" font-weight="700" fill="#2e7d5a">HTML</text>
+        <text x="616" y="83" font-family="sans-serif" font-size="10" fill="#3a2a4a">HyperText Markup Language</text>
+        <text x="600" y="103" font-family="sans-serif" font-size="11" font-weight="700" fill="#2e7d5a">CSS</text>
+        <text x="616" y="118" font-family="sans-serif" font-size="10" fill="#3a2a4a">Cascading Style Sheets</text>
+        <text x="600" y="138" font-family="sans-serif" font-size="11" font-weight="700" fill="#2e7d5a">JS</text>
+        <text x="616" y="153" font-family="sans-serif" font-size="10" fill="#3a2a4a">JavaScript, el lenguaje web</text>
+        <text x="592" y="178" font-family="monospace" font-size="9" fill="#2e7d5a">&lt;dl&gt;&lt;dt&gt;...&lt;dd&gt;...&lt;/dl&gt;</text>
+      </svg>
+    </div>
+
+    <div class="code-block">
+      <div class="code-bar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="clabel">listas.html</span></div>
+      <div class="code-content"><span class="cm">&lt;!-- Lista Desordenada (bullets) --&gt;</span>
+<span class="tg">&lt;ul&gt;</span>
+  <span class="tg">&lt;li&gt;</span><span class="pt">HTML – estructura</span><span class="tg">&lt;/li&gt;</span>
+  <span class="tg">&lt;li&gt;</span><span class="pt">CSS – estilos</span>
+    <span class="tg">&lt;ul&gt;</span>
+      <span class="tg">&lt;li&gt;</span><span class="pt">SASS – preprocesador</span><span class="tg">&lt;/li&gt;</span>
+    <span class="tg">&lt;/ul&gt;</span>
+  <span class="tg">&lt;/li&gt;</span>
+  <span class="tg">&lt;li&gt;</span><span class="pt">JavaScript – interactividad</span><span class="tg">&lt;/li&gt;</span>
+<span class="tg">&lt;/ul&gt;</span>
+
+<span class="cm">&lt;!-- Lista Ordenada (numerada) --&gt;</span>
+<span class="tg">&lt;ol</span> <span class="at">start</span>=<span class="vl">"1"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;li&gt;</span><span class="pt">Aprender HTML</span><span class="tg">&lt;/li&gt;</span>
+  <span class="tg">&lt;li&gt;</span><span class="pt">Aprender CSS</span><span class="tg">&lt;/li&gt;</span>
+  <span class="tg">&lt;li&gt;</span><span class="pt">Aprender JavaScript</span><span class="tg">&lt;/li&gt;</span>
+<span class="tg">&lt;/ol&gt;</span>
+
+<span class="cm">&lt;!-- Lista de Definición (término + descripción) --&gt;</span>
+<span class="tg">&lt;dl&gt;</span>
+  <span class="tg">&lt;dt&gt;</span><span class="pt">HTML</span><span class="tg">&lt;/dt&gt;</span>
+  <span class="tg">&lt;dd&gt;</span><span class="pt">Lenguaje de marcado para la web</span><span class="tg">&lt;/dd&gt;</span>
+  <span class="tg">&lt;dt&gt;</span><span class="pt">CSS</span><span class="tg">&lt;/dt&gt;</span>
+  <span class="tg">&lt;dd&gt;</span><span class="pt">Lenguaje de estilos en cascada</span><span class="tg">&lt;/dd&gt;</span>
+<span class="tg">&lt;/dl&gt;</span></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       PASO 4 – Enlaces e imágenes
+  ════════════════════════════════ -->
+  <section class="paso" id="paso4">
+    <div class="paso-header">
+      <div class="paso-num n4">4</div>
+      <div class="paso-info">
+        <h2>Enlaces e Imágenes</h2>
+        <p>Conecta páginas y muestra contenido visual</p>
+      </div>
+    </div>
+
+    <div class="guia-texto">
+      <p>Los <strong>hipervínculos</strong> son la esencia de la web: conectan páginas entre sí. Las <strong>imágenes</strong> son el contenido visual más básico. Ambos usan atributos clave que debes memorizar.</p>
+    </div>
+
+    <div class="ilustracion">
+      <svg viewBox="0 0 860 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="200" fill="#e6f7ef"/>
+        <circle cx="80" cy="170" r="80" fill="#c0ecd4" opacity=".5"/>
+
+        <!-- Anatomía del enlace -->
+        <rect x="20" y="20" width="400" height="160" rx="14" fill="white" stroke="#2e7d5a" stroke-width="1.5"/>
+        <rect x="20" y="20" width="400" height="34" rx="14" fill="#2e7d5a"/>
+        <rect x="20" y="36" width="400" height="18" fill="#2e7d5a"/>
+        <text x="220" y="42" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="white">Anatomía del &lt;a&gt;</text>
+        <text x="40" y="78" font-family="monospace" font-size="11" fill="#1a1228">&lt;</text>
+        <text x="50" y="78" font-family="monospace" font-size="11" fill="#f07178">a</text>
+        <text x="60" y="78" font-family="monospace" font-size="11" fill="#cdd3de"> </text>
+        <text x="65" y="78" font-family="monospace" font-size="11" fill="#ffcb6b">href</text>
+        <text x="96" y="78" font-family="monospace" font-size="11" fill="#cdd3de">=</text>
+        <text x="103" y="78" font-family="monospace" font-size="11" fill="#c3e88d">"https://…"</text>
+        <text x="195" y="78" font-family="monospace" font-size="11" fill="#cdd3de"> </text>
+        <text x="200" y="78" font-family="monospace" font-size="11" fill="#ffcb6b">target</text>
+        <text x="240" y="78" font-family="monospace" font-size="11" fill="#cdd3de">=</text>
+        <text x="248" y="78" font-family="monospace" font-size="11" fill="#c3e88d">"_blank"</text>
+        <text x="302" y="78" font-family="monospace" font-size="11" fill="#cdd3de">&gt;</text>
+        <text x="313" y="78" font-family="monospace" font-size="11" fill="#82aaff">Texto</text>
+        <text x="348" y="78" font-family="monospace" font-size="11" fill="#cdd3de">&lt;/</text>
+        <text x="364" y="78" font-family="monospace" font-size="11" fill="#f07178">a</text>
+        <text x="374" y="78" font-family="monospace" font-size="11" fill="#cdd3de">&gt;</text>
+        <!-- flechas explicativas -->
+        <line x1="65" y1="90" x2="65" y2="115" stroke="#ffcb6b" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="30" y="130" font-family="sans-serif" font-size="9" fill="#7a6020">La URL destino</text>
+        <line x1="200" y1="90" x2="200" y2="115" stroke="#ffcb6b" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="160" y="130" font-family="sans-serif" font-size="9" fill="#7a6020">Abre nueva pestaña</text>
+        <line x1="313" y1="90" x2="313" y2="115" stroke="#82aaff" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="285" y="130" font-family="sans-serif" font-size="9" fill="#204080">Lo que se ve</text>
+
+        <!-- Tipos de enlace -->
+        <text x="40" y="155" font-family="sans-serif" font-size="9" fill="#2e7d5a" font-weight="600">Tipos:</text>
+        <text x="80" y="155" font-family="monospace" font-size="9" fill="#c3e88d">href="https://…"</text>
+        <text x="195" y="155" font-family="sans-serif" font-size="9" fill="#7a7a7a">externo</text>
+        <text x="80" y="168" font-family="monospace" font-size="9" fill="#ffcb6b">href="pagina.html"</text>
+        <text x="200" y="168" font-family="sans-serif" font-size="9" fill="#7a7a7a">local</text>
+        <text x="80" y="181" font-family="monospace" font-size="9" fill="#c792ea">href="#seccion"</text>
+        <text x="195" y="181" font-family="sans-serif" font-size="9" fill="#7a7a7a">ancla interna</text>
+
+        <!-- Anatomía imagen -->
+        <rect x="445" y="20" width="395" height="160" rx="14" fill="white" stroke="#264de4" stroke-width="1.5"/>
+        <rect x="445" y="20" width="395" height="34" rx="14" fill="#264de4"/>
+        <rect x="445" y="36" width="395" height="18" fill="#264de4"/>
+        <text x="642" y="42" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="white">Anatomía del &lt;img/&gt;</text>
+        <text x="460" y="78" font-family="monospace" font-size="10" fill="#cdd3de">&lt;</text>
+        <text x="468" y="78" font-family="monospace" font-size="10" fill="#f07178">img</text>
+        <text x="492" y="78" font-family="monospace" font-size="10" fill="#ffcb6b"> src</text>
+        <text x="516" y="78" font-family="monospace" font-size="10" fill="#cdd3de">=</text>
+        <text x="522" y="78" font-family="monospace" font-size="10" fill="#c3e88d">"foto.jpg"</text>
+        <text x="576" y="78" font-family="monospace" font-size="10" fill="#ffcb6b"> alt</text>
+        <text x="596" y="78" font-family="monospace" font-size="10" fill="#cdd3de">=</text>
+        <text x="602" y="78" font-family="monospace" font-size="10" fill="#c3e88d">"descripción"</text>
+        <text x="688" y="78" font-family="monospace" font-size="10" fill="#ffcb6b"> width</text>
+        <text x="720" y="78" font-family="monospace" font-size="10" fill="#cdd3de">=</text>
+        <text x="726" y="78" font-family="monospace" font-size="10" fill="#f78c6c">"300"</text>
+        <text x="754" y="78" font-family="monospace" font-size="10" fill="#cdd3de">/&gt;</text>
+        <!-- flechas -->
+        <line x1="530" y1="90" x2="530" y2="115" stroke="#c3e88d" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="490" y="130" font-family="sans-serif" font-size="9" fill="#205a20">Ruta del archivo</text>
+        <line x1="636" y1="90" x2="636" y2="115" stroke="#ffcb6b" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="598" y="130" font-family="sans-serif" font-size="9" fill="#7a6020">Texto alternativo</text>
+        <line x1="736" y1="90" x2="736" y2="115" stroke="#f78c6c" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="714" y="130" font-family="sans-serif" font-size="9" fill="#6a3010">Tamaño px</text>
+        <text x="460" y="155" font-family="sans-serif" font-size="9" fill="#264de4" font-weight="600">Formatos:</text>
+        <text x="510" y="155" font-family="monospace" font-size="9" fill="#82aaff">.jpg .png .gif .svg .webp</text>
+        <text x="460" y="170" font-family="sans-serif" font-size="9" fill="#264de4" font-weight="600">Lazy load:</text>
+        <text x="510" y="170" font-family="monospace" font-size="9" fill="#c792ea">loading="lazy"</text>
+      </svg>
+    </div>
+
+    <div class="code-block">
+      <div class="code-bar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="clabel">enlaces-imagenes.html</span></div>
+      <div class="code-content"><span class="cm">&lt;!-- ── ENLACES ── --&gt;</span>
+<span class="cm">&lt;!-- Enlace externo, abre en nueva pestaña --&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"https://google.com"</span> <span class="at">target</span>=<span class="vl">"_blank"</span> <span class="at">rel</span>=<span class="vl">"noopener"</span><span class="tg">&gt;</span>
+  <span class="pt">Ir a Google</span>
+<span class="tg">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Enlace a otra página local --&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"contacto.html"</span><span class="tg">&gt;</span><span class="pt">Contacto</span><span class="tg">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Ancla interna (navega a un id) --&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"#seccion1"</span><span class="tg">&gt;</span><span class="pt">Ir a Sección 1</span><span class="tg">&lt;/a&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"mailto:hola@correo.com"</span><span class="tg">&gt;</span><span class="pt">Enviar email</span><span class="tg">&lt;/a&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"tel:+521234567890"</span><span class="tg">&gt;</span><span class="pt">Llamar</span><span class="tg">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Imagen como enlace --&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"https://ejemplo.com"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="vl">"logo.png"</span> <span class="at">alt</span>=<span class="vl">"Logo"</span><span class="tg">/&gt;</span>
+<span class="tg">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- ── IMÁGENES ── --&gt;</span>
+<span class="tg">&lt;img</span>
+  <span class="at">src</span>=<span class="vl">"fotos/mi-foto.jpg"</span>
+  <span class="at">alt</span>=<span class="vl">"Descripción accesible de la imagen"</span>
+  <span class="at">width</span>=<span class="vl">"600"</span>
+  <span class="at">height</span>=<span class="vl">"400"</span>
+  <span class="at">loading</span>=<span class="vl">"lazy"</span>
+<span class="tg">/&gt;</span>
+
+<span class="cm">&lt;!-- Imagen responsive con múltiples fuentes --&gt;</span>
+<span class="tg">&lt;picture&gt;</span>
+  <span class="tg">&lt;source</span> <span class="at">srcset</span>=<span class="vl">"imagen.webp"</span> <span class="at">type</span>=<span class="vl">"image/webp"</span><span class="tg">/&gt;</span>
+  <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="vl">"imagen.jpg"</span> <span class="at">alt</span>=<span class="vl">"Fallback"</span><span class="tg">/&gt;</span>
+<span class="tg">&lt;/picture&gt;</span>
+
+<span class="cm">&lt;!-- Figura con pie de imagen --&gt;</span>
+<span class="tg">&lt;figure&gt;</span>
+  <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="vl">"grafico.png"</span> <span class="at">alt</span>=<span class="vl">"Gráfico de datos"</span><span class="tg">/&gt;</span>
+  <span class="tg">&lt;figcaption&gt;</span><span class="pt">Fig. 1 – Resultados del estudio</span><span class="tg">&lt;/figcaption&gt;</span>
+<span class="tg">&lt;/figure&gt;</span></div>
+    </div>
+
+    <div class="nota warn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>El atributo <strong>alt</strong> en imágenes es <strong>obligatorio</strong> para accesibilidad. Los lectores de pantalla lo leen en voz alta para personas con discapacidad visual. También aparece si la imagen no carga.</span>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       PASO 5 – Estructura semántica
+  ════════════════════════════════ -->
+  <section class="paso" id="paso5">
+    <div class="paso-header">
+      <div class="paso-num n5">5</div>
+      <div class="paso-info">
+        <h2>Etiquetas Semánticas HTML5</h2>
+        <p>Estructura con significado: la gran novedad de HTML5</p>
+      </div>
+    </div>
+
+    <div class="guia-texto">
+      <p>HTML5 introdujo etiquetas <strong>semánticas</strong>: en lugar de usar <code>&lt;div&gt;</code> para todo, ahora usamos etiquetas con <strong>significado propio</strong>. Esto beneficia el SEO, la accesibilidad y la legibilidad del código.</p>
+    </div>
+
+    <!-- Mapa visual de estructura semántica -->
+    <div class="ilustracion">
+      <svg viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="340" fill="#fce8f0"/>
+        <circle cx="800" cy="300" r="120" fill="#f7c5d5" opacity=".4"/>
+
+        <!-- Layout completo de página -->
+        <!-- header -->
+        <rect x="30" y="20" width="800" height="55" rx="10" fill="#e44d26" opacity=".15" stroke="#e44d26" stroke-width="2"/>
+        <text x="430" y="52" text-anchor="middle" font-family="monospace" font-size="13" fill="#c0390a" font-weight="700">&lt;header&gt; — Encabezado de la página (logo, nav)</text>
+
+        <!-- nav -->
+        <rect x="30" y="83" width="800" height="38" rx="8" fill="#264de4" opacity=".12" stroke="#264de4" stroke-width="1.5"/>
+        <text x="430" y="106" text-anchor="middle" font-family="monospace" font-size="12" fill="#264de4" font-weight="600">&lt;nav&gt; — Menú de navegación principal</text>
+
+        <!-- main -->
+        <rect x="30" y="129" width="800" height="140" rx="10" fill="#2e7d5a" opacity=".08" stroke="#2e7d5a" stroke-width="2"/>
+        <text x="90" y="148" font-family="monospace" font-size="12" fill="#2e7d5a" font-weight="700">&lt;main&gt; — Contenido principal único</text>
+
+        <!-- article -->
+        <rect x="45" y="155" width="490" height="104" rx="8" fill="#9b6bcc" opacity=".1" stroke="#9b6bcc" stroke-width="1.5"/>
+        <text x="65" y="172" font-family="monospace" font-size="11" fill="#7a4aaa" font-weight="600">&lt;article&gt; — Contenido independiente (post, noticia)</text>
+        <!-- section dentro de article -->
+        <rect x="60" y="180" width="220" height="68" rx="7" fill="#f0a0bb" opacity=".2" stroke="#f0a0bb" stroke-width="1.5"/>
+        <text x="75" y="196" font-family="monospace" font-size="10" fill="#8a2a5a">&lt;section&gt;</text>
+        <text x="75" y="212" font-family="sans-serif" font-size="9" fill="#6a2a4a">Agrupa contenido temático</text>
+        <text x="75" y="228" font-family="monospace" font-size="9" fill="#6a2a4a">relacionado</text>
+        <text x="75" y="242" font-family="monospace" font-size="10" fill="#8a2a5a">&lt;/section&gt;</text>
+
+        <!-- aside -->
+        <rect x="550" y="155" width="265" height="104" rx="8" fill="#f0db4f" opacity=".15" stroke="#e0a000" stroke-width="1.5"/>
+        <text x="568" y="172" font-family="monospace" font-size="11" fill="#7a5000" font-weight="600">&lt;aside&gt;</text>
+        <text x="568" y="190" font-family="sans-serif" font-size="9" fill="#5a3a00">Contenido lateral complementario</text>
+        <text x="568" y="206" font-family="sans-serif" font-size="9" fill="#5a3a00">Sidebar, publicidad, links</text>
+        <text x="568" y="222" font-family="sans-serif" font-size="9" fill="#5a3a00">relacionados</text>
+        <text x="568" y="250" font-family="monospace" font-size="11" fill="#7a5000" font-weight="600">&lt;/aside&gt;</text>
+
+        <!-- footer -->
+        <rect x="30" y="277" width="800" height="48" rx="10" fill="#555" opacity=".1" stroke="#555" stroke-width="2"/>
+        <text x="430" y="305" text-anchor="middle" font-family="monospace" font-size="13" fill="#333" font-weight="700">&lt;footer&gt; — Pie de página (derechos, contacto, links)</text>
+      </svg>
+    </div>
+
+    <div class="code-block">
+      <div class="code-bar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="clabel">semantica.html</span></div>
+      <div class="code-content"><span class="tg">&lt;body&gt;</span>
+
+  <span class="tg">&lt;header&gt;</span>
+    <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="vl">"logo.png"</span> <span class="at">alt</span>=<span class="vl">"Mi Marca"</span><span class="tg">/&gt;</span>
+    <span class="tg">&lt;nav&gt;</span>
+      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"/"</span><span class="tg">&gt;</span><span class="pt">Inicio</span><span class="tg">&lt;/a&gt;</span>
+      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"/blog"</span><span class="tg">&gt;</span><span class="pt">Blog</span><span class="tg">&lt;/a&gt;</span>
+      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"/contacto"</span><span class="tg">&gt;</span><span class="pt">Contacto</span><span class="tg">&lt;/a&gt;</span>
+    <span class="tg">&lt;/nav&gt;</span>
+  <span class="tg">&lt;/header&gt;</span>
+
+  <span class="tg">&lt;main&gt;</span>
+    <span class="tg">&lt;article&gt;</span>
+      <span class="tg">&lt;h1&gt;</span><span class="pt">Título del artículo</span><span class="tg">&lt;/h1&gt;</span>
+      <span class="tg">&lt;section&gt;</span>
+        <span class="tg">&lt;h2&gt;</span><span class="pt">Primera sección</span><span class="tg">&lt;/h2&gt;</span>
+        <span class="tg">&lt;p&gt;</span><span class="pt">Contenido...</span><span class="tg">&lt;/p&gt;</span>
+      <span class="tg">&lt;/section&gt;</span>
+    <span class="tg">&lt;/article&gt;</span>
+
+    <span class="tg">&lt;aside&gt;</span>
+      <span class="tg">&lt;h3&gt;</span><span class="pt">Artículos relacionados</span><span class="tg">&lt;/h3&gt;</span>
+    <span class="tg">&lt;/aside&gt;</span>
+  <span class="tg">&lt;/main&gt;</span>
+
+  <span class="tg">&lt;footer&gt;</span>
+    <span class="tg">&lt;p&gt;</span><span class="pt">&amp;copy; 2025 Sophia Castro</span><span class="tg">&lt;/p&gt;</span>
+    <span class="tg">&lt;address&gt;</span><span class="pt">contacto@sophia.com</span><span class="tg">&lt;/address&gt;</span>
+  <span class="tg">&lt;/footer&gt;</span>
+
+<span class="tg">&lt;/body&gt;</span></div>
+    </div>
+
+    <div class="tags-grid">
+      <div class="tag-card rojo"><div class="tag-name">&lt;header&gt;</div><div class="tag-desc">Encabezado de página o sección. Suele contener el logo y navegación.</div></div>
+      <div class="tag-card azul"><div class="tag-name">&lt;nav&gt;</div><div class="tag-desc">Bloque de navegación principal. Solo para grupos de enlaces de navegación.</div></div>
+      <div class="tag-card verde"><div class="tag-name">&lt;main&gt;</div><div class="tag-desc">Contenido principal único de la página. Solo debe haber uno por documento.</div></div>
+      <div class="tag-card morado"><div class="tag-name">&lt;article&gt;</div><div class="tag-desc">Contenido independiente y reutilizable: posts, noticias, comentarios.</div></div>
+      <div class="tag-card morado"><div class="tag-name">&lt;section&gt;</div><div class="tag-desc">Agrupa contenido temáticamente relacionado. Suele llevar un título h2.</div></div>
+      <div class="tag-card"><div class="tag-name">&lt;aside&gt;</div><div class="tag-desc">Contenido lateral complementario al principal: sidebar, widgets, notas.</div></div>
+      <div class="tag-card gris"><div class="tag-name">&lt;footer&gt;</div><div class="tag-desc">Pie de página con derechos, contacto, mapa del sitio.</div></div>
+      <div class="tag-card gris"><div class="tag-name">&lt;div&gt;</div><div class="tag-desc">Contenedor genérico sin semántica. Usarlo cuando ninguna etiqueta semántica aplique.</div></div>
+      <div class="tag-card gris"><div class="tag-name">&lt;span&gt;</div><div class="tag-desc">Contenedor inline genérico. Para dar estilo a partes del texto sin semántica.</div></div>
+      <div class="tag-card verde"><div class="tag-name">&lt;address&gt;</div><div class="tag-desc">Información de contacto del autor o de la empresa.</div></div>
+      <div class="tag-card azul"><div class="tag-name">&lt;time&gt;</div><div class="tag-desc">Fecha u hora legible por máquinas con el atributo <code>datetime</code>.</div></div>
+      <div class="tag-card verde"><div class="tag-name">&lt;details&gt; / &lt;summary&gt;</div><div class="tag-desc">Acordeón nativo HTML: contenido desplegable sin JavaScript.</div></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       PASO 6 – TABLAS
+  ════════════════════════════════ -->
+  <section class="paso" id="paso6">
+    <div class="paso-header">
+      <div class="paso-num n6">6</div>
+      <div class="paso-info">
+        <h2>Tablas de Datos</h2>
+        <p>Presenta información organizada en filas y columnas</p>
+      </div>
+    </div>
+    <div class="guia-texto">
+      <p>Las tablas HTML son para mostrar <strong>datos tabulares</strong> (como hojas de cálculo). No deben usarse para maquetar layouts. Tienen una estructura jerárquica: cabecera, cuerpo y pie.</p>
+    </div>
+
+    <div class="ilustracion">
+      <svg viewBox="0 0 860 240" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="240" fill="#ffeaea"/>
+        <circle cx="40" cy="200" r="80" fill="#ffd0d0" opacity=".5"/>
+
+        <!-- Tabla ejemplo -->
+        <rect x="40" y="20" width="500" height="200" rx="12" fill="white" stroke="#c62828" stroke-width="1.5"/>
+        <!-- thead -->
+        <rect x="40" y="20" width="500" height="36" rx="12" fill="#c62828"/>
+        <rect x="40" y="40" width="500" height="16" fill="#c62828"/>
+        <text x="115" y="42" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="white">&lt;th&gt; Nombre</text>
+        <text x="280" y="42" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="white">&lt;th&gt; Materia</text>
+        <text x="440" y="42" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="white">&lt;th&gt; Calificación</text>
+        <!-- Líneas columnas -->
+        <line x1="200" y1="56" x2="200" y2="220" stroke="rgba(200,40,40,.15)" stroke-width="1"/>
+        <line x1="370" y1="56" x2="370" y2="220" stroke="rgba(200,40,40,.15)" stroke-width="1"/>
+        <!-- tbody rows -->
+        <rect x="40" y="56" width="500" height="36" fill="#fff5f5"/>
+        <text x="115" y="78" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3a1a1a">Sophia Castro</text>
+        <text x="280" y="78" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3a1a1a">Cultura Digital</text>
+        <text x="440" y="78" text-anchor="middle" font-family="monospace" font-size="12" font-weight="700" fill="#c62828">10</text>
+        <rect x="40" y="92" width="500" height="36" fill="white"/>
+        <text x="115" y="114" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3a1a1a">Carlos López</text>
+        <text x="280" y="114" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3a1a1a">Programación</text>
+        <text x="440" y="114" text-anchor="middle" font-family="monospace" font-size="12" font-weight="700" fill="#2e7d5a">9.5</text>
+        <rect x="40" y="128" width="500" height="36" fill="#fff5f5"/>
+        <text x="115" y="150" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3a1a1a">Ana Martínez</text>
+        <text x="280" y="150" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3a1a1a">Diseño Web</text>
+        <text x="440" y="150" text-anchor="middle" font-family="monospace" font-size="12" font-weight="700" fill="#264de4">9.8</text>
+        <!-- tfoot -->
+        <rect x="40" y="164" width="500" height="36" rx="0" fill="#ffd0d0"/>
+        <rect x="40" y="164" width="500" height="36" rx="0" fill="#ffd0d0"/>
+        <path d="M40 164 L540 164 L540 192 Q540 200 532 200 L48 200 Q40 200 40 192 Z" fill="#ffd0d0"/>
+        <text x="280" y="186" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#8a1010">&lt;tfoot&gt; — Total: 29.3 puntos</text>
+
+        <!-- Etiquetas a la derecha -->
+        <text x="570" y="42" font-family="monospace" font-size="10" fill="#c62828">&lt;thead&gt;</text>
+        <text x="570" y="110" font-family="monospace" font-size="10" fill="#2e7d5a">&lt;tbody&gt;</text>
+        <text x="570" y="185" font-family="monospace" font-size="10" fill="#c62828">&lt;tfoot&gt;</text>
+        <text x="570" y="58" font-family="monospace" font-size="9" fill="#7a3030">↑ Cabecera de tabla</text>
+        <text x="570" y="125" font-family="monospace" font-size="9" fill="#3a6a3a">← &lt;tr&gt; fila</text>
+        <text x="570" y="140" font-family="monospace" font-size="9" fill="#3a6a3a">    &lt;td&gt; celda</text>
+        <text x="570" y="200" font-family="monospace" font-size="9" fill="#7a3030">↑ Pie de tabla</text>
+
+        <!-- colspan/rowspan note -->
+        <rect x="600" y="20" width="240" height="80" rx="10" fill="white" stroke="#f0db4f" stroke-width="1.5"/>
+        <text x="720" y="36" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#7a6000">colspan y rowspan</text>
+        <text x="614" y="52" font-family="monospace" font-size="9" fill="#7a4000">colspan="2" → fusiona 2 cols</text>
+        <text x="614" y="67" font-family="monospace" font-size="9" fill="#7a4000">rowspan="3" → fusiona 3 filas</text>
+        <text x="614" y="85" font-family="sans-serif" font-size="9" fill="#aaa">Como "merge cells" en Excel</text>
+      </svg>
+    </div>
+
+    <div class="code-block">
+      <div class="code-bar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="clabel">tabla.html</span></div>
+      <div class="code-content"><span class="tg">&lt;table&gt;</span>
+  <span class="cm">&lt;!-- Cabecera --&gt;</span>
+  <span class="tg">&lt;thead&gt;</span>
+    <span class="tg">&lt;tr&gt;</span>
+      <span class="tg">&lt;th</span> <span class="at">scope</span>=<span class="vl">"col"</span><span class="tg">&gt;</span><span class="pt">Nombre</span><span class="tg">&lt;/th&gt;</span>
+      <span class="tg">&lt;th</span> <span class="at">scope</span>=<span class="vl">"col"</span><span class="tg">&gt;</span><span class="pt">Materia</span><span class="tg">&lt;/th&gt;</span>
+      <span class="tg">&lt;th</span> <span class="at">scope</span>=<span class="vl">"col"</span><span class="tg">&gt;</span><span class="pt">Calificación</span><span class="tg">&lt;/th&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+  <span class="tg">&lt;/thead&gt;</span>
+  <span class="cm">&lt;!-- Cuerpo --&gt;</span>
+  <span class="tg">&lt;tbody&gt;</span>
+    <span class="tg">&lt;tr&gt;</span>
+      <span class="tg">&lt;td&gt;</span><span class="pt">Sophia Castro</span><span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td&gt;</span><span class="pt">Cultura Digital</span><span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td&gt;</span><span class="pt">10</span><span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+    <span class="cm">&lt;!-- Celda que ocupa 2 columnas --&gt;</span>
+    <span class="tg">&lt;tr&gt;</span>
+      <span class="tg">&lt;td</span> <span class="at">colspan</span>=<span class="vl">"2"</span><span class="tg">&gt;</span><span class="pt">Promedio general</span><span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td&gt;</span><span class="pt">9.8</span><span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+  <span class="tg">&lt;/tbody&gt;</span>
+  <span class="cm">&lt;!-- Pie --&gt;</span>
+  <span class="tg">&lt;tfoot&gt;</span>
+    <span class="tg">&lt;tr&gt;</span>
+      <span class="tg">&lt;td</span> <span class="at">colspan</span>=<span class="vl">"3"</span><span class="tg">&gt;</span><span class="pt">Total estudiantes: 3</span><span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+  <span class="tg">&lt;/tfoot&gt;</span>
+<span class="tg">&lt;/table&gt;</span></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       PASO 7 – FORMULARIOS
+  ════════════════════════════════ -->
+  <section class="paso" id="paso7">
+    <div class="paso-header">
+      <div class="paso-num n7">7</div>
+      <div class="paso-info">
+        <h2>Formularios HTML5</h2>
+        <p>Recolecta datos del usuario: el corazón de la interactividad</p>
+      </div>
+    </div>
+    <div class="guia-texto">
+      <p>Los formularios permiten que los usuarios <strong>envíen datos</strong>: registros, búsquedas, pagos, comentarios. HTML5 amplió enormemente los tipos de input, añadiendo <strong>validación nativa</strong> sin JavaScript.</p>
+    </div>
+
+    <div class="ilustracion">
+      <svg viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="300" fill="#e3f0ff"/>
+        <circle cx="800" cy="260" r="100" fill="#c0d8f8" opacity=".4"/>
+
+        <!-- Formulario visual -->
+        <rect x="30" y="20" width="380" height="260" rx="14" fill="white" stroke="#1565c0" stroke-width="1.5"/>
+        <rect x="30" y="20" width="380" height="36" rx="14" fill="#1565c0"/>
+        <rect x="30" y="38" width="380" height="18" fill="#1565c0"/>
+        <text x="220" y="43" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="white">Ejemplo de Formulario</text>
+        <!-- Campo nombre -->
+        <text x="50" y="78" font-family="sans-serif" font-size="10" font-weight="600" fill="#1565c0">Nombre completo *</text>
+        <rect x="50" y="83" width="340" height="28" rx="6" fill="#f0f6ff" stroke="#82aaff" stroke-width="1.5"/>
+        <text x="62" y="100" font-family="sans-serif" font-size="10" fill="#8a9ab0">Escribe tu nombre...</text>
+        <!-- Email -->
+        <text x="50" y="128" font-family="sans-serif" font-size="10" font-weight="600" fill="#1565c0">Correo electrónico *</text>
+        <rect x="50" y="133" width="340" height="28" rx="6" fill="#f0f6ff" stroke="#82aaff" stroke-width="1.5"/>
+        <text x="62" y="150" font-family="sans-serif" font-size="10" fill="#8a9ab0">ejemplo@correo.com</text>
+        <!-- Contraseña -->
+        <text x="50" y="178" font-family="sans-serif" font-size="10" font-weight="600" fill="#1565c0">Contraseña</text>
+        <rect x="50" y="183" width="340" height="28" rx="6" fill="#f0f6ff" stroke="#82aaff" stroke-width="1.5"/>
+        <text x="62" y="200" font-family="sans-serif" font-size="10" fill="#aaa">●●●●●●●●</text>
+        <!-- Select -->
+        <text x="50" y="228" font-family="sans-serif" font-size="10" font-weight="600" fill="#1565c0">Especialidad</text>
+        <rect x="50" y="233" width="340" height="28" rx="6" fill="#f0f6ff" stroke="#82aaff" stroke-width="1.5"/>
+        <text x="62" y="250" font-family="sans-serif" font-size="10" fill="#3a3a5a">Inteligencia Artificial ▾</text>
+        <!-- Btn -->
+        <rect x="50" y="268" width="150" height="30" rx="8" fill="#1565c0"/>
+        <text x="125" y="287" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="white">Registrarse</text>
+
+        <!-- Tipos de input a la derecha -->
+        <rect x="440" y="14" width="400" height="272" rx="14" fill="white" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="6,3"/>
+        <text x="640" y="36" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1565c0">Tipos de &lt;input&gt; en HTML5</text>
+        <text x="460" y="58" font-family="monospace" font-size="9.5" fill="#c792ea">type="text"</text><text x="590" y="58" font-family="sans-serif" font-size="9" fill="#555">Texto libre</text>
+        <text x="460" y="74" font-family="monospace" font-size="9.5" fill="#c792ea">type="email"</text><text x="590" y="74" font-family="sans-serif" font-size="9" fill="#555">Correo con validación</text>
+        <text x="460" y="90" font-family="monospace" font-size="9.5" fill="#c792ea">type="password"</text><text x="590" y="90" font-family="sans-serif" font-size="9" fill="#555">Contraseña oculta</text>
+        <text x="460" y="106" font-family="monospace" font-size="9.5" fill="#c792ea">type="number"</text><text x="590" y="106" font-family="sans-serif" font-size="9" fill="#555">Solo números</text>
+        <text x="460" y="122" font-family="monospace" font-size="9.5" fill="#c792ea">type="date"</text><text x="590" y="122" font-family="sans-serif" font-size="9" fill="#555">Selector de fecha</text>
+        <text x="460" y="138" font-family="monospace" font-size="9.5" fill="#c792ea">type="time"</text><text x="590" y="138" font-family="sans-serif" font-size="9" fill="#555">Selector de hora</text>
+        <text x="460" y="154" font-family="monospace" font-size="9.5" fill="#c792ea">type="color"</text><text x="590" y="154" font-family="sans-serif" font-size="9" fill="#555">Selector de color</text>
+        <text x="460" y="170" font-family="monospace" font-size="9.5" fill="#c792ea">type="range"</text><text x="590" y="170" font-family="sans-serif" font-size="9" fill="#555">Slider deslizable</text>
+        <text x="460" y="186" font-family="monospace" font-size="9.5" fill="#c792ea">type="file"</text><text x="590" y="186" font-family="sans-serif" font-size="9" fill="#555">Subir archivos</text>
+        <text x="460" y="202" font-family="monospace" font-size="9.5" fill="#c792ea">type="checkbox"</text><text x="590" y="202" font-family="sans-serif" font-size="9" fill="#555">Casilla de verificación</text>
+        <text x="460" y="218" font-family="monospace" font-size="9.5" fill="#c792ea">type="radio"</text><text x="590" y="218" font-family="sans-serif" font-size="9" fill="#555">Opción única</text>
+        <text x="460" y="234" font-family="monospace" font-size="9.5" fill="#c792ea">type="search"</text><text x="590" y="234" font-family="sans-serif" font-size="9" fill="#555">Campo de búsqueda</text>
+        <text x="460" y="250" font-family="monospace" font-size="9.5" fill="#c792ea">type="tel"</text><text x="590" y="250" font-family="sans-serif" font-size="9" fill="#555">Teléfono</text>
+        <text x="460" y="266" font-family="monospace" font-size="9.5" fill="#c792ea">type="url"</text><text x="590" y="266" font-family="sans-serif" font-size="9" fill="#555">URL con validación</text>
+        <text x="460" y="282" font-family="monospace" font-size="9.5" fill="#c792ea">type="submit"</text><text x="590" y="282" font-family="sans-serif" font-size="9" fill="#555">Botón enviar</text>
+      </svg>
+    </div>
+
+    <div class="code-block">
+      <div class="code-bar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="clabel">formulario.html</span></div>
+      <div class="code-content"><span class="tg">&lt;form</span> <span class="at">action</span>=<span class="vl">"/enviar"</span> <span class="at">method</span>=<span class="vl">"post"</span><span class="tg">&gt;</span>
+
+  <span class="cm">&lt;!-- Agrupación con fieldset --&gt;</span>
+  <span class="tg">&lt;fieldset&gt;</span>
+    <span class="tg">&lt;legend&gt;</span><span class="pt">Datos personales</span><span class="tg">&lt;/legend&gt;</span>
+
+    <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"nombre"</span><span class="tg">&gt;</span><span class="pt">Nombre *</span><span class="tg">&lt;/label&gt;</span>
+    <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"text"</span> <span class="at">id</span>=<span class="vl">"nombre"</span> <span class="at">name</span>=<span class="vl">"nombre"</span>
+           <span class="at">placeholder</span>=<span class="vl">"Tu nombre"</span> <span class="at">required</span> <span class="at">minlength</span>=<span class="vl">"2"</span><span class="tg">/&gt;</span>
+
+    <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"email"</span><span class="tg">&gt;</span><span class="pt">Email *</span><span class="tg">&lt;/label&gt;</span>
+    <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"email"</span> <span class="at">id</span>=<span class="vl">"email"</span> <span class="at">name</span>=<span class="vl">"email"</span>
+           <span class="at">placeholder</span>=<span class="vl">"hola@ejemplo.com"</span> <span class="at">required</span><span class="tg">/&gt;</span>
+
+    <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"edad"</span><span class="tg">&gt;</span><span class="pt">Edad</span><span class="tg">&lt;/label&gt;</span>
+    <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"number"</span> <span class="at">id</span>=<span class="vl">"edad"</span> <span class="at">min</span>=<span class="vl">"14"</span> <span class="at">max</span>=<span class="vl">"120"</span><span class="tg">/&gt;</span>
+
+    <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"nacimiento"</span><span class="tg">&gt;</span><span class="pt">Fecha de nacimiento</span><span class="tg">&lt;/label&gt;</span>
+    <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"date"</span> <span class="at">id</span>=<span class="vl">"nacimiento"</span><span class="tg">/&gt;</span>
+  <span class="tg">&lt;/fieldset&gt;</span>
+
+  <span class="cm">&lt;!-- Select desplegable --&gt;</span>
+  <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"especialidad"</span><span class="tg">&gt;</span><span class="pt">Especialidad</span><span class="tg">&lt;/label&gt;</span>
+  <span class="tg">&lt;select</span> <span class="at">id</span>=<span class="vl">"especialidad"</span> <span class="at">name</span>=<span class="vl">"especialidad"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;option</span> <span class="at">value</span>=<span class="vl">""</span><span class="tg">&gt;</span><span class="pt">-- Selecciona --</span><span class="tg">&lt;/option&gt;</span>
+    <span class="tg">&lt;option</span> <span class="at">value</span>=<span class="vl">"ia"</span><span class="tg">&gt;</span><span class="pt">Inteligencia Artificial</span><span class="tg">&lt;/option&gt;</span>
+    <span class="tg">&lt;option</span> <span class="at">value</span>=<span class="vl">"prog"</span><span class="tg">&gt;</span><span class="pt">Programación</span><span class="tg">&lt;/option&gt;</span>
+  <span class="tg">&lt;/select&gt;</span>
+
+  <span class="cm">&lt;!-- Textarea --&gt;</span>
+  <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"mensaje"</span><span class="tg">&gt;</span><span class="pt">Mensaje</span><span class="tg">&lt;/label&gt;</span>
+  <span class="tg">&lt;textarea</span> <span class="at">id</span>=<span class="vl">"mensaje"</span> <span class="at">rows</span>=<span class="vl">"4"</span> <span class="at">cols</span>=<span class="vl">"40"</span>
+             <span class="at">placeholder</span>=<span class="vl">"Escribe aquí..."</span><span class="tg">&gt;&lt;/textarea&gt;</span>
+
+  <span class="cm">&lt;!-- Botones --&gt;</span>
+  <span class="tg">&lt;button</span> <span class="at">type</span>=<span class="vl">"submit"</span><span class="tg">&gt;</span><span class="pt">Enviar</span><span class="tg">&lt;/button&gt;</span>
+  <span class="tg">&lt;button</span> <span class="at">type</span>=<span class="vl">"reset"</span><span class="tg">&gt;</span><span class="pt">Limpiar</span><span class="tg">&lt;/button&gt;</span>
+
+<span class="tg">&lt;/form&gt;</span></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       PASO 8 – MULTIMEDIA
+  ════════════════════════════════ -->
+  <section class="paso" id="paso8">
+    <div class="paso-header">
+      <div class="paso-num n8">8</div>
+      <div class="paso-info">
+        <h2>Multimedia: Audio, Video e iFrame</h2>
+        <p>Incrusta contenido audiovisual sin plugins</p>
+      </div>
+    </div>
+    <div class="guia-texto">
+      <p>HTML5 revolucionó la web al permitir <strong>audio y video nativos</strong> sin necesitar Flash ni plugins. Con <code>&lt;video&gt;</code> y <code>&lt;audio&gt;</code> puedes controlar la reproducción directamente desde HTML. <code>&lt;iframe&gt;</code> permite incrustar páginas externas.</p>
+    </div>
+
+    <div class="ilustracion">
+      <svg viewBox="0 0 860 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="200" fill="#fff3ee"/>
+        <circle cx="800" cy="30" r="90" fill="#ffe0c0" opacity=".4"/>
+
+        <!-- Video player -->
+        <rect x="20" y="20" width="260" height="160" rx="14" fill="#1a1a2a" stroke="#ff7043" stroke-width="1.5"/>
+        <rect x="20" y="20" width="260" height="120" rx="14" fill="#0d1020"/>
+        <rect x="20" y="120" width="260" height="20" fill="#0d1020"/>
+        <!-- play icon -->
+        <circle cx="150" cy="70" r="25" fill="rgba(255,112,67,.3)" stroke="#ff7043" stroke-width="2"/>
+        <polygon points="142,58 142,82 168,70" fill="#ff7043"/>
+        <!-- subtitles -->
+        <rect x="50" y="100" width="160" height="12" rx="3" fill="rgba(255,255,255,.15)"/>
+        <!-- controls -->
+        <rect x="30" y="128" width="240" height="4" rx="2" fill="#333"/>
+        <rect x="30" y="128" width="100" height="4" rx="2" fill="#ff7043"/>
+        <circle cx="130" cy="130" r="5" fill="#ff7043"/>
+        <!-- buttons -->
+        <text x="35" y="148" font-family="sans-serif" font-size="12" fill="#ff7043">⏮ ⏯ ⏭</text>
+        <text x="180" y="148" font-family="sans-serif" font-size="10" fill="#888">🔊 ⛶</text>
+        <text x="150" y="175" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#ff7043">&lt;video&gt;</text>
+
+        <!-- Audio player -->
+        <rect x="305" y="60" width="250" height="80" rx="14" fill="white" stroke="#9b6bcc" stroke-width="1.5"/>
+        <text x="318" y="82" font-family="sans-serif" font-size="11" font-weight="700" fill="#7a4aaa">🎵 Mi Canción.mp3</text>
+        <rect x="318" y="90" width="200" height="4" rx="2" fill="#e0d0f8"/>
+        <rect x="318" y="90" width="80" height="4" rx="2" fill="#9b6bcc"/>
+        <circle cx="398" cy="92" r="6" fill="#9b6bcc"/>
+        <text x="325" y="120" font-family="sans-serif" font-size="14" fill="#9b6bcc">⏮ ⏯ ⏭ 🔊</text>
+        <text x="430" y="175" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#9b6bcc">&lt;audio&gt;</text>
+
+        <!-- iFrame -->
+        <rect x="580" y="20" width="260" height="160" rx="14" fill="#f0f4ff" stroke="#264de4" stroke-width="1.5"/>
+        <rect x="580" y="20" width="260" height="30" rx="14" fill="#264de4"/>
+        <rect x="580" y="36" width="260" height="14" fill="#264de4"/>
+        <text x="710" y="38" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,.5)">https://youtube.com/embed/...</text>
+        <!-- youtube fake -->
+        <rect x="595" y="55" width="230" height="110" rx="6" fill="#0d0d0d"/>
+        <polygon points="680,90 680,120 710,105" fill="red"/>
+        <text x="710" y="175" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#264de4">&lt;iframe&gt;</text>
+      </svg>
+    </div>
+
+    <div class="code-block">
+      <div class="code-bar"><span class="cd r"></span><span class="cd y"></span><span class="cd g"></span><span class="clabel">multimedia.html</span></div>
+      <div class="code-content"><span class="cm">&lt;!-- VIDEO nativo HTML5 --&gt;</span>
+<span class="tg">&lt;video</span>
+  <span class="at">width</span>=<span class="vl">"640"</span> <span class="at">height</span>=<span class="vl">"360"</span>
+  <span class="at">controls</span>
+  <span class="at">autoplay</span>
+  <span class="at">muted</span>
+  <span class="at">loop</span>
+  <span class="at">poster</span>=<span class="vl">"portada-video.jpg"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;source</span> <span class="at">src</span>=<span class="vl">"video.mp4"</span>  <span class="at">type</span>=<span class="vl">"video/mp4"</span><span class="tg">/&gt;</span>
+  <span class="tg">&lt;source</span> <span class="at">src</span>=<span class="vl">"video.webm"</span> <span class="at">type</span>=<span class="vl">"video/webm"</span><span class="tg">/&gt;</span>
+  <span class="pt">Tu navegador no soporta video.</span>
+<span class="tg">&lt;/video&gt;</span>
+
+<span class="cm">&lt;!-- AUDIO nativo HTML5 --&gt;</span>
+<span class="tg">&lt;audio</span> <span class="at">controls</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;source</span> <span class="at">src</span>=<span class="vl">"cancion.mp3"</span> <span class="at">type</span>=<span class="vl">"audio/mpeg"</span><span class="tg">/&gt;</span>
+  <span class="tg">&lt;source</span> <span class="at">src</span>=<span class="vl">"cancion.ogg"</span> <span class="at">type</span>=<span class="vl">"audio/ogg"</span><span class="tg">/&gt;</span>
+<span class="tg">&lt;/audio&gt;</span>
+
+<span class="cm">&lt;!-- IFRAME – Incrustar YouTube --&gt;</span>
+<span class="tg">&lt;iframe</span>
+  <span class="at">src</span>=<span class="vl">"https://www.youtube.com/embed/ID_VIDEO"</span>
+  <span class="at">width</span>=<span class="vl">"560"</span> <span class="at">height</span>=<span class="vl">"315"</span>
+  <span class="at">allowfullscreen</span>
+  <span class="at">loading</span>=<span class="vl">"lazy"</span>
+  <span class="at">title</span>=<span class="vl">"Video de YouTube"</span><span class="tg">&gt;</span>
+<span class="tg">&lt;/iframe&gt;</span>
+
+<span class="cm">&lt;!-- CANVAS – Dibujo con JavaScript --&gt;</span>
+<span class="tg">&lt;canvas</span> <span class="at">id</span>=<span class="vl">"miCanvas"</span> <span class="at">width</span>=<span class="vl">"500"</span> <span class="at">height</span>=<span class="vl">"300"</span><span class="tg">&gt;&lt;/canvas&gt;</span></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       PASO 9 – ATRIBUTOS GLOBALES
+  ════════════════════════════════ -->
+  <section class="paso" id="paso9">
+    <div class="paso-header">
+      <div class="paso-num n9">9</div>
+      <div class="paso-info">
+        <h2>Atributos Globales y Buenas Prácticas</h2>
+        <p>Los atributos que funcionan en cualquier etiqueta</p>
+      </div>
+    </div>
+    <div class="guia-texto">
+      <p>Los <strong>atributos globales</strong> se pueden aplicar a casi cualquier etiqueta HTML. Son esenciales para el CSS, JavaScript, accesibilidad y SEO. Dominarlos es lo que diferencia un código básico de uno profesional.</p>
+    </div>
+
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Atributo</th>
+            <th>Para qué sirve</th>
+            <th>Ejemplo de uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>id</code></td><td>Identifica un elemento único en la página. Usado por CSS (#id) y JS</td><td><code>&lt;div id="menu"&gt;</code></td></tr>
+          <tr><td><code>class</code></td><td>Agrupa elementos para estilos CSS o selectores JS. Puede repetirse</td><td><code>&lt;p class="destacado"&gt;</code></td></tr>
+          <tr><td><code>style</code></td><td>CSS inline directamente en el elemento (no recomendado para producción)</td><td><code>&lt;h1 style="color:red"&gt;</code></td></tr>
+          <tr><td><code>title</code></td><td>Tooltip al pasar el mouse encima del elemento</td><td><code>&lt;abbr title="HyperText"&gt;HTML&lt;/abbr&gt;</code></td></tr>
+          <tr><td><code>lang</code></td><td>Idioma del contenido del elemento</td><td><code>&lt;p lang="en"&gt;Hello&lt;/p&gt;</code></td></tr>
+          <tr><td><code>hidden</code></td><td>Oculta el elemento visualmente y del DOM accesible</td><td><code>&lt;div hidden&gt;</code></td></tr>
+          <tr><td><code>tabindex</code></td><td>Orden de navegación con teclado (accesibilidad)</td><td><code>&lt;button tabindex="1"&gt;</code></td></tr>
+          <tr><td><code>data-*</code></td><td>Atributos personalizados para guardar datos en HTML</td><td><code>&lt;div data-usuario="sophia"&gt;</code></td></tr>
+          <tr><td><code>contenteditable</code></td><td>Hace el elemento editable por el usuario</td><td><code>&lt;p contenteditable="true"&gt;</code></td></tr>
+          <tr><td><code>draggable</code></td><td>Permite arrastrar el elemento (Drag &amp; Drop)</td><td><code>&lt;div draggable="true"&gt;</code></td></tr>
+          <tr><td><code>aria-label</code></td><td>Etiqueta accesible para lectores de pantalla</td><td><code>&lt;button aria-label="Cerrar"&gt;</code></td></tr>
+          <tr><td><code>role</code></td><td>Define el rol ARIA del elemento para accesibilidad</td><td><code>&lt;div role="dialog"&gt;</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Buenas prácticas -->
+    <div class="guia-texto" style="margin-top:24px;"><p><strong>Buenas prácticas HTML5 — checklist del desarrollador:</strong></p></div>
+    <ul class="checklist">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d5a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Siempre incluir <code>&lt;!DOCTYPE html&gt;</code> al inicio del archivo
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d5a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Usar <code>lang="es"</code> en <code>&lt;html&gt;</code> para SEO y accesibilidad
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d5a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Incluir siempre el atributo <code>alt</code> en todas las imágenes
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d5a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Usar etiquetas semánticas (<code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;footer&gt;</code>) en lugar de <code>&lt;div&gt;</code> para todo
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d5a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Solo usar un <code>&lt;h1&gt;</code> por página; respetar la jerarquía h1 → h2 → h3
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d5a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Indentar correctamente el código (2 o 4 espacios por nivel)
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d5a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Cerrar todas las etiquetas (excepto las vacías: <code>&lt;img/&gt;</code>, <code>&lt;br/&gt;</code>, <code>&lt;hr/&gt;</code>)
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d5a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Incluir <code>&lt;meta name="viewport"&gt;</code> para que la web sea responsive en móviles
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d5a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        No usar estilos inline (<code>style=""</code>). Mantener HTML y CSS separados
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d5a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Validar el código en <strong>validator.w3.org</strong> antes de publicar
+      </li>
+    </ul>
+  </section>
+
+  <!-- ════════════════════════════════
+       RESUMEN FINAL
+  ════════════════════════════════ -->
+  <section class="paso">
+    <div class="paso-header">
+      <div class="paso-num" style="background:linear-gradient(135deg,#ff7043,#e44d26);">✓</div>
+      <div class="paso-info">
+        <h2>Resumen: Todo HTML5 en un vistazo</h2>
+        <p>Lo que aprendiste en esta guía</p>
+      </div>
+    </div>
+
+    <div class="resumen-grid">
+      <div class="res-card c1">
+        <h4>🏗️ Estructura Base</h4>
+        <p>DOCTYPE, html, head, body. El esqueleto obligatorio de todo documento.</p>
+      </div>
+      <div class="res-card c2">
+        <h4>📝 Texto y Tipografía</h4>
+        <p>h1-h6, p, strong, em, mark, blockquote, code y más etiquetas de contenido.</p>
+      </div>
+      <div class="res-card c3">
+        <h4>📋 Listas</h4>
+        <p>ul, ol, dl — tres tipos para organizar cualquier información estructurada.</p>
+      </div>
+      <div class="res-card c4">
+        <h4>🔗 Enlaces e Imágenes</h4>
+        <p>a con href, img con src y alt. Conecta páginas y muestra contenido visual.</p>
+      </div>
+      <div class="res-card c5">
+        <h4>🧭 Semántica HTML5</h4>
+        <p>header, nav, main, article, section, aside, footer — da significado al código.</p>
+      </div>
+      <div class="res-card c6">
+        <h4>📊 Tablas</h4>
+        <p>table, thead, tbody, tfoot, tr, th, td. Para datos tabulares nunca para layout.</p>
+      </div>
+      <div class="res-card c1">
+        <h4>📬 Formularios</h4>
+        <p>form, input (15+ tipos), label, select, textarea, button — recolecta datos del usuario.</p>
+      </div>
+      <div class="res-card c2">
+        <h4>🎬 Multimedia</h4>
+        <p>video, audio, iframe, canvas — contenido audiovisual sin Flash ni plugins.</p>
+      </div>
+      <div class="res-card c3">
+        <h4>🌐 Atributos Globales</h4>
+        <p>id, class, data-*, aria-*, style, hidden — aplican en cualquier etiqueta.</p>
+      </div>
+    </div>
+
+    <div class="nota tip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <span><strong>¡Siguiente paso!</strong> Con HTML dominas la <em>estructura</em>. El siguiente nivel es aprender <strong>CSS</strong> para darle estilos y diseño, y luego <strong>JavaScript</strong> para añadir interactividad. ¡Ya tienes la base más importante!</span>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <span class="escuela">Centro de Bachillerato Tecnológico Industrial y de Servicios No. 144</span>
+    <div class="footer-divider"></div>
+    <span class="footer-esp">Especialidad: Inteligencia Artificial</span>
+    <span class="footer-autor">Profesor: &nbsp;<strong>Jordy Chirino Balcázar</strong></span>
+    <span class="footer-autor">Creado por &nbsp;<strong>Sophia Castro</strong></span>
+  </div>
+</footer>
+
+</body>
+</html>

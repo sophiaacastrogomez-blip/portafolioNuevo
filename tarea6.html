@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarea 6 - Conceptos Generales de Python</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0ff;
+    --card-1: #ffd6e7;
+    --card-2: #d6f0ff;
+    --card-3: #d6ffd8;
+    --card-4: #fff3d6;
+    --card-5: #e8d6ff;
+    --card-6: #ffd6d6;
+    --card-7: #d6fff5;
+    --card-8: #fff0d6;
+    --accent-1: #e8789a;
+    --accent-2: #78b4e8;
+    --accent-3: #78c87a;
+    --accent-4: #e8c278;
+    --accent-5: #a878e8;
+    --accent-6: #e87878;
+    --accent-7: #78e8c8;
+    --accent-8: #e8a878;
+    --text-dark: #3d3355;
+    --text-mid: #6b5f80;
+    --code-bg: rgba(255,255,255,0.65);
+    --shadow: 0 8px 32px rgba(120,100,180,0.12);
+    --radius: 20px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 15% 20%, #ffe4f5 0%, transparent 40%),
+      radial-gradient(circle at 85% 80%, #d8eaff 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, #e8f5e0 0%, transparent 60%);
+    min-height: 100vh;
+    padding: 40px 20px 60px;
+    color: var(--text-dark);
+  }
+
+  /* BOTÓN REGRESAR */
+  .btn-regresar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    background: white;
+    border: 2px solid #c9b8e8;
+    border-radius: 50px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text-dark);
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(160,130,220,0.2);
+    transition: all 0.25s ease;
+    cursor: pointer;
+  }
+  .btn-regresar:hover {
+    background: #e8d6ff;
+    border-color: #a878e8;
+    transform: translateX(-3px);
+    box-shadow: 0 6px 20px rgba(160,130,220,0.35);
+  }
+  .btn-regresar .arrow { font-size: 18px; }
+
+  /* ENCABEZADO */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-top: 20px;
+  }
+  .header .badge {
+    display: inline-block;
+    background: white;
+    border: 2px solid #c9b8e8;
+    border-radius: 50px;
+    padding: 6px 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a878e8;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .header h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    color: var(--text-dark);
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .header h1 span {
+    background: linear-gradient(120deg, #e87878, #a878e8, #78b4e8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header p {
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    max-width: 560px;
+    margin: 0 auto;
+    font-weight: 600;
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 28px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* CARD */
+  .card {
+    border-radius: var(--radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(120,100,180,0.18);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    opacity: 0.25;
+  }
+
+  .card:nth-child(1)  { background: var(--card-1); animation-delay: 0.05s; }
+  .card:nth-child(1)::before { background: var(--accent-1); }
+  .card:nth-child(2)  { background: var(--card-2); animation-delay: 0.10s; }
+  .card:nth-child(2)::before { background: var(--accent-2); }
+  .card:nth-child(3)  { background: var(--card-3); animation-delay: 0.15s; }
+  .card:nth-child(3)::before { background: var(--accent-3); }
+  .card:nth-child(4)  { background: var(--card-4); animation-delay: 0.20s; }
+  .card:nth-child(4)::before { background: var(--accent-4); }
+  .card:nth-child(5)  { background: var(--card-5); animation-delay: 0.25s; }
+  .card:nth-child(5)::before { background: var(--accent-5); }
+  .card:nth-child(6)  { background: var(--card-6); animation-delay: 0.30s; }
+  .card:nth-child(6)::before { background: var(--accent-6); }
+  .card:nth-child(7)  { background: var(--card-7); animation-delay: 0.35s; }
+  .card:nth-child(7)::before { background: var(--accent-7); }
+  .card:nth-child(8)  { background: var(--card-8); animation-delay: 0.40s; }
+  .card:nth-child(8)::before { background: var(--accent-8); }
+
+  .card-icon {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .card-number {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 4px;
+  }
+  .card h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: var(--text-dark);
+    line-height: 1.2;
+  }
+  .card p {
+    font-size: 0.93rem;
+    color: var(--text-mid);
+    line-height: 1.65;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  /* CÓDIGO */
+  .code-block {
+    background: var(--code-bg);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: #3d3355;
+    border: 1px solid rgba(255,255,255,0.8);
+    backdrop-filter: blur(4px);
+    overflow-x: auto;
+    position: relative;
+  }
+  .code-block .label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.45;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .kw  { color: #a878e8; font-weight: 600; }
+  .fn  { color: #e87878; font-weight: 600; }
+  .str { color: #78a878; }
+  .num { color: #e8a878; }
+  .cm  { color: #aaa; font-style: italic; }
+  .op  { color: #78b4e8; font-weight: 600; }
+
+  /* OUTPUT */
+  .output {
+    margin-top: 10px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    font-family: 'Fira Code', monospace;
+    color: #5a4f6e;
+    border-left: 3px solid rgba(120,100,180,0.3);
+  }
+  .output .out-label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.4;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 12px;
+    color: var(--text-mid);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 52px;
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    font-weight: 600;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BOTÓN REGRESAR A PORTAFOLIO -->
+<a class="btn-regresar" href="index.html">
+  <span class="arrow">←</span> Regresar al portafolio
+</a>
+
+<!-- ENCABEZADO -->
+<div class="header">
+  <div class="badge">Tarea 6 · Cultura Digital</div>
+  <h1>Conceptos Generales de <span>Python</span></h1>
+  <p>Fundamentos del lenguaje de programación más popular del mundo, con ejemplos prácticos.</p>
+</div>
+
+<!-- GRID DE CARDS -->
+<div class="grid">
+
+  <!-- CARD 1: ¿Qué es Python? -->
+  <div class="card">
+    <span class="card-icon">🐍</span>
+    <div class="card-number">Concepto 01</div>
+    <h2>¿Qué es Python?</h2>
+    <p>Python es un lenguaje de programación de alto nivel, interpretado y de propósito general. Fue creado por <strong>Guido van Rossum</strong> en 1991. Es famoso por su sintaxis limpia y legible, similar al inglés, lo que lo hace ideal para principiantes y expertos.</p>
+    <div class="code-block">
+      <span class="label">Ejemplo — Primer programa</span>
+      <span class="fn">print</span>(<span class="str">"¡Hola, mundo!"</span>)<br>
+      <span class="fn">print</span>(<span class="str">"Bienvenido a Python"</span>)
+    </div>
+    <div class="output">
+      <span class="out-label">Salida</span>
+      ¡Hola, mundo!<br>Bienvenido a Python
+    </div>
+    <span class="tag">🏷 Lenguaje interpretado</span>
+  </div>
+
+  <!-- CARD 2: Variables y Tipos de Datos -->
+  <div class="card">
+    <span class="card-icon">📦</span>
+    <div class="card-number">Concepto 02</div>
+    <h2>Variables y Tipos de Datos</h2>
+    <p>Una <strong>variable</strong> es un espacio en memoria donde guardamos información. Python detecta automáticamente el tipo de dato (tipado dinámico). Los tipos principales son: <em>int</em>, <em>float</em>, <em>str</em>, <em>bool</em> y <em>list</em>.</p>
+    <div class="code-block">
+      <span class="label">Ejemplo — Declaración de variables</span>
+      nombre <span class="op">=</span> <span class="str">"Ana"</span>          <span class="cm"># str</span><br>
+      edad   <span class="op">=</span> <span class="num">20</span>             <span class="cm"># int</span><br>
+      altura <span class="op">=</span> <span class="num">1.65</span>          <span class="cm"># float</span><br>
+      activo <span class="op">=</span> <span class="kw">True</span>          <span class="cm"># bool</span><br>
+      <span class="fn">print</span>(<span class="fn">type</span>(nombre))   <span class="cm"># &lt;class 'str'&gt;</span>
+    </div>
+    <div class="output">
+      <span class="out-label">Salida</span>
+      &lt;class 'str'&gt;
+    </div>
+    <span class="tag">🏷 Tipado dinámico</span>
+  </div>
+
+  <!-- CARD 3: Operadores -->
+  <div class="card">
+    <span class="card-icon">➕</span>
+    <div class="card-number">Concepto 03</div>
+    <h2>Operadores</h2>
+    <p>Los <strong>operadores</strong> permiten realizar operaciones con variables y valores. Existen operadores <em>aritméticos</em> (+, -, *, /), <em>de comparación</em> (==, !=, &gt;, &lt;) y <em>lógicos</em> (and, or, not).</p>
+    <div class="code-block">
+      <span class="label">Ejemplo — Operadores aritméticos</span>
+      a <span class="op">=</span> <span class="num">10</span><br>
+      b <span class="op">=</span> <span class="num">3</span><br>
+      <span class="fn">print</span>(a <span class="op">+</span> b)   <span class="cm"># 13 → suma</span><br>
+      <span class="fn">print</span>(a <span class="op">**</span> b)  <span class="cm"># 1000 → potencia</span><br>
+      <span class="fn">print</span>(a <span class="op">%</span> b)   <span class="cm"># 1 → módulo (residuo)</span>
+    </div>
+    <div class="output">
+      <span class="out-label">Salida</span>
+      13 &nbsp; 1000 &nbsp; 1
+    </div>
+    <span class="tag">🏷 Aritmética y lógica</span>
+  </div>
+
+  <!-- CARD 4: Condicionales -->
+  <div class="card">
+    <span class="card-icon">🔀</span>
+    <div class="card-number">Concepto 04</div>
+    <h2>Condicionales (if / elif / else)</h2>
+    <p>Los <strong>condicionales</strong> permiten tomar decisiones en el código. Si una condición es verdadera, se ejecuta un bloque de código; si no, se pasa al siguiente. Python usa la <em>indentación</em> (sangría) para delimitar los bloques.</p>
+    <div class="code-block">
+      <span class="label">Ejemplo — Calificación escolar</span>
+      calificacion <span class="op">=</span> <span class="num">85</span><br><br>
+      <span class="kw">if</span> calificacion <span class="op">&gt;=</span> <span class="num">90</span>:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="str">"Excelente 🌟"</span>)<br>
+      <span class="kw">elif</span> calificacion <span class="op">&gt;=</span> <span class="num">70</span>:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="str">"Aprobado ✅"</span>)<br>
+      <span class="kw">else</span>:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="str">"Reprobado ❌"</span>)
+    </div>
+    <div class="output">
+      <span class="out-label">Salida</span>
+      Aprobado ✅
+    </div>
+    <span class="tag">🏷 Control de flujo</span>
+  </div>
+
+  <!-- CARD 5: Ciclos -->
+  <div class="card">
+    <span class="card-icon">🔁</span>
+    <div class="card-number">Concepto 05</div>
+    <h2>Ciclos (for / while)</h2>
+    <p>Los <strong>ciclos</strong> repiten un bloque de código varias veces. <em>for</em> se usa cuando se conoce el número de iteraciones (por ejemplo, recorrer una lista). <em>while</em> se usa cuando se repite mientras una condición sea verdadera.</p>
+    <div class="code-block">
+      <span class="label">Ejemplo — for y while</span>
+      <span class="cm"># Con for</span><br>
+      <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="num">4</span>):<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="str">f"Vuelta </span>{i}<span class="str">"</span>)<br><br>
+      <span class="cm"># Con while</span><br>
+      n <span class="op">=</span> <span class="num">3</span><br>
+      <span class="kw">while</span> n <span class="op">&gt;</span> <span class="num">0</span>:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(n); n <span class="op">-=</span> <span class="num">1</span>
+    </div>
+    <div class="output">
+      <span class="out-label">Salida (for)</span>
+      Vuelta 1 &nbsp; Vuelta 2 &nbsp; Vuelta 3
+    </div>
+    <span class="tag">🏷 Iteración</span>
+  </div>
+
+  <!-- CARD 6: Funciones -->
+  <div class="card">
+    <span class="card-icon">⚙️</span>
+    <div class="card-number">Concepto 06</div>
+    <h2>Funciones</h2>
+    <p>Una <strong>función</strong> es un bloque de código reutilizable que realiza una tarea específica. Se definen con <em>def</em> y pueden recibir <em>parámetros</em> y devolver un valor con <em>return</em>. Evitan repetir código.</p>
+    <div class="code-block">
+      <span class="label">Ejemplo — Función saludo</span>
+      <span class="kw">def</span> <span class="fn">saludar</span>(nombre, edad):<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="str">f"Hola {nombre}, tienes {edad} años"</span><br><br>
+      mensaje <span class="op">=</span> <span class="fn">saludar</span>(<span class="str">"Luis"</span>, <span class="num">21</span>)<br>
+      <span class="fn">print</span>(mensaje)
+    </div>
+    <div class="output">
+      <span class="out-label">Salida</span>
+      Hola Luis, tienes 21 años
+    </div>
+    <span class="tag">🏷 Reutilización de código</span>
+  </div>
+
+  <!-- CARD 7: Listas -->
+  <div class="card">
+    <span class="card-icon">📋</span>
+    <div class="card-number">Concepto 07</div>
+    <h2>Listas</h2>
+    <p>Una <strong>lista</strong> es una colección ordenada y modificable de elementos. Se crean con corchetes <em>[ ]</em> y pueden contener cualquier tipo de dato. Son una de las estructuras más usadas en Python por su flexibilidad.</p>
+    <div class="code-block">
+      <span class="label">Ejemplo — Operaciones con listas</span>
+      frutas <span class="op">=</span> [<span class="str">"mango"</span>, <span class="str">"fresa"</span>, <span class="str">"papaya"</span>]<br>
+      frutas.<span class="fn">append</span>(<span class="str">"guayaba"</span>)  <span class="cm"># agregar</span><br>
+      <span class="fn">print</span>(frutas[<span class="num">0</span>])           <span class="cm"># mango</span><br>
+      <span class="fn">print</span>(<span class="fn">len</span>(frutas))         <span class="cm"># 4</span><br>
+      frutas.<span class="fn">remove</span>(<span class="str">"fresa"</span>)    <span class="cm"># eliminar</span>
+    </div>
+    <div class="output">
+      <span class="out-label">Salida</span>
+      mango &nbsp; 4
+    </div>
+    <span class="tag">🏷 Estructura de datos</span>
+  </div>
+
+  <!-- CARD 8: Diccionarios -->
+  <div class="card">
+    <span class="card-icon">📖</span>
+    <div class="card-number">Concepto 08</div>
+    <h2>Diccionarios</h2>
+    <p>Un <strong>diccionario</strong> almacena datos en pares <em>clave: valor</em>. Se crean con llaves <em>{ }</em> y son ideales para representar objetos del mundo real, como los datos de una persona. Se accede a los valores usando la clave.</p>
+    <div class="code-block">
+      <span class="label">Ejemplo — Datos de un estudiante</span>
+      alumno <span class="op">=</span> {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"nombre"</span>: <span class="str">"Sofía"</span>,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"carrera"</span>: <span class="str">"Ing. en Sistemas"</span>,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"promedio"</span>: <span class="num">9.2</span><br>
+      }<br>
+      <span class="fn">print</span>(alumno[<span class="str">"nombre"</span>])
+    </div>
+    <div class="output">
+      <span class="out-label">Salida</span>
+      Sofía
+    </div>
+    <span class="tag">🏷 Clave — Valor</span>
+  </div>
+
+</div>
+
+<div class="footer">
+  Cultura Digital · Tarea 6 · Conceptos Generales de Python &nbsp;🐍
+</div>
+
+</body>
+</html>
