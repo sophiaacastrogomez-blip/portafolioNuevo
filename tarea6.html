@@ -270,6 +270,267 @@
     opacity: 0.6;
   }
 
+  /* ── LAYOUT WRAPPER ── */
+  .page-layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: #12101a;
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 24px;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.35);
+    scrollbar-width: thin;
+    scrollbar-color: #2e2a40 transparent;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: #2e2a40; border-radius: 4px; }
+
+  /* Sidebar top bar */
+  .sidebar-topbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid #1e1b2e;
+  }
+  .sidebar-topbar .sb-back {
+    background: #1e1b2e;
+    border: 1.5px solid #3a3258;
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    color: #e0d8f5;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .sidebar-topbar .sb-back:hover {
+    background: #2a2545;
+    border-color: #a878e8;
+  }
+  .sidebar-topbar .sb-breadcrumb {
+    font-size: 10px;
+    font-weight: 700;
+    color: #5a5272;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Sidebar logo/title area */
+  .sidebar-brand {
+    padding: 20px 20px 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .sb-logo {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #a878e8, #e87878);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .sb-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #e0d8f5;
+    line-height: 1.2;
+  }
+  .sb-subtitle {
+    font-size: 10px;
+    color: #5a5272;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* Progress bar */
+  .sb-progress-wrap {
+    margin: 0 20px 20px;
+    background: #1e1b2e;
+    border-radius: 50px;
+    height: 5px;
+    overflow: hidden;
+  }
+  .sb-progress-bar {
+    height: 100%;
+    border-radius: 50px;
+    background: linear-gradient(90deg, #a878e8, #e87878);
+    transition: width 0.4s ease;
+  }
+  .sb-progress-label {
+    font-size: 10px;
+    color: #5a5272;
+    font-weight: 700;
+    padding: 0 20px 6px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Section groups */
+  .sb-section {
+    margin: 6px 0 2px;
+    padding: 0 16px;
+  }
+  .sb-section-title {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #e8c278;
+    padding: 10px 6px 6px;
+  }
+
+  /* Nav items */
+  .sb-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s, transform 0.18s;
+    margin-bottom: 2px;
+    position: relative;
+  }
+  .sb-item:hover {
+    background: #1e1b2e;
+    transform: translateX(3px);
+  }
+  .sb-item.active {
+    background: #1e1b2e;
+    border-left: 3px solid #a878e8;
+    padding-left: 7px;
+  }
+  .sb-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #3a3258;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .sb-item.active .sb-dot,
+  .sb-item:hover .sb-dot {
+    background: #a878e8;
+  }
+  .sb-item-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: #9388b0;
+    transition: color 0.2s;
+    flex: 1;
+  }
+  .sb-item.active .sb-item-text,
+  .sb-item:hover .sb-item-text {
+    color: #e0d8f5;
+  }
+  .sb-num {
+    font-size: 10px;
+    font-weight: 800;
+    color: #3a3258;
+    background: #1a1728;
+    padding: 2px 7px;
+    border-radius: 50px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .sb-item.active .sb-num {
+    background: #a878e8;
+    color: #fff;
+  }
+
+  /* Sidebar footer */
+  .sb-footer {
+    margin-top: auto;
+    padding: 16px 20px 0;
+    border-top: 1px solid #1e1b2e;
+  }
+  .sb-footer-text {
+    font-size: 10px;
+    color: #3a3258;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  /* ── MAIN CONTENT SHIFT ── */
+  .main-content {
+    margin-left: 260px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Hide the old fixed back button since sidebar has one */
+  .btn-regresar {
+    display: none;
+  }
+
+  /* Sidebar toggle for mobile */
+  .sb-toggle {
+    display: none;
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 300;
+    background: #12101a;
+    border: none;
+    border-radius: 10px;
+    width: 40px; height: 40px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+  }
+  .sb-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #e0d8f5;
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .main-content {
+      margin-left: 0;
+    }
+    .sb-toggle {
+      display: flex;
+    }
+    .grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 1.8rem; }
+  }
+
   @media (max-width: 600px) {
     .grid { grid-template-columns: 1fr; }
     .header h1 { font-size: 1.8rem; }
@@ -277,6 +538,107 @@
 </style>
 </head>
 <body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+
+  <!-- Top bar -->
+  <div class="sidebar-topbar">
+    <a class="sb-back" href="index.html">← REGRESAR</a>
+    <span class="sb-breadcrumb">PORTAFOLIO · TAREA</span>
+  </div>
+
+  <!-- Brand -->
+  <div class="sidebar-brand">
+    <div class="sb-logo">🐍</div>
+    <div>
+      <div class="sb-title">Python</div>
+      <div class="sb-subtitle">Conceptos Generales</div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="sb-progress-label">PROGRESO DEL TEMA</div>
+  <div class="sb-progress-wrap">
+    <div class="sb-progress-bar" id="progressBar" style="width: 12%"></div>
+  </div>
+
+  <!-- Section: Fundamentos -->
+  <div class="sb-section">
+    <div class="sb-section-title">Fundamentos</div>
+
+    <a class="sb-item active" href="#c1" onclick="setActive(this)">
+      <span class="sb-dot"></span>
+      <span class="sb-item-text">¿Qué es Python?</span>
+      <span class="sb-num">01</span>
+    </a>
+    <a class="sb-item" href="#c2" onclick="setActive(this)">
+      <span class="sb-dot"></span>
+      <span class="sb-item-text">Variables y tipos</span>
+      <span class="sb-num">02</span>
+    </a>
+    <a class="sb-item" href="#c3" onclick="setActive(this)">
+      <span class="sb-dot"></span>
+      <span class="sb-item-text">Operadores</span>
+      <span class="sb-num">03</span>
+    </a>
+  </div>
+
+  <!-- Section: Control de flujo -->
+  <div class="sb-section">
+    <div class="sb-section-title">Control de Flujo</div>
+
+    <a class="sb-item" href="#c4" onclick="setActive(this)">
+      <span class="sb-dot"></span>
+      <span class="sb-item-text">Condicionales</span>
+      <span class="sb-num">04</span>
+    </a>
+    <a class="sb-item" href="#c5" onclick="setActive(this)">
+      <span class="sb-dot"></span>
+      <span class="sb-item-text">Ciclos for y while</span>
+      <span class="sb-num">05</span>
+    </a>
+  </div>
+
+  <!-- Section: Estructuras -->
+  <div class="sb-section">
+    <div class="sb-section-title">Estructuras</div>
+
+    <a class="sb-item" href="#c7" onclick="setActive(this)">
+      <span class="sb-dot"></span>
+      <span class="sb-item-text">Listas y tuplas</span>
+      <span class="sb-num">07</span>
+    </a>
+    <a class="sb-item" href="#c8" onclick="setActive(this)">
+      <span class="sb-dot"></span>
+      <span class="sb-item-text">Diccionarios</span>
+      <span class="sb-num">08</span>
+    </a>
+  </div>
+
+  <!-- Section: Funciones y más -->
+  <div class="sb-section">
+    <div class="sb-section-title">Funciones y Más</div>
+
+    <a class="sb-item" href="#c6" onclick="setActive(this)">
+      <span class="sb-dot"></span>
+      <span class="sb-item-text">Funciones</span>
+      <span class="sb-num">06</span>
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <div class="sb-footer">
+    <div class="sb-footer-text">Cultura Digital · Tarea 6</div>
+  </div>
+</nav>
+
+<!-- Mobile toggle button -->
+<button class="sb-toggle" id="sbToggle" onclick="toggleSidebar()">
+  <span></span><span></span><span></span>
+</button>
+
+<div class="main-content">
 
 <!-- BOTÓN REGRESAR A PORTAFOLIO -->
 <a class="btn-regresar" href="index.html">
@@ -294,7 +656,7 @@
 <div class="grid">
 
   <!-- CARD 1: ¿Qué es Python? -->
-  <div class="card">
+  <div class="card" id="c1">
     <span class="card-icon">🐍</span>
     <div class="card-number">Concepto 01</div>
     <h2>¿Qué es Python?</h2>
@@ -312,7 +674,7 @@
   </div>
 
   <!-- CARD 2: Variables y Tipos de Datos -->
-  <div class="card">
+  <div class="card" id="c2">
     <span class="card-icon">📦</span>
     <div class="card-number">Concepto 02</div>
     <h2>Variables y Tipos de Datos</h2>
@@ -333,7 +695,7 @@
   </div>
 
   <!-- CARD 3: Operadores -->
-  <div class="card">
+  <div class="card" id="c3">
     <span class="card-icon">➕</span>
     <div class="card-number">Concepto 03</div>
     <h2>Operadores</h2>
@@ -354,7 +716,7 @@
   </div>
 
   <!-- CARD 4: Condicionales -->
-  <div class="card">
+  <div class="card" id="c4">
     <span class="card-icon">🔀</span>
     <div class="card-number">Concepto 04</div>
     <h2>Condicionales (if / elif / else)</h2>
@@ -377,7 +739,7 @@
   </div>
 
   <!-- CARD 5: Ciclos -->
-  <div class="card">
+  <div class="card" id="c5">
     <span class="card-icon">🔁</span>
     <div class="card-number">Concepto 05</div>
     <h2>Ciclos (for / while)</h2>
@@ -400,7 +762,7 @@
   </div>
 
   <!-- CARD 6: Funciones -->
-  <div class="card">
+  <div class="card" id="c6">
     <span class="card-icon">⚙️</span>
     <div class="card-number">Concepto 06</div>
     <h2>Funciones</h2>
@@ -420,7 +782,7 @@
   </div>
 
   <!-- CARD 7: Listas -->
-  <div class="card">
+  <div class="card" id="c7">
     <span class="card-icon">📋</span>
     <div class="card-number">Concepto 07</div>
     <h2>Listas</h2>
@@ -441,7 +803,7 @@
   </div>
 
   <!-- CARD 8: Diccionarios -->
-  <div class="card">
+  <div class="card" id="c8">
     <span class="card-icon">📖</span>
     <div class="card-number">Concepto 08</div>
     <h2>Diccionarios</h2>
@@ -467,6 +829,55 @@
 <div class="footer">
   Cultura Digital · Tarea 6 · Conceptos Generales de Python &nbsp;🐍
 </div>
+
+</div><!-- /main-content -->
+
+<script>
+  // Sidebar active item
+  function setActive(el) {
+    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    updateProgress();
+    // Close sidebar on mobile after click
+    if (window.innerWidth <= 900) {
+      document.getElementById('sidebar').classList.remove('open');
+    }
+  }
+
+  // Progress bar: based on which card is active
+  const progressMap = { c1:12, c2:25, c3:37, c4:50, c5:62, c6:75, c7:87, c8:100 };
+
+  function updateProgress() {
+    const active = document.querySelector('.sb-item.active');
+    if (!active) return;
+    const href = active.getAttribute('href').replace('#','');
+    const pct = progressMap[href] || 12;
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  // Scroll spy
+  const cards = ['c1','c2','c3','c4','c5','c6','c7','c8'];
+  window.addEventListener('scroll', () => {
+    let current = 'c1';
+    cards.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < window.innerHeight * 0.5) {
+        current = id;
+      }
+    });
+    document.querySelectorAll('.sb-item').forEach(item => {
+      item.classList.remove('active');
+      if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+    });
+    const pct = progressMap[current] || 12;
+    document.getElementById('progressBar').style.width = pct + '%';
+  });
+
+  // Mobile toggle
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+</script>
 
 </body>
 </html>
